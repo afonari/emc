@@ -1,3 +1,3 @@
 ### Effective Mass Calculator
 
-![Effective Mass Tensor](https://github.com/alexandr-fonari/emc/blob/master/p_ms.gif)
+![Effective Mass Tensor](https://raw.github.com/alexandr-fonari/emc/master/p_ms.gif)
