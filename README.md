@@ -20,14 +20,18 @@ Second order derivatives are estimated with ```O(h^4)``` error:
 Mixed second derivatives are estimated also with ```O(h^4)``` error:  
 ![Mixed 2nd Derivative](http://www.holoborodko.com/pavel/wp-content/ql-cache/quicklatex.com-ead43440eddb0f8db2cc36a1df79c547_l3.svg)
 
-After matrix is built, it is inversed (```DGETRF+DGETRI``` [SO](http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c)) and diagonalized (```DGEEV```).
+After matrix is built, it is inversed (```DGETRF+DGETRI``` [[SO]](http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c)) and diagonalized (```DGEEV```).
 
 #### Required input files
-```inp``` file is **required** and has the following form:  
+**1.** ```OUTCAR``` can be either OUTCAR from an SCF calculation from VASP or output from an SCF calculation from CRYSTAL renamed to OUTCAR  
+**2.** ```inp``` has the following form:  
 ```
-0.000 0.000 0.000   ! K-POINT in reciprocal cartesian, set to Gamma: 3 floats
+0.000 0.000 0.000   ! K-POINT in reciprocal cartesian system, set to Gamma: 3 floats
 0.001               ! dk step: 1 float
 81                  ! band number, can be VB or CB or whatever you want: 1 integer
 V                   ! program, currently support V for VASP and C for crystal: 1 char
 ```
-#### CRYSTAL pecularities
+
+#### How to run with CRYSTAL
+1. Run SCF.
+1. make directory, e.g. ```emH-00-50-00-d01```, meaning, we are calculating effective mass for **Y** point with ```dk=0.01```
