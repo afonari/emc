@@ -1,6 +1,6 @@
 ## Effective Mass Calculator
 
-#### Theory
+#### 1. Theory
 
 ```
 Note: Will work in atomic units (a.u.), where: hbar = 1, energy is in Hartrees,
@@ -22,7 +22,7 @@ Mixed second derivatives are estimated also with ```O(h^4)``` error:
 
 After matrix is built, it is inversed (```DGETRF+DGETRI``` [[SO]](http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c)) and diagonalized (```DGEEV```).
 
-#### Required input files
+#### 2. Required input files
 **1.** ```OUTCAR``` can be either OUTCAR from an SCF calculation from VASP or output from an SCF calculation from CRYSTAL renamed to OUTCAR  
 **2.** ```inp``` has the following form:  
 ```
@@ -32,6 +32,6 @@ After matrix is built, it is inversed (```DGETRF+DGETRI``` [[SO]](http://stackov
 V                   ! program, currently support V for VASP and C for crystal: 1 char
 ```
 
-#### How to run with CRYSTAL
+#### 3. How to run with CRYSTAL
 1. Run SCF.
 1. make directory, e.g. ```emH-00-50-00-d01```, meaning, we are calculating effective mass for **Y** point with ```dk=0.01```

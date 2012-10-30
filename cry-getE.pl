@@ -107,7 +107,7 @@ OUT
 open( my $kpoints_fh, "<", "KPOINTS" ) || die "Can't open KPOINTS file: $!";
 
 <$kpoints_fh>; # title
-<$kpoints_fh>; # nkpoints = 61
+<$kpoints_fh>; # NKPOINTS == 61
 <$kpoints_fh>; # Cartesian
 
 my $iss = 1000; #  shrinking factor
@@ -121,7 +121,7 @@ print $eigenval_fh "LINE\n";
 print $eigenval_fh "1 1 1\n";
 
 
-for(my $i = 1; $i <= $nkpoints; $i++)
+for(my $i = 1; $i <= NKPOINTS; $i++)
 {
     open( my $band_fh, ">", "input.d3" ) || die "Can't open input file: $!";
 
