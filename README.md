@@ -34,4 +34,7 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 
 #### 3. How to run with CRYSTAL
 1. Run SCF.
-1. make directory, e.g. ```emH-00-50-00-d01```, meaning, we are calculating effective mass for **Y** point with ```dk=0.01```
+1. Make directory, e.g. ```emH-00-50-00-d01```, meaning, we are calculating effective mass for **Y** point with ```dk=0.01```.
+1. Run from freshly created directory (```emH-00-50-00-d01```) as ```cry-getE.pl -i ../input.out -f ../input.f9 -b 131```.
+1. Copy ```EIGENVAL``` generated file to the directory with ```inp``` file.
+1. Run ```EMCc.x``` in directory with ```inp``` and ```EIGENVAL``` files.
