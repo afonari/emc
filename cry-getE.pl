@@ -23,7 +23,7 @@ use Getopt::Long;
 use constant PI => 3.14159265358979324;
 use constant A2B => 1.88972613289; # ANGSTROM_TO_BOHR
 use constant B2A => 0.529177249; #
-use constant ISS => 1000; # shrinking factor
+use constant ISS => 9999; # shrinking factor
 use constant NKPOINTS => 61; #
 
 my ($opt_help, $opt_input, $opt_f9, $opt_nband);
@@ -110,8 +110,6 @@ open( my $kpoints_fh, "<", "KPOINTS" ) || die "Can't open KPOINTS file: $!";
 <$kpoints_fh>; # NKPOINTS == 61
 <$kpoints_fh>; # Cartesian
 
-my $iss = 1000; #  shrinking factor
-
 open( my $eigenval_fh, ">", "EIGENVAL" ) || die "$!\n";
 print $eigenval_fh "$band\n";
 print $eigenval_fh "LINE\n";
@@ -127,7 +125,7 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
 
     print $band_fh "BAND\n";
     print $band_fh "For k-point (CART): TODO\n";
-    print $band_fh "1 ISS 2 $band $band 1 0\n";
+    print $band_fh "1 ".ISS." 2 $band $band 1 0\n";
 
     my @v1;
     ($v1[1], $v1[2], $v1[3]) = (<$kpoints_fh> =~ m/^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)/);
@@ -145,11 +143,11 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
 
     my @kp1 = m3by1( @f, @v1 );
     my @kp2 = m3by1( @f, @v2 );
-    print $band_fh sprintf("%5d %5d %5d   %5d %5d %5d\n", $kp1[1]*$iss, $kp1[2]*$iss, $kp1[3]*$iss, $kp2[1]*$iss, $kp2[2]*$iss, $kp2[3]*$iss);
+    print $band_fh sprintf("%5d %5d %5d   %5d %5d %5d\n", $kp1[1]*ISS, $kp1[2]*ISS, $kp1[3]*ISS, $kp2[1]*ISS, $kp2[2]*ISS, $kp2[3]*ISS);
     print $band_fh "END\n";
     close($band_fh);
 
-    print "running $i of NKPOINTS:\n\n";
+    print "running $i of ".NKPOINTS.":\n\n";
     print `cat input.d3`;
     print "\n\n";
     `cp $opt_f9 ./`;
