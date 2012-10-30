@@ -23,9 +23,8 @@ use Getopt::Long;
 use constant PI => 3.14159265358979324;
 use constant A2B => 1.88972613289; # ANGSTROM_TO_BOHR
 use constant B2A => 0.529177249; #
-
-my $iss = 1000; #  shrinking factor
-
+use constant ISS => 1000; # shrinking factor
+use constant NKPOINTS => 61; #
 
 my ($opt_help, $opt_input, $opt_f9, $opt_nband);
 
@@ -105,23 +104,20 @@ reciprocal lattice vectors matrix:
 
 OUT
 
-
-
 open( my $kpoints_fh, "<", "KPOINTS" ) || die "Can't open KPOINTS file: $!";
 
 <$kpoints_fh>; # title
 <$kpoints_fh>; # nkpoints = 61
 <$kpoints_fh>; # Cartesian
 
-my $nkpoints = 61;
 my $iss = 1000; #  shrinking factor
 
 open( my $eigenval_fh, ">", "EIGENVAL" ) || die "$!\n";
 print $eigenval_fh "$band\n";
-print $eigenval_fh "BS\n";
-print $eigenval_fh "BS\n";
-print $eigenval_fh "BS\n";
-print $eigenval_fh "BS\n";
+print $eigenval_fh "LINE\n";
+print $eigenval_fh "LINE\n";
+print $eigenval_fh "LINE\n";
+print $eigenval_fh "LINE\n";
 print $eigenval_fh "1 1 1\n";
 
 
@@ -131,13 +127,13 @@ for(my $i = 1; $i <= $nkpoints; $i++)
 
     print $band_fh "BAND\n";
     print $band_fh "For k-point (CART): TODO\n";
-    print $band_fh "1 $iss 2 $band $band 1 0\n";
+    print $band_fh "1 ISS 2 $band $band 1 0\n";
 
     my @v1;
     ($v1[1], $v1[2], $v1[3]) = (<$kpoints_fh> =~ m/^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)/);
 
     my @v2;
-    if($i == $nkpoints)
+    if($i == NKPOINTS)
     {   
         ($v2[1], $v2[2], $v2[3]) = (0.0, 0.0, 0.0)
     }
@@ -153,10 +149,10 @@ for(my $i = 1; $i <= $nkpoints; $i++)
     print $band_fh "END\n";
     close($band_fh);
 
-    print "running: $i input.d3:\n\n";
+    print "running $i of NKPOINTS:\n\n";
     print `cat input.d3`;
     print "\n\n";
-    `cp ../input.f9 ./`;
+    `cp $opt_f9 ./`;
     `runprop09 input input`;
     #`cat input.d3 > BAND-$i`;
     #`cat input_input_dat.BAND >> BAND-$i`;
@@ -184,9 +180,9 @@ for(my $i = 1; $i <= $nkpoints; $i++)
             print;
             # $line = <$bandout_fh>;
             print $eigenval_fh "\n";
-            print $eigenval_fh "BS";
+            print $eigenval_fh "LINE";
             print $eigenval_fh "\n";
-            print $eigenval_fh "1 ".sprintf("%15.10f\n", $2*27.211399);
+            print $eigenval_fh "1 ".sprintf("%15.10f\n", $2*27.211399); # to eVs like VASP
         }
     }
     close($bandout_fh);
@@ -229,13 +225,4 @@ sub t3by3(@)
     $t[7] = $m[3]; $t[8] = $m[6]; $t[9] = $m[9];
        
     return @t;
-}
-
-sub prec(@_)
-{
-    my ($f, $p) = ($_[0], $_[1]);
-    my $ret = Math::BigFloat->new($f);
-    $ret->precision(-$p);
-
-    return sprintf("%.${p}f", $ret); # rounding is done by BigFloat and NOT sprintf
 }
