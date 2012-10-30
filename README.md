@@ -1,4 +1,1 @@
-emc
-===
-
-Effective Mass Calculator
+### Effective Mass Calculator
