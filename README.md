@@ -39,7 +39,7 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 1. Run from freshly created directory (```emH-00-50-00-d01```) as ```cry-getE.pl -i ../input.out -f ../input.f9 -b 131```.
 1. Copy ```EIGENVAL``` generated file to the directory with ```inp``` file.
 1. Run ```EMCc.x``` in directory with ```inp``` and ```EIGENVAL``` files.
-1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.
+1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
 *. In CRYSTAL, units are 1/Bohr.
 
 #### 4. How to run with VASP
@@ -49,7 +49,7 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 1. Run non-SCF calculation (```ICHARG=11``` in INCAR) from freshly created directory (```emH-00-50-00-d01```)
 1. Copy resulting ```EIGENVAL``` file to the directory with ```inp``` file.
 1. Run ```EMCc.x``` in directory with ```inp``` and ```EIGENVAL``` files.
-1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.
+1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
 *. In VASP, units are 2Pi/A.
 
 #### 5. Acknowledgments and References
