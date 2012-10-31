@@ -1,4 +1,4 @@
-### SCF
+### 1. SCF
 INCAR:  
 ```
 System = fcc Si
@@ -43,7 +43,7 @@ Monkhorst Pack
 
 OSZICAR last line: ```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
 
-### Effective masses: Light Hole at Gamma
+### 2. Effective masses: Light Hole at Gamma
 inp file:
 ```
 0.000 0.000 0.000
@@ -60,3 +60,21 @@ Eigensystem:
   -0.1620290504:    0.0000000000   0.0000000000   1.0000000000
 ```
 Reference value: ```0.16m0```.
+
+### 3. Effective masses: Heavy Hole at Gamma
+inp file:
+```
+0.000 0.000 0.000
+0.0055
+16
+V
+```
+
+Ouput of EMCc.x:
+```
+Eigensystem:
+  -0.2440325848:    0.7071067812  -0.7071067812   0.0000000000
+  -0.2440345045:    0.7071067812   0.7071067812   0.0000000000
+  -0.2440335447:    0.0000000000   0.0000000000   1.0000000000
+```
+Reference value: ```0.25m0```.
