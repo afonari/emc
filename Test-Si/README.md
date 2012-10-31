@@ -7,8 +7,10 @@ INCAR:
 ```
 System = fcc Si
 ISTART = 0 ; ICHARG=2
-ENCUT  =    240
-ISMEAR = 0; SIGMA = 0.1;
+ENCUT  = 300
+EDIFF = 1.0E-8
+ISMEAR = 0; SIGMA = 0.05;
+ALGO = Fast
 ISYM = 0
 LCHARG = .TRUE.
 LWAVE = .FALSE.
@@ -41,6 +43,26 @@ K-Points
 Monkhorst Pack
  11 11 11
  0  0  0
+```
+
+OSZICAR last line:
+```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
+
+##### Effective masses: Light Hole at Gamma
+inp:
+```
+0.000 0.000 0.000
+0.0055
+14
+V
+```
+
+Ouput of EMCc.x:
+```
+Eigensystem:
+  -0.1620290504:    1.0000000000   0.0000000000   0.0000000000
+  -0.1620290504:    0.0000000000   1.0000000000   0.0000000000
+  -0.1620290504:    0.0000000000   0.0000000000   1.0000000000
 ```
 
 #### 5. Acknowledgments and References

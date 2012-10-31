@@ -10,7 +10,12 @@ program EMCg ! version 1.0
 implicit none
 real(kind=8) :: eigenval, get_next_eigeval, get_2nd_deriv, get_mixed_deriv1, ft(3,3), ev(3,3)
 real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), A(4), m(3,3), b(3), bi(3), WORK(12), DUMMY(1,1)
-real(kind=8) :: trash1(3), trash2(3), tmp(3), a2b, pi
+real(kind=8) :: trash1(3), trash2(3), tmp(3)
+
+real(kind=8), parameter :: a2b = 1.0D0/0.52917721092D0
+real(kind=8), parameter :: pi = 3.14159265358979324D0
+real(kind=8), parameter :: ev2h = 1.0D0/27.21138505D0
+
 integer h,i,i1,j,j1,k,l, LWORK, ok
 integer(kind=4) :: iunt, nkpoints, itrash, count, nbands, band
 character*3 version_number
@@ -21,8 +26,6 @@ external DSYEV, DGEEV
 
 version_number='1.0'
 nkpoints = 61
-a2b = 1.88972613289D0
-pi = 3.14159265358979324D0
 
 print*,'program KPG version ',version_number
 print*,''
@@ -85,14 +88,12 @@ A = (/ -2, -1, 1, 2 /)
 do i = 1, size(A)
     i1 = A(i)
     E(0,i1,0) = get_next_eigeval(iunt, band, nbands)
-    count=count+1
 end do
 
 ! z
 do i = 1, size(A)
     i1 = A(i)
     E(0,0,i1) = get_next_eigeval(iunt, band, nbands)
-    count=count+1
 end do
 
 ! xy
@@ -124,7 +125,7 @@ end do
 
 close(iunt)
 
-E = E*0.0367493049512 ! to Hartree, we want to deal with a.u.
+E = E*ev2h ! to Hartree, we want to deal with a.u.
 
 !d2N
 m(1,1) = get_2nd_deriv(E, dk, 1, 0, 0)
@@ -136,11 +137,11 @@ m(2,1) = get_mixed_deriv1(E, dk, 1, 0)
 m(3,1) = get_mixed_deriv1(E, dk, 0, 1)
 
 !dydz
-m(3,2) = (-63*(E(0,1,-2) + E(0,2,-1) + E(0,-2,1) +  E(0,-1,2))&
-         &+63*(E(0,-1,-2)+ E(0,-2,-1)+ E(0,1,2) +   E(0,2,1))&
-         &+44*( E(0,2,-2)+ E(0, -2, 2)-  E(0,-2,-2)- E(0,2,2))&
-         &+74*( E(0,-1,-1)+E(0, 1, 1) -  E(0,1,-1)-E(0,-1,1)))&
-         &/(600*dk**2)
+m(3,2) = (-63.0D0*(E(0,1,-2) + E(0,2,-1) + E(0,-2,1) +  E(0,-1,2))&
+         &+63.0D0*(E(0,-1,-2)+ E(0,-2,-1)+ E(0,1,2) +   E(0,2,1))&
+         &+44.0D0*( E(0,2,-2)+ E(0, -2, 2)-  E(0,-2,-2)- E(0,2,2))&
+         &+74.0D0*( E(0,-1,-1)+E(0, 1, 1) -  E(0,1,-1)-E(0,-1,1)))&
+         &/(600.0D0*dk**2)
 
 m(1,2) = m(2,1)
 m(1,3) = m(3,1)
@@ -189,8 +190,8 @@ real(kind=8) function get_2nd_deriv(E, dk, x, y, z)
     integer(kind=4) :: x, y, z
     real(kind=8) :: E(-2:2,-2:2,-2:2), dk
 
-    get_2nd_deriv = (-E(-2*x,-2*y,-2*z) + 16*E(-1*x,-1*y,-1*z) - 30*E(0,0,0)&
-         &+16*E(1*x,1*y,1*z) - E(2*x,2*y,2*z))/(12*dk**2)
+    get_2nd_deriv = (-E(-2*x,-2*y,-2*z) + 16.0D0*E(-1*x,-1*y,-1*z) - 30.0D0*E(0,0,0)&
+         &+16.0D0*E(1*x,1*y,1*z) - E(2*x,2*y,2*z))/(12.0D0*dk**2.0D0)
     return
 end function
 
@@ -200,11 +201,11 @@ real(kind=8) function get_mixed_deriv1(E, dk, y, z)
     real(kind=8) :: E(-2:2,-2:2,-2:2), dk
 
     get_mixed_deriv1=&
-    &(-63*(E(1,-2*y,-2*z) + E(2,-1*y,-1*z) + E(-2,1*y,1*z) +  E(-1,2*y,2*z))&
-     &+63*(E(-1,-2*y,-2*z)+ E(-2,-1*y,-1*z)+  E(1,2*y,2*z) +   E(2,1*y,1*z))&
-     &+44*( E(2,-2*y,-2*z)+ E(-2, 2*y, 2*z)-  E(-2,-2*y,-2*z)- E(2,2*y,2*z))&
-    &+74*( E(-1,-1*y,-1*z)+E(1, 1*y, 1*z) -  E( 1,-1*y,-1*z)-E(-1,1*y,1*z)))&
-    &/(600*dk**2)
+    &(-63.0D0*(E(1,-2*y,-2*z) + E(2,-1*y,-1*z) + E(-2,1*y,1*z) +  E(-1,2*y,2*z))&
+     &+63.0D0*(E(-1,-2*y,-2*z)+ E(-2,-1*y,-1*z)+  E(1,2*y,2*z) +   E(2,1*y,1*z))&
+     &+44.0D0*( E(2,-2*y,-2*z)+ E(-2, 2*y, 2*z)-  E(-2,-2*y,-2*z)- E(2,2*y,2*z))&
+    &+74.0D0*( E(-1,-1*y,-1*z)+E(1, 1*y, 1*z) -  E( 1,-1*y,-1*z)-E(-1,1*y,1*z)))&
+    &/(600.0D0*dk**2.0D0)
     return
 end function
 
