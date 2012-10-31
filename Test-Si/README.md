@@ -1,6 +1,6 @@
 ## Effective Mass Calculator Testing: fcc Si
 
-[!Silicon packing](https://raw.github.com/alexandr-fonari/emc/master/Test-Si/p_Si-packing.png) [!Brillouin zone](https://raw.github.com/alexandr-fonari/emc/master/Test-Si/p_Br-zone.png)
+![Silicon packing](https://raw.github.com/alexandr-fonari/emc/master/Test-Si/p_Si-packing.png) ![Brillouin zone](https://raw.github.com/alexandr-fonari/emc/master/Test-Si/p_Br-zone.png)
 1. [**VASP**](Test-Si/VASP.md)
 
 #### Acknowledgments and References
