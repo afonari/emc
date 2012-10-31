@@ -1,8 +1,4 @@
-## Effective Mass Calculator Testing: fcc Si
-
-#### 1. VASP
-
-##### SCF
+### SCF
 INCAR:  
 ```
 System = fcc Si
@@ -47,7 +43,7 @@ Monkhorst Pack
 
 OSZICAR last line: ```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
 
-##### Effective masses: Light Hole at Gamma
+### Effective masses: Light Hole at Gamma
 inp file:
 ```
 0.000 0.000 0.000
@@ -63,9 +59,4 @@ Eigensystem:
   -0.1620290504:    0.0000000000   1.0000000000   0.0000000000
   -0.1620290504:    0.0000000000   0.0000000000   1.0000000000
 ```
-Reference value: ```0.16```.
-
-#### 5. Acknowledgments and References
-1. Silicon CIF files: [AMS](http://rruff.geo.arizona.edu/AMS/result.php?mineral=silicon)
-1. Silicon effective masses: [Bart J. Van Zeghbroeck](http://ecee.colorado.edu/~bart/book/effmass.htm).
-1. Effective mass of electrons in silicon: [QuantumWise tutorial](http://quantumwise.com/publications/tutorials/mini-tutorials/135-effective-mass-of-electrons-in-silicon)
+Reference value: ```0.16m0```.
