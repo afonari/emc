@@ -1,6 +1,6 @@
 ## Effective Mass Calculator Testing: fcc Si
 
-[VASP](VASP.md)
+1. [**VASP**](Test-Si/VASP.md)
 
 #### Acknowledgments and References
 1. Silicon CIF files: [AMS](http://rruff.geo.arizona.edu/AMS/result.php?mineral=silicon)
