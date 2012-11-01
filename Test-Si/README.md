@@ -4,7 +4,7 @@
 Structure of the fcc Si crystal lattice and Brillouin zone of a fcc lattice with the notation for special symmetry direction and points.
 
 1. [**VASP**](Test-Si/VASP.md)
-1. **CRYSTAL** (TODO)
+1. [**CRYSTAL**](Test-Si/CRYSTAL.md)
 
 #### Acknowledgments and References
 1. Silicon CIF files: [AMS](http://rruff.geo.arizona.edu/AMS/result.php?mineral=silicon).

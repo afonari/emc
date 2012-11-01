@@ -54,3 +54,4 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 
 #### 5. Acknowledgments and References
 1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/)
+1. Outlined method, except finite difference is on three-point stencil, is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
