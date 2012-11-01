@@ -27,8 +27,8 @@ external DSYEV, DGEEV
 version_number='1.0'
 nkpoints = 61
 
-print*,'program KPG version ',version_number
-print*,''
+write(*,*) "Effective Mass Calculator calculator ", version_number
+write(*,*)
 
 ! read input ########################################################
 
@@ -39,10 +39,10 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) band    
     read(iunt,fmt=*) prg
 close(iunt)
-if(prg .eq. 'V') then
-    write(*,*) "dk will be converted to VASP units (dk*2*Pi/a2b)"
-    dk = dk*2.0D0*pi/a2b
-end if
+!if(prg .eq. 'V') then
+    !write(*,*) "dk will be converted to VASP units (dk*2*Pi/a2b)"
+    !dk = dk*2.0D0*pi/a2b
+!end if
 write(*,*) "band, dk: ", band, dk
 
 ! read OUTCAR ###########################################

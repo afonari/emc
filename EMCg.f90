@@ -10,15 +10,18 @@ program EMCg ! version 1.0
 implicit none
 
 real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), count, A(4), w
-integer(kind=4) :: h,i,i1,j,j1,k,l, iunt, nkpoints
-character trash1,trash2
+integer(kind=4) :: h,i,i1,j,j1,k,l, iunt, nkpoints, band
+character prg
 character*3 version_number
 character*20 wc1
 
+real(kind=8), parameter :: a2b = 1.0D0/0.52917721092D0
+real(kind=8), parameter :: pi = 3.14159265358979324D0
+
 version_number='1.0'
 
-print*,'program EMCg version ', version_number
-print*,''
+write(*,*) "Effective Mass Calculator generator ", version_number
+write(*,*)
 
 count = 1
 iunt = 10
@@ -28,10 +31,18 @@ w = 1.0 ! k point weight for VASP
 ! read input ########################################################
 
 open(unit=iunt,file='inp',form='formatted')
-  read(iunt,fmt=*) (kp(i),i=1,size(kp))
-  read(iunt,fmt=*) dk
-  write(*,*) "k-point: ", (kp(i),i=1,size(kp)), "dk: ", dk
+    read(iunt,fmt=*) (kp(i),i=1,size(kp))
+    read(iunt,fmt=*) dk
+    read(iunt,fmt=*) band
+    read(iunt,fmt=*) prg
 close(iunt)
+
+if(prg .eq. 'V') then
+    write(*,*) "dk will be converted to VASP units (2Pi/A)"
+    dk = dk*a2b/(2.0D0*pi)
+end if
+  write(*,*) "k-point: ", (kp(i),i=1,size(kp)), "dk: ", dk
+
 
 ! write KPOINTS file ###########################################
 

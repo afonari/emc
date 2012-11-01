@@ -23,7 +23,7 @@ use Getopt::Long;
 use constant PI => 3.14159265358979324;
 use constant A2B => 1.88972613289; # ANGSTROM_TO_BOHR
 use constant B2A => 0.529177249; #
-use constant ISS => 9999; # shrinking factor
+use constant ISS => 1000; # shrinking factor
 use constant NKPOINTS => 61; #
 
 my ($opt_help, $opt_input, $opt_f9, $opt_nband);
