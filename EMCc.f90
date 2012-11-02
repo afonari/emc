@@ -39,6 +39,8 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) band    
     read(iunt,fmt=*) prg
 close(iunt)
+
+! moved to the generator
 !if(prg .eq. 'V') then
     !write(*,*) "dk will be converted to VASP units (dk*2*Pi/a2b)"
     !dk = dk*2.0D0*pi/a2b

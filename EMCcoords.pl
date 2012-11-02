@@ -71,8 +71,6 @@ while(<$outcar_fh>)
 }
 close $outcar_fh;
 
-@f = map { $_ * 1.0/(2*PI) } @f;
-
 print <<OUT;
 
 f:
@@ -86,6 +84,8 @@ g:
   $g[7], $g[8], $g[9]
 
 OUT
+
+@f = map { $_ * 1.0/(2*PI) } @f;
 
 my @kp = (undef, $opt_kp[0], $opt_kp[1], $opt_kp[2]);
 print "from input: ".sprintf("%10.7f %10.7f %10.7f\n", $kp[1], $kp[2], $kp[3]);
