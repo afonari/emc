@@ -12,7 +12,7 @@ Effective mass tensor is defined as:
 
 Energy gradient tensor (symmetric) is defined in 3D as follows:  
 ![Energy Gradient Tensor](https://raw.github.com/alexandr-fonari/emc/master/p_et.png)  
-where ```x*, y*, z*``` are cartesian reciprocal directions (see ```EMCcoords.py``` for reference).
+where ```x*, y*, z*``` are cartesian reciprocal directions (see ```EMCcoords.pl``` for reference).
 
 Second order derivatives are estimated with ```O(h^4)``` error:  
 ![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/p_2ndd.png)
