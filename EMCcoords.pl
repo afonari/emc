@@ -33,7 +33,7 @@ OUT
     exit;
 }
 
-open( my $inp_fh, "<", "inp" ) || die "Can't open inp: $!";
+open( my $inp_fh, "<", "inp" ) || die "Can't open inp file: $!";
 <$inp_fh>;
 <$inp_fh>;
 <$inp_fh>;
