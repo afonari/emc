@@ -1,4 +1,7 @@
 ### 1. SCF
+Note:
+ - P1 symmetry, don't want to mess with CRYSTAL-only trnasformation to "CONVENTIONAL" unit cell.
+ - Basis set is from [Tutorial page](http://www.theochem.unito.it/crystal_tuto/mssc2008_cd/tutorials/basis_set/basis_set_tut.html).
 input.d12:  
 ```
 TEST10 - SILICON BULK - BASIS SET 6-21 MODIFIED
@@ -21,7 +24,7 @@ END
 2 1 6  8.  1.
 2 1 2  4.  1.
 0 1 1  0.  1.
-0.1233392     1.       1.
+0.1233392 1. 1.
 99 0
 END
 SCFDIR
@@ -48,9 +51,12 @@ inp file:
 ```
 0.000 0.000 0.000
 0.0055
-14
-V
+1
+C
 ```
+
+Generating ```EIGENVAL``` file (only CRYSTAL):  
+```cry-getE.pl -i ../input.out -f ../input.f9 -b 56```
 
 Ouput of EMCc.x:
 ```
@@ -66,15 +72,18 @@ inp file:
 ```
 0.000 0.000 0.000
 0.0055
-16
-V
+1
+C
 ```
+
+Generating ```EIGENVAL``` file (only CRYSTAL):  
+```cry-getE.pl -i ../input.out -f ../input.f9 -b 56```
 
 Ouput of EMCc.x:
 ```
 Eigensystem:
-  -0.2440325848:    0.7071067812  -0.7071067812   0.0000000000
-  -0.2440345045:    0.7071067812   0.7071067812   0.0000000000
-  -0.2440335447:    0.0000000000   0.0000000000   1.0000000000
+  -0.2543931563:    0.2340021460  -0.0180563778  -0.9720683941
+  -0.2545028801:   -0.9569256747   0.1724609900  -0.2335603992
+  -0.2545271568:   -0.1718611324  -0.9848508385  -0.0230776303
 ```
 Reference value: ```0.25m0```.
