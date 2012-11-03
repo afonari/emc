@@ -1,4 +1,4 @@
-## Effective Mass Calculator Testing: fcc Si
+## Effective Mass Calculator Testing: Pentacene at RT (*P-1* space group)
 
 Geometry from X-ray data was used (CSD code: ```PENCEN```):
 ```
