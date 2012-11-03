@@ -1,6 +1,6 @@
 ### 1. SCF
 Note:
- - P1 symmetry, don't want to mess with CRYSTAL-only trnasformation to "CONVENTIONAL" unit cell.
+ - P1 symmetry, don't want to mess with CRYSTAL-only transformation to "CONVENTIONAL" unit cell.
  - Basis set is from [Tutorial page](http://www.theochem.unito.it/crystal_tuto/mssc2008_cd/tutorials/basis_set/basis_set_tut.html).
 
 input.d12:
