@@ -61,6 +61,9 @@ OUT
     exit;
 }
 
+# check for runprop09 in path
+system("which runprop09 >& /dev/null") == 0 or die "runprop09 is not in \$PATH (which call failed): $?";
+
 open( my $outcar_fh, "<", $opt_input ) || die "Can't open $opt_input: $!";
 
 my (@f, @g, $vb, $cb);
