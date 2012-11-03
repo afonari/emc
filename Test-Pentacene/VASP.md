@@ -26,17 +26,22 @@ Ouput of EMCc.x:
 
 Converted eigenvectors of the matrix to the real space directions (using ```EMCcoords.pl```, look for ```Norm(g*kp)``` line):
 ```
-m0 =  -2.80: -0.979a + 0.204b + 0.023c
-m0 =  -5.07:  0.404a - 0.726b + 0.557c
-m0 = -27.46: -0.259a - 0.932b - 0.255c
+m0 =  -2.80; direction: -0.979a + 0.204b + 0.023c
+m0 =  -5.07; direction:  0.404a - 0.726b + 0.557c
+m0 = -27.46; direction: -0.259a - 0.932b - 0.255c
 ```
 
-Reference (calculated) values from [1]:
+Reference (calculated) values from [1], axis are reciprocal cartesian (same as obtained from ```EMCc.x``` output):
+```
+m0 =  -2.6; direction: -1.00x + 0.07y + 0.05z
+m0 =  -5.4; direction:  0.01x + 0.69y - 0.72z
+m0 = -16.3; direction:  0.09x + 0.72y + 0.69z
 ```
 
-```
+Note that experimentally 2nd lightest mass is ```5.2m0``` [2].
 
-### 3. Effective masses: Heavy Hole at Gamma
+
+### 3. Effective masses: Electron at **R** ([0.5, 0.5, 0.5]):
 inp file:
 ```
 0.000 0.000 0.000
@@ -55,7 +60,5 @@ Eigensystem:
 Reference value: ```0.25m0```.
 
 ### Acknowledgments and References
-1. K. Doi, *et al.*, *J. Appl. Phys*, **98**, 113709 (2005): http://dx.doi.org/10.1063/1.2138381
-1. Silicon effective masses: [Bart J. Van Zeghbroeck](http://ecee.colorado.edu/~bart/book/effmass.htm).
-1. Effective mass of electrons in silicon: [QuantumWise tutorial](http://quantumwise.com/publications/tutorials/mini-tutorials/135-effective-mass-of-electrons-in-silicon).
-1. Silicon packing and first Brillouin zone cartoons: [S. Dhar, PhD](http://www.iue.tuwien.ac.at/phd/dhar/node18.html).
+1. K. Doi, *et al.*, *J. Appl. Phys*, **98**, 113709 (2005): http://dx.doi.org/10.1063/1.2138381 .
+1. G. A. de Wijs, *et al.*, *Synth. Metals*, **139**, 109 (2003): http://dx.doi.org/10.1016/S0379-6779(03)00020-1 .
