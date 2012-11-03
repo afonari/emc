@@ -40,25 +40,6 @@ m0 = -16.3; direction:  0.09x + 0.72y + 0.69z
 
 Note that experimentally 2nd lightest mass is ```5.2m0``` [2].
 
-
-### 3. Effective masses: Electron at **R** ([0.5, 0.5, 0.5]):
-inp file:
-```
-0.000 0.000 0.000
-0.0055
-16
-V
-```
-
-Ouput of EMCc.x:
-```
-Eigensystem:
-  -0.2440325848:    0.7071067812  -0.7071067812   0.0000000000
-  -0.2440345045:    0.7071067812   0.7071067812   0.0000000000
-  -0.2440335447:    0.0000000000   0.0000000000   1.0000000000
-```
-Reference value: ```0.25m0```.
-
 ### Acknowledgments and References
 1. K. Doi, *et al.*, *J. Appl. Phys*, **98**, 113709 (2005): http://dx.doi.org/10.1063/1.2138381 .
 1. G. A. de Wijs, *et al.*, *Synth. Metals*, **139**, 109 (2003): http://dx.doi.org/10.1016/S0379-6779(03)00020-1 .
