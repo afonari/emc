@@ -44,6 +44,7 @@ FMIXING
 30
 END
 ```
+
 ```== SCF ENDED - CONVERGENCE ON ENERGY      E(AU) -2.3147994980024E+03 CYCLES  12```
 
 ### 2. Effective masses: Light Hole at Gamma
