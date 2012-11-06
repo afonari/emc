@@ -95,7 +95,7 @@ $ EMCcoords.pl -k 0.375 0.5 0.075
 
 Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01```.
 
-#### 2.a dk = 0.0055
+#### 2.a Step dk = 0.0055
 inp file:
 ```
 0.1381077  0.2743332  0.1360926
@@ -114,7 +114,7 @@ Ouput of EMCc.x:
   -1.4141976892:   -0.9880325042   0.1540842729   0.0070574417
   -2.0102281592:   -0.1512433832  -0.9767693115   0.1518128822
 ```
-#### 2.b dk = 0.01
+#### 2.b Step dk = 0.01
 Ouput of EMCc.x:
 ```
  Eigensystem:
@@ -123,7 +123,9 @@ Ouput of EMCc.x:
   -4.2984910380:   -0.0711810451  -0.8970523802   0.4361539706
 ```
 
-Again, reference (calculated) values (see [VASP](VASP.md)):
+```Note significant wrong directions in the case of 0.0055 step```.
+
+Again, reference (calculated) values (see [masses from VASP](VASP.md)):
 ```
 m0 =  -5.4; direction:  0.01x + 0.69y - 0.72z
 m0 =  -2.6; direction: -1.00x + 0.07y + 0.05z
