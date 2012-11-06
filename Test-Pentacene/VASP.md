@@ -20,9 +20,9 @@ V
 Ouput of EMCc.x:
 ```
  Eigensystem:
- -27.4579649685:   -0.1438683390  -0.7905320511  -0.5952822668
   -2.8049633222:   -0.9880379472   0.1484981479   0.0415850334
   -5.0732884101:   -0.0555240123  -0.5941442386   0.8024398468
+  -27.4579649685:   -0.1438683390  -0.7905320511  -0.5952822668
 ```
 
 Converted eigenvectors of the matrix to the real space directions (using ```EMCcoords.pl```, look for ```Norm(g*kp)``` line):

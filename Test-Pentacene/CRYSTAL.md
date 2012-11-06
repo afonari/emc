@@ -110,24 +110,24 @@ Generating ```EIGENVAL``` file by a sequence of band structure calculations (CRY
 Ouput of EMCc.x:
 ```
  Eigensystem:
-  -10.2067300473:   -0.0302854701  -0.1489286708  -0.9883840556
   -1.4141976892:   -0.9880325042   0.1540842729   0.0070574417
   -2.0102281592:   -0.1512433832  -0.9767693115   0.1518128822
+  -10.2067300473:   -0.0302854701  -0.1489286708  -0.9883840556
 ```
 #### 2.b Step dk = 0.01
 Ouput of EMCc.x:
 ```
  Eigensystem:
-  -11.6577474166:   -0.0759769228  -0.4311167356  -0.8990916902
   -2.2826326408:   -0.9945656167   0.0971359227   0.0374679396
   -4.2984910380:   -0.0711810451  -0.8970523802   0.4361539706
+  -11.6577474166:   -0.0759769228  -0.4311167356  -0.8990916902
 ```
 
 ```Note significant wrong directions in the case of 0.0055 step```.
 
 Again, reference (calculated) values (see [masses from VASP](VASP.md)):
 ```
-m0 =  -5.4; direction:  0.01x + 0.69y - 0.72z
 m0 =  -2.6; direction: -1.00x + 0.07y + 0.05z
+m0 =  -5.4; direction:  0.01x + 0.69y - 0.72z
 m0 = -16.3; direction:  0.09x + 0.72y + 0.69z
 ```
