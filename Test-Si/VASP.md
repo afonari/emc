@@ -40,10 +40,10 @@ Monkhorst Pack
  11 11 11
  0  0  0
 ```
+ - froum OUTCAR: ```NELECT =      32.0000```
+ - OSZICAR last line: ```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
 
-OSZICAR last line: ```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
-
-### 2. Effective masses: Light Hole at Gamma
+### 2. Effective masses: Light Hole (CB-2) at Gamma
 inp file:
 ```
 0.000 0.000 0.000
@@ -61,8 +61,8 @@ Eigensystem:
 ```
 Reference value: ```0.16m0```.
 
-### 3. Effective masses: Heavy Hole at Gamma
-```Note: unlike in the case of CRYSTAL, same EIGENVAL file can be used when using VASP```
+### 3. Effective masses: Heavy Hole (CB) at Gamma
+```Note: unlike in the case of CRYSTAL, same EIGENVAL file can be used  to calculate effective masses for different bands, when using VASP.```
 
 inp file:
 ```

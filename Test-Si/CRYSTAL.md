@@ -45,10 +45,10 @@ FMIXING
 30
 END
 ```
+ - from output: ```== SCF ENDED - CONVERGENCE ON ENERGY      E(AU) -2.3147994980024E+03 CYCLES  12```
+ - from output: ```N. OF ELECTRONS PER CELL  112```
 
-```== SCF ENDED - CONVERGENCE ON ENERGY      E(AU) -2.3147994980024E+03 CYCLES  12```
-
-### 2. Effective masses: Light Hole at Gamma
+### 2. Effective masses: Light Hole (CB-2) at Gamma
 inp file:
 ```
 0.000 0.000 0.000
