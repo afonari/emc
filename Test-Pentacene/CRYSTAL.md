@@ -86,13 +86,13 @@ END
  - from output: ```N. OF ELECTRONS PER CELL  292```
 
 ### 2. Effective masses: Hole at **B** ([0.375, 0.5, 0.075])
-Converted to reciprocal cartesian coordinates **B** point (look for ```T(g)*kp:``` line in the output of ```EMCcoords.pl```), using ```EMCcoords.pl```, ```OUTCAR``` (renamed output) and ```inp``` (with dummy coordinates at the first line) files are required:
+Converted to reciprocal cartesian coordinates **B** point (look for ```T(g)*kp:``` line in the output of ```EMCcoords.pl```), using ```EMCcoords.pl```; Two files are required: ```OUTCAR``` (SCF output) and ```inp``` (with dummy coordinates at the first line).
 ```
 $ EMCcoords.pl -k 0.375 0.5 0.075
 > T(g)*kp:  0.1381077  0.2743332  0.1360926
 ```
 
-Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](Test-Si/CRYSTAL.md)) and ```0.01```:
+Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01```:
 ```
 0.1381077  0.2743332  0.1360926
 0.0055
