@@ -40,7 +40,7 @@ Monkhorst Pack
  11 11 11
  0  0  0
 ```
- - froum OUTCAR: ```NELECT =      32.0000```
+ - from OUTCAR: ```NELECT =      32.0000```
  - OSZICAR last line: ```1 F= -.43354085E+02 E0= -.43354085E+02  d E =-.232531E-12```
 
 ### 2. Effective masses: Light Hole (CB-2) at Gamma
