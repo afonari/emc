@@ -86,13 +86,17 @@ END
  - from output: ```N. OF ELECTRONS PER CELL  292```
 
 ### 2. Effective masses: Hole at **B** ([0.375, 0.5, 0.075])
-Converted to reciprocal cartesian coordinates **B** point (look for ```T(g)*kp:``` line in the output of ```EMCcoords.pl```), using ```EMCcoords.pl```; Two files are required: ```OUTCAR``` (SCF output) and ```inp``` (with dummy coordinates at the first line).
+Converted to reciprocal cartesian coordinates **B** point (look for ```T(g)*kp:``` line in the output of ```EMCcoords.pl```), using ```EMCcoords.pl```;  
+Two files are required: ```OUTCAR``` (SCF output) and ```inp``` (with dummy coordinates at the first line).
 ```
 $ EMCcoords.pl -k 0.375 0.5 0.075
 > T(g)*kp:  0.1381077  0.2743332  0.1360926
 ```
 
-Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01```:
+Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01```.
+
+#### dk = 0.0055
+inp file:
 ```
 0.1381077  0.2743332  0.1360926
 0.0055
@@ -110,14 +114,15 @@ Ouput of EMCc.x:
   -1.4141976892:   -0.9880325042   0.1540842729   0.0070574417
   -2.0102281592:   -0.1512433832  -0.9767693115   0.1518128822
 ```
-
-Value of ```dk``` is changed to ```0.01```, ouput of EMCc.x:
+#### dk = 0.01
+Ouput of EMCc.x:
 ```
  Eigensystem:
   -11.6577474166:   -0.0759769228  -0.4311167356  -0.8990916902
   -2.2826326408:   -0.9945656167   0.0971359227   0.0374679396
   -4.2984910380:   -0.0711810451  -0.8970523802   0.4361539706
 ```
+
 Again, reference (calculated) values from [1] (see [VASP](Test-Pentacene/VASP.md)):
 ```
 m0 =  -2.6; direction: -1.00x + 0.07y + 0.05z
