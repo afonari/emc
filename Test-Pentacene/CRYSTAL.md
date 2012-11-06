@@ -93,7 +93,7 @@ $ EMCcoords.pl -k 0.375 0.5 0.075
 > T(g)*kp:  0.1381077  0.2743332  0.1360926
 ```
 
-Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01```.
+Two values of ```dk``` will be checked: ```0.0055``` (good for [Silicon](../Test-Si/CRYSTAL.md)) and ```0.01``` (1/Bohr).
 
 #### 2.a Step dk = 0.0055
 inp file:
