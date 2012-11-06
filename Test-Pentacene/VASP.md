@@ -1,6 +1,7 @@
 ### 1. SCF
-Check ```INCAR```, ```POSCAR``` and ```KPOINTS``` files. ```POSCAR``` was generated from CSD: ```PENCEN```.  
-OSZICAR last line: ```1 F= -.49593848E+03 E0= -.49593848E+03  d E =-.541128E-13```
+Check ```INCAR```, ```POSCAR``` and ```KPOINTS``` files. ```POSCAR``` was generated from CIF using [VESTA](http://jp-minerals.org/vesta/en/).  
+ - OSZICAR last line: ```1 F= -.49593848E+03 E0= -.49593848E+03  d E =-.541128E-13```.
+ - from OUTCAR: ```NELECT =     204.0000```.
 
 ### 2. Effective masses: Hole at **B** ([0.375, 0.5, 0.075])
 Converted to reciprocal cartesian coordinates **B** point (look for ```T(g)*kp:``` line in the output of ```EMCcoords.pl```), using ```EMCcoords.pl```, ```OUTCAR``` and ```inp``` (with dummy coordinates at the first line) files are required:
