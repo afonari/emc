@@ -57,5 +57,5 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 1. Finite difference method on three-point stencil is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
 
 #### 6. Test cases
-1. [Silicon](Test-Si/)
-1. [Pentacene](Test-Pentacene/)
+1. [Silicon](emc/Test-Si/)
+1. [Pentacene](emc/Test-Pentacene/)
