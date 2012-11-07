@@ -123,7 +123,7 @@ Ouput of EMCc.x:
   -11.6577474166:   -0.0759769228  -0.4311167356  -0.8990916902
 ```
 
-```Note significant wrong directions in the case of 0.0055 step```.
+```Note significant difference in directions going from 0.0055 to 0.01 (1/Bohr) step```.
 
 Again, reference (calculated) values (see [masses from VASP](VASP.md)):
 ```
