@@ -58,4 +58,4 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 
 #### 6. Test cases
 1. [Silicon](emc/tree/master/Test-Si)
-1. [Pentacene](emc/Test-Pentacene/)
+1. [Pentacene](emc/tree/master/Test-Pentacene/)
