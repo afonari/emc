@@ -52,6 +52,10 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
 *. In VASP, units are 2Pi/A.
 
-#### 5. Acknowledgments and References
+#### 5. Acknowledgments and references
 1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/)
-1. Outlined method, except finite difference is on three-point stencil, is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
+1. Finite difference method on three-point stencil is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
+
+#### 6. Test cases
+1. [Silicon](Test-Si/)
+1. [Pentacene](Test-Pentacene/)
