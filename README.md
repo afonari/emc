@@ -53,7 +53,7 @@ V                   ! program, currently support V for VASP and C for crystal: 1
 *. In VASP, units are 2Pi/A.
 
 #### 5. Acknowledgments and references
-1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/)
+1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/).
 1. Finite difference method on three-point stencil is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
 
 #### 6. Test cases (folders)
