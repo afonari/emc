@@ -13,6 +13,7 @@ real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), A(4), m(3,3), b(3), bi(3), WORK(12
 real(kind=8) :: trash1(3), trash2(3), tmp(3)
 
 real(kind=8), parameter :: a2b = 1.0D0/0.52917721092D0
+real(kind=8), parameter :: b2a = 0.52917721092D0
 real(kind=8), parameter :: pi = 3.14159265358979324D0
 real(kind=8), parameter :: ev2h = 1.0D0/27.21138505D0
 
@@ -40,10 +41,9 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) prg
 close(iunt)
 
-! moved to the generator
 !if(prg .eq. 'V') then
-    !write(*,*) "dk will be converted to VASP units (dk*2*Pi/a2b)"
-    !dk = dk*2.0D0*pi/a2b
+!    write(*,*) "dk will be converted to VASP units (dk*2*Pi/a2b)"
+!    dk = dk/(2.0D0*pi*b2a)
 !end if
 write(*,*) "band, dk: ", band, dk
 

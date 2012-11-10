@@ -16,6 +16,7 @@ character*3 version_number
 character*20 wc1
 
 real(kind=8), parameter :: a2b = 1.0D0/0.52917721092D0
+real(kind=8), parameter :: b2a = 0.52917721092D0
 real(kind=8), parameter :: pi = 3.14159265358979324D0
 
 version_number='1.0'
@@ -39,7 +40,7 @@ close(iunt)
 
 if(prg .eq. 'V') then
     write(*,*) "dk will be converted to VASP units (2Pi/A)"
-    dk = dk*a2b/(2.0D0*pi)
+    dk = dk/(2.0D0*pi*b2a)
 end if
   write(*,*) "k-point: ", (kp(i),i=1,size(kp)), "dk: ", dk
 
