@@ -9,7 +9,7 @@
 program EMCg ! version 1.0
 implicit none
 real(kind=8) :: eigenval, get_next_eigeval, get_2nd_deriv, get_mixed_deriv1, ft(3,3), ev(3,3)
-real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), A(4), m(3,3), b(3), bi(3), WORK(12), DUMMY(1,1)
+real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), A(4), m(3,3), b(3), bi(3), WORK(100), DUMMY(1,1)
 real(kind=8) :: trash1(3), trash2(3), tmp(3)
 
 real(kind=8), parameter :: a2b = 1.0D0/0.52917721092D0
@@ -23,7 +23,7 @@ character*3 version_number
 character*20 wc1
 character(len=80) :: cha
 character(len=1) :: prg
-external DSYEV, DGEEV
+external DSYEV
 
 version_number='1.0'
 nkpoints = 61
@@ -150,20 +150,29 @@ m(1,3) = m(3,1)
 m(2,3) = m(3,2)
 
 write(*,*) "Original matrix:"
-do i=1,3
-    write(*,fmt="(A1,F10.5,A2,F10.5,A2,F10.5,A2)") "{", m(1,i), ", ", m(2,i), ", ", m(3,i), "},"
-end do
+write(*,"(3F15.8)") ((m(i,j), j=1,3),i=1,3)
+!do i=1,3
+!    write(*,fmt="(A1,F10.5,A2,F10.5,A2,F10.5,A2)") "{", m(1,i), ", ", m(2,i), ", ", m(3,i), "},"
+!end do
 write(*,*)
 
-
-call inverse(m, 3)
-call DGEEV('N', 'V', 3, m, 3, b, bi, DUMMY, 1, ev, 3, WORK, 12, ok)
-
-write(*,*) "Eigensystem:"
+! At this point m can be either (a) inverted and diagonalized or (b) diagonalized and eigenvalues inverted.
+! The problem with (a) is that inverse procedure does NOT guarantee symmetric matrix as the result.
+! (a):
+!   call inverse(m, 3)
+!   call DGEEV('N', 'V', 3, m, 3, b, bi, DUMMY, 1, ev, 3, WORK, 12, ok)
+!
+! (b):
+call DSYEV( 'V', 'U', 3, m, 3, b, WORK, 100, ok )
 if (ok .eq. 0) then
-    do i=1,3
-        write(*,fmt="(F15.10,A2,F15.10,F15.10,F15.10)") b(i), ": ", ev(1,i), ev(2,i), ev(3,i)
-    enddo
+    write(*,*) "Principle effective masses and directions:"
+    do i=1, 3
+        write(*,"(A25,F10.2)") "Effective mass:", 1.0D0/b(i)
+        write(*,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
+    !       call cart2fract(vabc,emabc(1,i),em(1,i))
+    !       call normal(emabc(1,i),3)
+    !       write(*,"(A25,3F10.3)") "Direct lattice vectors:", (emabc(j,i), j=1,3)
+    end do
 else
     write (*,*) "An error occured while diagonalizing matrix in DGEEV()"
 endif
