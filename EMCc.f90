@@ -151,13 +151,10 @@ m(2,3) = m(3,2)
 
 write(*,*) "Original matrix:"
 write(*,"(3F15.8)") ((m(i,j), j=1,3),i=1,3)
-!do i=1,3
-!    write(*,fmt="(A1,F10.5,A2,F10.5,A2,F10.5,A2)") "{", m(1,i), ", ", m(2,i), ", ", m(3,i), "},"
-!end do
 write(*,*)
 
 ! At this point m can be either (a) inverted and diagonalized or (b) diagonalized and eigenvalues inverted.
-! The problem with (a) is that inverse procedure does NOT guarantee symmetric matrix as the result.
+! The problem with (a) is that the inverse procedure does NOT guarantee symmetric matrix as the result.
 ! (a):
 !   call inverse(m, 3)
 !   call DGEEV('N', 'V', 3, m, 3, b, bi, DUMMY, 1, ev, 3, WORK, 12, ok)
