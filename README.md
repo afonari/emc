@@ -3,9 +3,13 @@
 #### 1. Theory
 
 ```
-Note: Will work in atomic units (a.u.), where: hbar = 1, energy is in Hartrees,
+Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees,
 distance is in Bohrs, mass is in electron mass (m0).
 ```
+
+The average velocity of an electron for a certain value of *n* and *k* is:  
+![Mean velocity](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)
+
 
 Effective mass tensor is defined as:  
 ![Effective Mass Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)

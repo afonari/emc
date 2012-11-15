@@ -138,12 +138,12 @@ write(ilog,*)
 call DSYEV( 'V', 'U', 3, m, 3, b, WORK, size(WORK), ok )
 if (ok .eq. 0) then
     write(ilog,*) "Principle effective masses and directions:"
-    do i=1, 3
+    do i=1,3
         write(ilog,"(A25,F10.3)") "Effective mass:", 1.0D0/b(i)
         write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
-        v = real_cart2fract(f, m(i,:))
-        call normal(v,3)
-        write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
+        v = cart2fract(f, (/ 1.d0, 2.d0, 3.d0 /))
+        ! call normal(v,3)
+        !write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
         write(ilog,*)
     end do
 else
