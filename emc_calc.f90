@@ -11,7 +11,7 @@ real(kind=8), parameter :: b2a = dble(0.52917721092)
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
 real(kind=8), parameter :: ev2h = 1.D0/27.21138505D0
 integer(kind=4), parameter :: nkpoints = 61
-integer(kind=4), parameter :: iunt = 10
+integer(kind=4), parameter :: iunt = 10, ilog = 11
 character(len=3), parameter :: version_number = '1.0'
 
 real(kind=8) :: get_next_eigeval, get_2nd_deriv, get_mixed_deriv1
@@ -22,8 +22,10 @@ integer i, i1, j, j1, ok
 integer(kind=4) :: itrash, count, nbands, band, A(4)
 character(len=1) :: prg
 external :: DSYEV
-write(*,*) "Effective Mass Calculator calculator ", version_number
-write(*,*)
+
+open(unit=ilog,file='emc_calc.log',form='formatted')
+write(ilog,*) "Effective Mass Calculator calculator ", version_number
+write(ilog,*)
 
 ! read input ########################################################
 
@@ -34,12 +36,6 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) prg
     read(iunt,*) ((f(j,i),j=1,3),i=1,3)
 close(iunt)
-
-if(prg .eq. 'V') then
-    !write(*,*) "dk will be converted to VASP units (2Pi/A)"
-    !dk = dk/(2.0D0*pi*b2a)
-end if
-write(*,"(A,I5,F12.5)") "band, dk: ", band, dk
 
 ! read EIGENVAL ###########################################
 
@@ -52,7 +48,7 @@ read(iunt,fmt=*)
 read(iunt,fmt=*)
 read(iunt,fmt=*) itrash, itrash, nbands
 
-write(*,*) "NBands: ", nbands
+write(ilog,"(A,I5,I5,F12.5)") "nbands, band, dk: ", nbands, band, dk
 
 ! x
 do i=-2,2
@@ -125,9 +121,9 @@ m(1,2) = m(2,1)
 m(1,3) = m(3,1)
 m(2,3) = m(3,2)
 
-write(*,*) "Original matrix:"
-write(*,"(3F15.8)") ((m(i,j), j=1,3),i=1,3)
-write(*,*)
+write(ilog,*) "Original matrix:"
+write(ilog,"(3F15.8)") ((m(i,j), j=1,3),i=1,3)
+write(ilog,*)
 
 ! At this point m can be either (a) inverted and diagonalized or (b) diagonalized and eigenvalues inverted.
 ! The problem with (a) is that the inverse procedure does NOT guarantee symmetric matrix as the result.
@@ -138,16 +134,17 @@ write(*,*)
 ! (b):
 call DSYEV( 'V', 'U', 3, m, 3, b, WORK, size(WORK), ok )
 if (ok .eq. 0) then
-    write(*,*) "Principle effective masses and directions:"
+    write(ilog,*) "Principle effective masses and directions:"
     do i=1, 3
-        write(*,"(A25,F10.2)") "Effective mass:", 1.0D0/b(i)
-        write(*,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
+        write(ilog,"(A25,F10.2)") "Effective mass:", 1.0D0/b(i)
+        write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
         v = real_cart2fract(f, m(i,:))
         call normal(v,3)
-        write(*,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
+        write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
+        write(ilog,*)
     end do
 else
-    write (*,*) "INFO from DGEEV: ", ok
+    write (ilog,*) "INFO from DGEEV: ", ok
 endif
 
 end program
