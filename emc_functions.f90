@@ -1,0 +1,94 @@
+! http://www.tek-tips.com/viewthread.cfm?qid=1516435
+module emc_functions
+    implicit none
+contains
+function real_cart2fract(f, frac_coords)
+    implicit none
+    integer(kind=4), parameter :: size = 3
+    real(kind=8), intent(in) :: f(size,size), frac_coords(size)
+    real(kind=8) :: real_cart2fract(size)
+    integer(kind=4) :: IPIV(size), INFO, i, j
+    external :: DGESV
+
+    call DGESV( size, 1, f, size, IPIV, frac_coords, size, INFO )
+    if (INFO /= 0) then
+        write(*,*) "INFO from real_cart2fract function: ", INFO
+        real_cart2fract = 0.d0
+    else
+        real_cart2fract = frac_coords
+    endif
+    return
+end function real_cart2fract
+
+function fract2cart(f, frac_coords)
+    implicit none
+    integer(kind=4), parameter :: size = 3
+    real(kind=8), intent(in) :: f(size,size), frac_coords(size)
+    real(kind=8) :: fract2cart(size), ft(size,size)
+    external :: DGEMV
+
+    call DGEMV('t', size, size, 1.d0, f, size, frac_coords, 1, 1.d0, fract2cart, 1)
+    return
+end function fract2cart
+
+subroutine normalize(v, n)
+    implicit none
+    integer(kind=4) :: i, n
+    real(kind=8) :: v(n), norm
+
+    norm = 0.d0
+    do i=1,n
+        norm = norm + v(i)**2
+    end do
+
+    v = v/dsqrt(norm)
+    return
+end subroutine
+
+subroutine normal(a,n)
+    implicit none
+    integer(kind=4) :: n, i
+    real(kind=8) :: a(n), amax
+
+    amax=0.0d0
+    do i=1, n
+       if (dabs(amax)<dabs(a(i))) amax=a(i)
+    end do
+    do i=1, n
+       a(i)=a(i)/amax
+    end do
+    return
+end
+
+! http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c
+subroutine inverse(M, n)
+    implicit none
+    integer(kind=4) :: n, LWORK, ok
+    real(kind=8) :: M(n,n)
+    integer(kind=4),allocatable :: ipiv(:)
+    real(kind=8),allocatable :: WORK(:)
+    external DGETRF, DGETRI
+
+    LWORK = n*n
+    allocate(WORK(LWORK))
+    allocate(ipiv(n+1))
+
+    call DGETRF(n, n, M, n, ipiv, ok)
+    if (ok > 0) then
+        write(*,*) 'Matrix is singular in: ', ok
+        return
+    end if
+    
+    call DGETRI(n, M, n, ipiv, WORK, LWORK, ok)
+
+    if (ok > 0) then
+        write(*,*) 'Matrix is singular in: ', ok
+        return
+    end if
+
+    deallocate(ipiv)
+    deallocate(WORK)
+    return
+end subroutine
+
+end module emc_functions

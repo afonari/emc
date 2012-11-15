@@ -7,8 +7,8 @@
 !######################################################################
 
 program EMCc ! version 1.0
+use emc_functions
 implicit none
-
 real(kind=8), parameter :: b2a = dble(0.52917721092)
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
 real(kind=8), parameter :: ev2h = 1.D0/27.21138505D0
@@ -16,52 +16,35 @@ integer(kind=4), parameter :: nkpoints = 61
 integer(kind=4), parameter :: iunt = 10
 character(len=3), parameter :: version_number = '1.0'
 
-real(kind=8) :: eigenval, get_next_eigeval, get_2nd_deriv, get_mixed_deriv1, ft(3,3), ev(3,3)
-real(kind=8) :: kp(3), dk, E(-2:2,-2:2,-2:2), A(4), m(3,3), b(3), bi(3), WORK(100), DUMMY(1,1)
-real(kind=8) :: trash1(3), trash2(3), tmp(3), basis(3,3)
+real(kind=8) :: get_next_eigeval, get_2nd_deriv, get_mixed_deriv1
+real(kind=8) :: f(3,3), ev(3,3)
+real(kind=8) :: E(-2:2,-2:2,-2:2), m(3,3), b(3), WORK(100), v(3)
+real(kind=8) :: kp(3), dk, trash1(3), trash2(3), tmp(3), basis(3,3)
 
-integer h,i,i1,j,j1,k,l, LWORK, ok
-integer(kind=4) :: itrash, count, nbands, band
+integer h,i,i1,j,j1,k,l, ok
+integer(kind=4) :: itrash, count, nbands, band, A(4)
 character*20 wc1
 character(len=80) :: cha
 character(len=1) :: prg
-external DSYEV
-
+external :: DSYEV
 write(*,*) "Effective Mass Calculator calculator ", version_number
 write(*,*)
 
 ! read input ########################################################
 
 open(unit=iunt,file='inp',form='formatted')
-    read(iunt,fmt=*) cha
+    read(iunt,fmt=*) (kp(j),j=1,3)
     read(iunt,fmt=*) dk
     read(iunt,fmt=*) band    
     read(iunt,fmt=*) prg
+    read(iunt,*) ((f(j,i),j=1,3),i=1,3)
 close(iunt)
 
 if(prg .eq. 'V') then
-    write(*,*) "dk will be converted to VASP units (2Pi/A)"
-    dk = dk/(2.0D0*pi*b2a)
+    !write(*,*) "dk will be converted to VASP units (2Pi/A)"
+    !dk = dk/(2.0D0*pi*b2a)
 end if
-write(*,*) "band, dk: ", band, dk
-
-! read OUTCAR ###########################################
-
-!open(unit=iunt,file='OUTCAR',form='formatted')
-!    cha="direct lattice vectors"
-!    call search_key(cha, iunt)
-
-    !reading TRANSPOSE f
-!    do i=1,3
-!        read(iunt, fmt=*)ft(i,1),ft(i,2),ft(i,3)
-!    end do
-!close(iunt)
-
-! call inverse(ft, 3)
-!write(*,*) "Inverse transposed f matrix:"
-!do i=1,3
-!    write(*,*) ft(1,i), ft(2,i), ft(3,i)
-!enddo
+write(*,"(A,I5,F12.5)") "band, dk: ", band, dk
 
 ! read EIGENVAL ###########################################
 
@@ -158,38 +141,21 @@ write(*,*)
 !   call DGEEV('N', 'V', 3, m, 3, b, bi, DUMMY, 1, ev, 3, WORK, 12, ok)
 !
 ! (b):
-call DSYEV( 'V', 'U', 3, m, 3, b, WORK, 100, ok )
+call DSYEV( 'V', 'U', 3, m, 3, b, WORK, size(WORK), ok )
 if (ok .eq. 0) then
     write(*,*) "Principle effective masses and directions:"
     do i=1, 3
         write(*,"(A25,F10.2)") "Effective mass:", 1.0D0/b(i)
         write(*,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
-    !       call cart2fract(vabc,emabc(1,i),em(1,i))
-    !       call normal(emabc(1,i),3)
-    !       write(*,"(A25,3F10.3)") "Direct lattice vectors:", (emabc(j,i), j=1,3)
+        v = real_cart2fract(f, m(i,:))
+        call normal(v,3)
+        write(*,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
     end do
 else
-    write (*,*) "An error occured while diagonalizing matrix in DGEEV()"
+    write (*,*) "INFO from DGEEV: ", ok
 endif
 
-!write(*,*) "Directions:"
-!do i=1,3
-!    ! trash1 = (/ ev(1,i), ev(2,i), ev(3,i) /)
-!    call DGEMV('N', 3, 3, 1.0d0, ft, 3, ev(:,i), 1, 0.0d0, trash2, 1)
-!    call normalize(trash2, 3)
-!    write(*,"(F10.5,F10.5,F10.5)") trash2(1), trash2(2), trash2(3)
-!end do
-
 end program
-
-subroutine set_next_eigeval(iunt, kp, i, j, k, w, dk)
-    implicit none
-    integer(kind=4) :: iunt, i, j, k
-    real(kind=8) :: kp(3), w, dk
-
-    write(unit=iunt,fmt='(F15.10,F15.10,F15.10,F5.1)') kp(1)+i*dk, kp(2)+j*dk, kp(3)+k*dk, w
-    return
-end subroutine
 
 real(kind=8) function get_2nd_deriv(E, dk, x, y, z)
     implicit none
@@ -215,37 +181,6 @@ real(kind=8) function get_mixed_deriv1(E, dk, y, z)
     return
 end function
 
-! http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c
-subroutine inverse(M, n)
-    implicit none
-    integer(kind=4) :: n, LWORK, ok
-    real(kind=8) :: M(n,n)
-    integer(kind=4),allocatable :: ipiv(:)
-    real(kind=8),allocatable :: WORK(:)
-    external DGETRF, DGETRI
-
-    LWORK = n*n
-    allocate(WORK(LWORK))
-    allocate(ipiv(n+1))
-
-    call DGETRF(n, n, M, n, ipiv, ok)
-    if (ok > 0) then
-        write(*,*) 'Matrix is singular in: ', ok
-        return
-    end if
-    
-    call DGETRI(n, M, n, ipiv, WORK, LWORK, ok)
-
-    if (ok > 0) then
-        write(*,*) 'Matrix is singular in: ', ok
-        return
-    end if
-
-    deallocate(ipiv)
-    deallocate(WORK)
-    return
-end subroutine
-
 real(kind=8) function get_next_eigeval(iunt, band, nbands)
     implicit none
     integer(kind=4) :: iunt, band, nbands, j, itrash
@@ -262,17 +197,3 @@ real(kind=8) function get_next_eigeval(iunt, band, nbands)
     end do
     return
 end function
-
-subroutine normalize(v, n)
-    implicit none
-    real(kind=8) :: v(n), norm
-    integer(kind=4) :: i, n
-
-    norm = 0.0D0
-    do i=1,n
-        norm = norm + v(i)**2
-    end do
-
-    v = v/SQRT(norm)
-    return
-end subroutine
