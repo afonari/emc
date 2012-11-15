@@ -6,17 +6,16 @@ function cart2fract(f, cart_coords)
     implicit none
     integer(kind=4), parameter :: size = 3
     real(kind=8), intent(in) :: f(size,size), cart_coords(size)
-    real(kind=8) :: cart2fract(size)
+    real(kind=8) :: f1(size,size), cart2fract(size)
     integer(kind=4) :: IPIV(size), INFO, i, j
     external :: DGETRS
 
+    f1 = f
     cart2fract = cart_coords
-    call DGETRS( 'N', size, 1, f, size, IPIV, cart2fract, size, INFO )
+    call DGETRS( 'T', size, 1, f1, size, IPIV, cart2fract, size, INFO )
     if (INFO /= 0) then
         write(*,*) "INFO from cart2fract function: ", INFO
         cart2fract = 0.d0
-    else
-        cart2fract = cart_coords
     endif
     return
 end function cart2fract
@@ -32,20 +31,6 @@ function fract2cart(f, frac_coords)
     return
 end function fract2cart
 
-subroutine normalize(v, n)
-    implicit none
-    integer(kind=4) :: i, n
-    real(kind=8) :: v(n), norm
-
-    norm = 0.d0
-    do i=1,n
-        norm = norm + v(i)**2
-    end do
-
-    v = v/dsqrt(norm)
-    return
-end subroutine
-
 subroutine normal(a,n)
     implicit none
     integer(kind=4) :: n, i
@@ -59,7 +44,7 @@ subroutine normal(a,n)
        a(i)=a(i)/amax
     end do
     return
-end
+end subroutine normal
 
 subroutine print_time(iunt)
     implicit none
