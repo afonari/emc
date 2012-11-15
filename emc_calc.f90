@@ -15,14 +15,11 @@ integer(kind=4), parameter :: iunt = 10
 character(len=3), parameter :: version_number = '1.0'
 
 real(kind=8) :: get_next_eigeval, get_2nd_deriv, get_mixed_deriv1
-real(kind=8) :: f(3,3), ev(3,3)
-real(kind=8) :: E(-2:2,-2:2,-2:2), m(3,3), b(3), WORK(100), v(3)
-real(kind=8) :: kp(3), dk, trash1(3), trash2(3), tmp(3), basis(3,3)
-
-integer h,i,i1,j,j1,k,l, ok
+real(kind=8) :: f(3,3), ev(3,3), v(3)
+real(kind=8) :: E(-2:2,-2:2,-2:2), m(3,3), b(3), WORK(100)
+real(kind=8) :: kp(3), dk
+integer i, i1, j, j1, ok
 integer(kind=4) :: itrash, count, nbands, band, A(4)
-character*20 wc1
-character(len=80) :: cha
 character(len=1) :: prg
 external :: DSYEV
 write(*,*) "Effective Mass Calculator calculator ", version_number

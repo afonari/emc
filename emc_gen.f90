@@ -7,15 +7,14 @@
 program emc_gen ! version 1.0
 use emc_functions
 implicit none
-real(kind=8), parameter :: b2a = dble(0.52917721092)
+real(kind=8), parameter :: b2a = 0.52917721092d0
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
-real(kind=8), parameter :: ev2h = 1.D0/27.21138505D0
 integer(kind=4), parameter :: nkpoints = 61
-integer(kind=4), parameter :: iunt = 10, ilog = 11, w = 1.0 ! k point weight for VASP
+integer(kind=4), parameter :: iunt = 10, ilog = 11, w = 1 ! k point weight for VASP
 character(len=3), parameter :: version_number = '1.0'
 
-real(kind=8) :: kp(3), kpr(3), dk, E(-2:2,-2:2,-2:2), count, A(4), f(3,3), g(3,3)
-integer(kind=4) :: h,i,i1,j,j1,k,l, band
+real(kind=8) :: kp(3), kpr(3), dk, E(-2:2,-2:2,-2:2), A(4), f(3,3), g(3,3)
+integer(kind=4) :: i, i1, j, j1, band
 character prg
 
 open(unit=ilog,file='emc_gen.log',form='formatted')
