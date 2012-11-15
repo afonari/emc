@@ -30,10 +30,14 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
 
+write(ilog,"(A,I5,F10.6)") "band, dk: ", band, dk
+
 if(prg .eq. 'V') then
-    write(ilog,*) "dk will be converted to VASP units (2Pi/A)"
     dk = dk/(2.0D0*pi*b2a)
+    write(ilog,"(A,F10.6)") "dk will be converted to VASP units (2Pi/A): ", dk
 end if
+write(ilog,*)
+
 
 ! g = inverse(transpose(f)), will do it in two steps
 g=f
@@ -44,6 +48,7 @@ write(ilog,*) "direct lattice vectors              reciprocal lattice vectors"
 do i=1,3
     write(ilog,"(3F10.6,A,3F10.6)") , (f(i,j), j=1,3), "     ", (g(i,j), j=1,3)
 end do
+write(ilog,*)
 
 kpr = fract2cart(g, kp)
 write(ilog,*) "k-point in: reciprocal space       reciprocal Cartesian space"

@@ -25,6 +25,7 @@ external :: DSYEV
 
 open(unit=ilog,file='emc_calc.log',form='formatted')
 write(ilog,*) "Effective Mass Calculator calculator ", version_number
+call print_time(ilog)
 write(ilog,*)
 
 ! read input ########################################################
@@ -48,7 +49,9 @@ read(iunt,fmt=*)
 read(iunt,fmt=*)
 read(iunt,fmt=*) itrash, itrash, nbands
 
-write(ilog,"(A,I5,I5,F12.5)") "nbands, band, dk: ", nbands, band, dk
+write(ilog,"(A,2I5,F10.6)") "nbands, band, dk: ", nbands, band, dk
+write(ilog,"(A,3F10.6)") "k-point in reciprocal space:", (kp(j), j=1,3)
+write(ilog,*)
 
 ! x
 do i=-2,2
@@ -136,7 +139,7 @@ call DSYEV( 'V', 'U', 3, m, 3, b, WORK, size(WORK), ok )
 if (ok .eq. 0) then
     write(ilog,*) "Principle effective masses and directions:"
     do i=1, 3
-        write(ilog,"(A25,F10.2)") "Effective mass:", 1.0D0/b(i)
+        write(ilog,"(A25,F10.3)") "Effective mass:", 1.0D0/b(i)
         write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
         v = real_cart2fract(f, m(i,:))
         call normal(v,3)
