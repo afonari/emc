@@ -1,5 +1,5 @@
 GFORTRAN module version '9' created from emc_functions.f90
-MD5:05546f9c6cc7ff11e0d40b848c8e8f53 -- If you edit this, you'll get what you deserve.
+MD5:bc050d2fff95555f11ce246c470f2217 -- If you edit this, you'll get what you deserve.
 
 (() () () () () () () () () () () () () () () () () () () () () () () ()
 () () ())
@@ -31,17 +31,20 @@ DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0 UNKNOWN ()) 12 0 (13 14) ()
 15 'normalize' 'emc_functions' '' 1 ((PROCEDURE UNKNOWN-INTENT
 MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0 UNKNOWN ()) 16
 0 (17 18) () 0 () () () 0 0)
-19 'real_cart2fract' 'emc_functions' '' 1 ((PROCEDURE UNKNOWN-INTENT
+19 'print_time' 'emc_functions' '' 1 ((PROCEDURE UNKNOWN-INTENT
+MODULE-PROC DECL UNKNOWN 0 0 SUBROUTINE) (UNKNOWN 0 0 0 0 UNKNOWN ()) 20
+0 (21) () 0 () () () 0 0)
+22 'real_cart2fract' 'emc_functions' '' 1 ((PROCEDURE UNKNOWN-INTENT
 MODULE-PROC DECL UNKNOWN 0 0 DIMENSION FUNCTION ALWAYS_EXPLICIT) (REAL 8
-0 0 0 REAL ()) 20 0 (21 22) (1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0 0
-INTEGER ()) 0 '1') (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '3')) 19 ()
+0 0 0 REAL ()) 23 0 (24 25) (1 0 EXPLICIT (CONSTANT (INTEGER 4 0 0 0
+INTEGER ()) 0 '1') (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '3')) 22 ()
 () () 0 0)
-21 'f' '' '' 20 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DIMENSION
+24 'f' '' '' 23 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DIMENSION
 DUMMY) (REAL 8 0 0 0 REAL ()) 0 0 () (2 0 EXPLICIT (CONSTANT (INTEGER 4
 0 0 0 INTEGER ()) 0 '1') (CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '3') (
 CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (INTEGER 4 0 0 0
 INTEGER ()) 0 '3')) 0 () () () 0 0)
-22 'frac_coords' '' '' 20 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
+25 'frac_coords' '' '' 23 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
 DIMENSION DUMMY) (REAL 8 0 0 0 REAL ()) 0 0 () (1 0 EXPLICIT (CONSTANT (
 INTEGER 4 0 0 0 INTEGER ()) 0 '1') (CONSTANT (INTEGER 4 0 0 0 INTEGER ())
 0 '3')) 0 () () () 0 0)
@@ -66,6 +69,8 @@ CONSTANT (INTEGER 4 0 0 0 INTEGER ()) 0 '1') (VARIABLE (INTEGER 4 0 0 0
 INTEGER ()) 0 14 ())) 0 () () () 0 0)
 14 'n' '' '' 12 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN 0
 0 DUMMY) (INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
+21 'iunt' '' '' 20 ((VARIABLE IN UNKNOWN-PROC UNKNOWN UNKNOWN 0 0 DUMMY)
+(INTEGER 4 0 0 0 INTEGER ()) 0 0 () () 0 () () () 0 0)
 9 'm' '' '' 8 ((VARIABLE UNKNOWN-INTENT UNKNOWN-PROC UNKNOWN UNKNOWN 0 0
 DIMENSION DUMMY) (REAL 8 0 0 0 REAL ()) 0 0 () (2 0 EXPLICIT (CONSTANT (
 INTEGER 4 0 0 0 INTEGER ()) 0 '1') (VARIABLE (INTEGER 4 0 0 0 INTEGER ())
@@ -76,4 +81,4 @@ INTEGER 4 0 0 0 INTEGER ()) 0 10 ())) 0 () () () 0 0)
 )
 
 ('emc_functions' 0 2 'fract2cart' 0 3 'inverse' 0 7 'normal' 0 11
-'normalize' 0 15 'real_cart2fract' 0 19)
+'normalize' 0 15 'print_time' 0 19 'real_cart2fract' 0 22)

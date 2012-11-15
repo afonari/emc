@@ -1,12 +1,10 @@
-!##########################################++##########################
-!####                                                               
-!#### Effective Mass Calculator
-!#### c.alculator program
-!#### licensed under MIT LICENSE
-!####                                                               
-!######################################################################
+! Copyright (c) "2012, by Georgia Institute of Technology
+!                Contributors: Alexandr Fonari
+!                Affiliation: Dr. Bredas group
+!                URL: https://github.com/alexandr-fonari/emc
+!                License: MIT License"
 
-program EMCc ! version 1.0
+program emc_calc ! version 1.0
 use emc_functions
 implicit none
 real(kind=8), parameter :: b2a = dble(0.52917721092)

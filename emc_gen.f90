@@ -1,30 +1,27 @@
-!##########################################++##########################
-!####                                                               
-!#### Effective Mass Calculator
-!#### g.enerator program
-!#### licensed under MIT LICENSE
-!####                                                               
-!######################################################################
+! Copyright (c) "2012, by Georgia Institute of Technology
+!                Contributors: Alexandr Fonari
+!                Affiliation: Dr. Bredas group
+!                URL: https://github.com/alexandr-fonari/emc
+!                License: MIT License"
 
-program EMCg ! version 1.0
+program emc_gen ! version 1.0
 use emc_functions
 implicit none
 real(kind=8), parameter :: b2a = dble(0.52917721092)
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
 real(kind=8), parameter :: ev2h = 1.D0/27.21138505D0
 integer(kind=4), parameter :: nkpoints = 61
-integer(kind=4), parameter :: iunt = 10, w = 1.0 ! k point weight for VASP
+integer(kind=4), parameter :: iunt = 10, ilog = 11, w = 1.0 ! k point weight for VASP
 character(len=3), parameter :: version_number = '1.0'
 
 real(kind=8) :: kp(3), kpr(3), dk, E(-2:2,-2:2,-2:2), count, A(4), f(3,3), g(3,3)
 integer(kind=4) :: h,i,i1,j,j1,k,l, band
 character prg
-character*20 wc1
 
-write(*,*) "Effective Mass Calculator generator ", version_number
-write(*,*)
-
-! read input ########################################################
+open(unit=ilog,file='emc_gen.log',form='formatted')
+write(ilog,*) "Effective Mass Calculator generator ", version_number
+call print_time(ilog)
+write(ilog,*)
 
 open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) (kp(i),i=1,size(kp))
@@ -35,7 +32,7 @@ open(unit=iunt,file='inp',form='formatted')
 close(iunt)
 
 if(prg .eq. 'V') then
-    write(*,*) "dk will be converted to VASP units (2Pi/A)"
+    write(ilog,*) "dk will be converted to VASP units (2Pi/A)"
     dk = dk/(2.0D0*pi*b2a)
 end if
 
@@ -44,14 +41,14 @@ g=f
 g=transpose(g)
 call inverse(g, 3)
 
-write(*,*) "direct lattice vectors              reciprocal lattice vectors"
+write(ilog,*) "direct lattice vectors              reciprocal lattice vectors"
 do i=1,3
-    write(*,"(3F10.6,A,3F10.6)") , (f(i,j), j=1,3), "     ", (g(i,j), j=1,3)
+    write(ilog,"(3F10.6,A,3F10.6)") , (f(i,j), j=1,3), "     ", (g(i,j), j=1,3)
 end do
 
 kpr = fract2cart(g, kp)
-write(*,*) "k-point in: reciprocal space       reciprocal Cartesian space"
-write(*,"(3F10.6,A,3F10.6)") , (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
+write(ilog,*) "k-point in: reciprocal space       reciprocal Cartesian space"
+write(ilog,"(3F10.6,A,3F10.6)") , (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
 
 
 ! write KPOINTS file ###########################################
