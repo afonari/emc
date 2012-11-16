@@ -15,7 +15,7 @@ integer(kind=4), parameter :: iunt = 10, ilog = 11
 character(len=3), parameter :: version_number = '1.0'
 
 real(kind=8) :: get_next_eigeval, get_2nd_deriv, get_mixed_deriv1
-real(kind=8) :: f(3,3), ev(3,3), v(3)
+real(kind=8) :: f(3,3), ev(3,3), v(3), len
 real(kind=8) :: E(-2:2,-2:2,-2:2), m(3,3), b(3), WORK(100)
 real(kind=8) :: kp(3), dk
 integer i, i1, j, j1, ok
@@ -142,7 +142,7 @@ if (ok .eq. 0) then
         write(ilog,"(A25,F10.3)") "Effective mass:", 1.0D0/b(i)
         write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
         v = cart2fract(f,m(:,i))
-        call normal(v,3)
+        v = normal(v, size(v))
         write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
         write(ilog,*)
     end do

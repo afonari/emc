@@ -10,9 +10,9 @@ function cart2fract(f, cart_coords)
     integer(kind=4) :: IPIV(size), INFO, i, j
     external :: DGETRS
 
-    f1 = f
-    cart2fract = cart_coords
-    call DGETRS( 'T', size, 1, f1, size, IPIV, cart2fract, size, INFO )
+    f1 = f                   !! DGETRS crashes if called with intent(in) variables
+    cart2fract = cart_coords !!
+    call DGETRS( 't', size, 1, f1, size, IPIV, cart2fract, size, INFO )
     if (INFO /= 0) then
         write(*,*) "INFO from cart2fract function: ", INFO
         cart2fract = 0.d0
@@ -31,20 +31,21 @@ function fract2cart(f, frac_coords)
     return
 end function fract2cart
 
-subroutine normal(a,n)
+pure function normal(a, n)
     implicit none
-    integer(kind=4) :: n, i
-    real(kind=8) :: a(n), amax
+    integer(kind=4), intent(in) :: n
+    real(kind=8), intent(in) :: a(n)
+    integer(kind=4) :: i
+    real(kind=8) :: normal(n), amax
 
-    amax=0.0d0
+    amax=0.d0
     do i=1, n
-       if (dabs(amax)<dabs(a(i))) amax=a(i)
+       if (DABS(amax) < DABS(a(i))) amax=a(i)
     end do
-    do i=1, n
-       a(i)=a(i)/amax
-    end do
+
+    normal = a/amax
     return
-end subroutine normal
+end function normal
 
 subroutine print_time(iunt)
     implicit none
@@ -57,6 +58,9 @@ subroutine print_time(iunt)
     return
 end subroutine print_time
 
+!!!!!!!     UNUSED FUNCTIONS
+!!
+!
 ! http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c
 subroutine inverse(M, n)
     implicit none
@@ -87,5 +91,30 @@ subroutine inverse(M, n)
     deallocate(WORK)
     return
 end subroutine
+
+function vect2G(f)
+    implicit none
+    real(kind=8), parameter :: fact = 180.d0/(4.d0*DATAN(1.d0))
+    integer(kind=4), parameter :: size = 3
+    real(kind=8), intent(in) :: f(size,size)
+    real(kind=8) :: l(3), ang(3), vect2G ! vect2G(size,size), 
+    integer(kind=4) :: i
+    real(kind=8), external :: DDOT
+
+    ! http://theory.cm.utexas.edu/redmine/projects/vtstscripts/repository/entry/pos2cif.pl
+    do i=1,3
+        l(i) = dsqrt(f(1,i)**2 + f(2,i)**2 + f(3,i)**2)
+    end do
+
+    ang(1) = dacos( DDOT(3, f(:,3), 1, f(:,2), 1)/l(2)/l(3) )*fact;
+    ang(2) = dacos( DDOT(3, f(:,1), 1, f(:,3), 1)/l(1)/l(3) )*fact;
+    ang(3) = dacos( DDOT(3, f(:,1), 1, f(:,2), 1)/l(1)/l(2) )*fact;
+
+    do i=1,3
+        write(*,*) l(i), ang(i)
+    end do
+
+    return
+end function vect2G
 
 end module emc_functions
