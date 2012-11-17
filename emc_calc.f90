@@ -7,9 +7,9 @@
 program emc_calc ! version 1.0
 use emc_functions
 implicit none
-real(kind=8), parameter :: b2a = dble(0.52917721092)
+real(kind=8), parameter :: b2a = 0.52917721092d0
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
-real(kind=8), parameter :: ev2h = 1.D0/27.21138505D0
+real(kind=8), parameter :: ev2h = 1.d0/27.21138505d0
 integer(kind=4), parameter :: nkpoints = 61
 integer(kind=4), parameter :: iunt = 10, ilog = 11
 character(len=3), parameter :: version_number = '1.0'
@@ -35,7 +35,11 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) dk
     read(iunt,fmt=*) band    
     read(iunt,fmt=*) prg
-    read(iunt,*) ((f(j,i),j=1,3),i=1,3)
+    if(prg .eq. 'C') then
+        read(iunt,'(3e20.12)') ((f(i,j),j=1,3),i=1,3)
+    else if(prg .eq. 'V') then
+        read(iunt,*) ((f(i,j),j=1,3),i=1,3)
+    end if
 close(iunt)
 
 ! read EIGENVAL ###########################################
