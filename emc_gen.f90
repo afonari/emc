@@ -54,7 +54,7 @@ do i=1,3
 end do
 write(ilog,*)
 
-kpr = fract2cart(g, kp)
+kpr = pureDEGMV(g, kp, 'T')
 write(ilog,*) "k-point in: reciprocal space       reciprocal Cartesian space"
 write(ilog,"(3F10.6,A,3F10.6)") , (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
 

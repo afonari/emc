@@ -2,17 +2,6 @@
 
 #  VERSION 1.0 (or 1.1.5 of the old effective mass script)
 #
-# UPDATES from 1.1.5
-# - finally fixed the directions, again.
-# - effective mass tensor now precisely symmetric.
-#
-# UPDATES from 1.1.4
-#  - finaly fixed (hopefully) the directions.
-#
-# UPDATES from 1.1.3:
-#  - added user friendly output in Mathematica output.
-#  - added generation of basis set (eigenvalues), both in real and reciprocal space.
-#
 #
 use strict;
 use Data::Dumper;
@@ -91,7 +80,7 @@ my $band = $opt_nband;
 print "Will use band = $band\n";
 
 
-@f = map { $_ * 1.0/(2*PI) } @f;
+# @f = map { $_ * 1.0/(2*PI) } @f;
 
 print <<OUT;
 
@@ -144,8 +133,8 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
         $i++;
     }
 
-    my @kp1 = m3by1( @f, @v1 );
-    my @kp2 = m3by1( @f, @v2 );
+    my @kp1 = m3by1( t3by3(@f), @v1 );
+    my @kp2 = m3by1( t3by3(@f), @v2 );
     print $band_fh sprintf("%5d %5d %5d   %5d %5d %5d\n", $kp1[1]*ISS, $kp1[2]*ISS, $kp1[3]*ISS, $kp2[1]*ISS, $kp2[2]*ISS, $kp2[3]*ISS);
     print $band_fh "END\n";
     close($band_fh);

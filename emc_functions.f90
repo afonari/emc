@@ -8,28 +8,34 @@ function cart2fract(f, cart_coords)
     real(kind=8), intent(in) :: f(size,size), cart_coords(size)
     real(kind=8) :: f1(size,size), cart2fract(size)
     integer(kind=4) :: IPIV(size), INFO, i, j
-    external :: DGETRS
+    external :: DGETRS, DGESV
 
-    f1 = f                   !! DGETRS crashes if called with intent(in) variables
-    cart2fract = cart_coords !!
-    call DGETRS( 't', size, 1, f1, size, IPIV, cart2fract, size, INFO )
+    cart2fract = cart_coords
+    f1 = f
+    IPIV = 0
+
+    call DGETRS( 'T', size, 1, f1, size, IPIV, cart2fract, size, INFO )
+    ! call DGESV( 3, 1, cart2fract, 3, IPIV, f1, 3, INFO )
     if (INFO /= 0) then
         write(*,*) "INFO from cart2fract function: ", INFO
         cart2fract = 0.d0
     endif
+    ! write(*,*)(cart2fract(j), j=1,3)
     return
 end function cart2fract
 
-function fract2cart(f, frac_coords)
+function pureDEGMV(m, vec, trans)
     implicit none
     integer(kind=4), parameter :: size = 3
-    real(kind=8), intent(in) :: f(size,size), frac_coords(size)
-    real(kind=8) :: fract2cart(size), ft(size,size)
+    real(kind=8), intent(in) :: m(size,size), vec(size)
+    character(len=1), intent(in) :: trans
+    real(kind=8) :: pureDEGMV(size)
     external :: DGEMV
 
-    call DGEMV('t', size, size, 1.d0, f, size, frac_coords, 1, 1.d0, fract2cart, 1)
+    pureDEGMV = 0.d0
+    call DGEMV(trans, size, size, 1.d0, m, size, vec, 1, 1.d0, pureDEGMV, 1)
     return
-end function fract2cart
+end function pureDEGMV
 
 pure function normal(a, n)
     implicit none

@@ -15,7 +15,7 @@ integer(kind=4), parameter :: iunt = 10, ilog = 11
 character(len=3), parameter :: version_number = '1.0'
 
 real(kind=8) :: get_next_eigeval, get_2nd_deriv, get_mixed_deriv1
-real(kind=8) :: f(3,3), ev(3,3), v(3), len
+real(kind=8) :: f(3,3), g(3,3), ev(3,3), v(3), len
 real(kind=8) :: E(-2:2,-2:2,-2:2), m(3,3), b(3), WORK(100)
 real(kind=8) :: kp(3), dk
 integer i, i1, j, j1, ok
@@ -41,6 +41,17 @@ open(unit=iunt,file='inp',form='formatted')
         read(iunt,*) ((f(i,j),j=1,3),i=1,3)
     end if
 close(iunt)
+
+! g = inverse(transpose(f)), will do it in two steps
+g=f
+g=transpose(g)
+call inverse(g, 3)
+
+write(ilog,*) "direct lattice vectors              reciprocal lattice vectors"
+do i=1,3
+    write(ilog,"(3F10.6,A,3F10.6)") , (f(i,j), j=1,3), "     ", (g(i,j), j=1,3)
+end do
+write(ilog,*)
 
 ! read EIGENVAL ###########################################
 
@@ -145,7 +156,7 @@ if (ok .eq. 0) then
     do i=1,3
         write(ilog,"(A25,F10.3)") "Effective mass:", 1.0D0/b(i)
         write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
-        v = cart2fract(f,m(:,i))
+        v = pureDEGMV(f, m(:,i), 'N')
         v = normal(v, size(v))
         write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
         write(ilog,*)
