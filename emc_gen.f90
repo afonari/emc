@@ -27,7 +27,11 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) dk
     read(iunt,fmt=*) band
     read(iunt,fmt=*) prg
-    read(iunt,fmt=*) ((f(i,j),j=1,3),i=1,3)
+    if(prg .eq. 'C') then
+        read(iunt,'(3e20.12)') ((f(i,j),j=1,3),i=1,3)
+    else if(prg .eq. 'V') then
+        read(iunt,*) ((f(i,j),j=1,3),i=1,3)
+    end if
 close(iunt)
 
 write(ilog,"(A,I5,F10.6)") "band, dk: ", band, dk
