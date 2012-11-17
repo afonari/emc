@@ -150,7 +150,7 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
     print $band_fh "END\n";
     close($band_fh);
 
-    print "running $i of ".NKPOINTS.":\n\n";
+    print "\n\n\nrunning $i of ".NKPOINTS.":\n\n";
     print `cat input.d3`;
     print "\n\n";
     `cp $opt_f9 ./`;
@@ -189,6 +189,7 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
     close($bandout_fh);
 }
 
+print "done.\n";
 close($eigenval_fh);
 
 # sum two three-component vectors
