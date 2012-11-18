@@ -24,6 +24,31 @@ function cart2fract(f, cart_coords)
     return
 end function cart2fract
 
+function pureDGESV(a, b, trans)
+    implicit none
+    real(kind=8), intent(in) :: a(3,3), b(3)
+    character(len=1), intent(in) :: trans
+    real(kind=8) :: a1(3,3), pureDGESV(3)
+    integer(kind=4) :: IPIV(3), INFO, i, j
+    external :: DGESV
+
+    do i=1,3
+        pureDGESV(i)=b(i)
+        do j=1,3
+            if(trans .eq. 'T') then
+                a1(j,i)=a(i,j)
+            else
+                a1(j,i)=a(j,i)
+            end if
+        end do
+    end do
+
+    IPIV = 0
+    call DGESV( 3, 1, a1, 3, IPIV, pureDGESV, 3, INFO )
+    if (INFO /= 0) write(*,*) "INFO:", INFO
+    return
+end function pureDGESV
+
 function pureDEGMV(m, vec, trans)
     implicit none
     integer(kind=4), parameter :: size = 3
