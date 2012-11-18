@@ -2,28 +2,6 @@
 module emc_functions
     implicit none
 contains
-function cart2fract(f, cart_coords)
-    implicit none
-    integer(kind=4), parameter :: size = 3
-    real(kind=8), intent(in) :: f(size,size), cart_coords(size)
-    real(kind=8) :: f1(size,size), cart2fract(size)
-    integer(kind=4) :: IPIV(size), INFO, i, j
-    external :: DGETRS, DGESV
-
-    cart2fract = cart_coords
-    f1 = f
-    IPIV = 0
-
-    call DGETRS( 'T', size, 1, f1, size, IPIV, cart2fract, size, INFO )
-    ! call DGESV( 3, 1, cart2fract, 3, IPIV, f1, 3, INFO )
-    if (INFO /= 0) then
-        write(*,*) "INFO from cart2fract function: ", INFO
-        cart2fract = 0.d0
-    endif
-    ! write(*,*)(cart2fract(j), j=1,3)
-    return
-end function cart2fract
-
 function pureDGESV(a, b, trans)
     implicit none
     real(kind=8), intent(in) :: a(3,3), b(3)
