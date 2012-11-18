@@ -35,11 +35,7 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) dk
     read(iunt,fmt=*) band    
     read(iunt,fmt=*) prg
-    if(prg .eq. 'C') then
-        read(iunt,'(3e20.12)') ((f(i,j),j=1,3),i=1,3)
-    else if(prg .eq. 'V') then
-        read(iunt,*) ((f(i,j),j=1,3),i=1,3)
-    end if
+    read(iunt,*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
 
 ! g = inverse(transpose(f)), will do it in two steps
@@ -156,7 +152,7 @@ if (ok .eq. 0) then
     do i=1,3
         write(ilog,"(A25,F10.3)") "Effective mass:", 1.0D0/b(i)
         write(ilog,"(A25,3F10.6)") "Cartesian coordinate:", (m(j,i), j=1,3)
-        v = pureDEGMV(f, m(:,i), 'N')
+        v = pureDGESV(f, m(:,i), 'T')
         v = normal(v, size(v))
         write(ilog,"(A25,3F10.3)") "Direct lattice vectors:", (v(j), j=1,3)
         write(ilog,*)
