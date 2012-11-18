@@ -27,12 +27,12 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) dk
     read(iunt,fmt=*) band
     read(iunt,fmt=*) prg
-    if(prg .eq. 'C') then
-        read(iunt,'(3e20.12)') ((f(i,j),j=1,3),i=1,3)
-    else if(prg .eq. 'V') then
-        read(iunt,*) ((f(i,j),j=1,3),i=1,3)
-    end if
+    read(iunt,*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
+    
+if(prg .eq. 'C') then
+    f=f/(2.d0*pi)
+end if
 
 write(ilog,"(A,I5,F10.6)") "band, dk: ", band, dk
 
@@ -56,8 +56,7 @@ write(ilog,*)
 
 kpr = pureDEGMV(g, kp, 'T')
 write(ilog,*) "k-point in: reciprocal space       reciprocal Cartesian space"
-write(ilog,"(3F10.6,A,3F10.6)") , (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
-
+write(ilog,"(3F10.6,A,3F10.6)") (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
 
 ! write KPOINTS file ###########################################
 
@@ -69,7 +68,7 @@ write(unit=iunt,fmt='(A)') 'Cartesian'
 
 ! x
 do i=-2,2
-    call set_next_eigeval(iunt, kpr, i, 0, 0, w, dk)
+    call set_next_eigeval(iunt, g, kpr, i, 0, 0, w, dk, prg)
 end do
 
 ! http://stackoverflow.com/questions/9791001/loop-in-fortran-from-a-list
@@ -78,13 +77,13 @@ A = (/ -2, -1, 1, 2 /)
 ! y
 do i = 1, size(A)
     i1 = A(i)
-    call set_next_eigeval(iunt, kpr, 0, i1, 0, w, dk)
+    call set_next_eigeval(iunt, g, kpr, 0, i1, 0, w, dk, prg)
 end do
 
 ! z
 do i = 1, size(A)
     i1 = A(i)
-    call set_next_eigeval(iunt, kpr, 0, 0, i1, w, dk)
+    call set_next_eigeval(iunt, g, kpr, 0, 0, i1, w, dk, prg)
 end do
 
 ! xy
@@ -92,7 +91,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, kpr, j1, i1, 0, w, dk)
+        call set_next_eigeval(iunt, g, kpr, j1, i1, 0, w, dk, prg)
     end do
 end do
 
@@ -101,7 +100,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, kpr, j1, 0, i1, w, dk)
+        call set_next_eigeval(iunt, g, kpr, j1, 0, i1, w, dk, prg)
     end do
 end do
 
@@ -110,7 +109,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, kpr, 0, j1, i1, w, dk)
+        call set_next_eigeval(iunt, g, kpr, 0, j1, i1, w, dk, prg)
     end do
 end do
 
@@ -118,12 +117,23 @@ close(30)
 
 end program
 
-subroutine set_next_eigeval(iunt, kp, i, j, k, w, dk)
+subroutine set_next_eigeval(iunt, g, kp, i, j, k, w, dk, prg)
+    use emc_functions
     implicit none
     integer(kind=4), intent(in) :: iunt, i, j, k, w
-    real(kind=8), intent(in) :: kp(3), dk
+    real(kind=8), intent(in) :: g(3,3), kp(3), dk
+    character, intent(in) :: prg
+    real(kind=8) :: kp1(3)
 
-    write(unit=iunt,fmt='(F15.10,F15.10,F15.10,F5.1)') kp(1)+i*dk, kp(2)+j*dk, kp(3)+k*dk, dble(w)
+    kp1(1) = kp(1)+dble(i)*dk
+    kp1(2) = kp(2)+dble(j)*dk
+    kp1(3) = kp(3)+dble(k)*dk
+
+    if(prg .eq. 'C') then
+        kp1 = pureDGESV(g, kp1, 'T') ! get reciprocal coords
+    end if
+    
+    write(unit=iunt,fmt='(F15.10,F15.10,F15.10,F5.1)') kp1(1), kp1(2), kp1(3), dble(w)
     ! write(unit=iunt,fmt='(I5,I5,I5)') i, j, k
     return
 end subroutine
