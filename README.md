@@ -1,5 +1,4 @@
 ## Effective Mass Calculator
-
 ### 1. Theory
 
 ```
@@ -35,7 +34,6 @@ where ```αi``` are eigevalues of the ```d2E/dk2``` tensor.
  1. Note that components of the effective mass tensor can be highly anisotropic.
 
 #### 1.1 Numerical Differentiation
-
 Derivatives are estimated using finite-difference method on a five-point stencil.  
 Second order derivatives are estimated with ```O(h^4)``` error:  
 ![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/pics/p_2ndd.png)  
@@ -80,10 +78,10 @@ V                                       ! program indentifier (1 char)
 1. Run a non-SCF calculation (```ICHARG=11``` in INCAR). Don't forget to copy ```CHGCAR``` file from SCF folder.
 1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
 
-#### 5. Acknowledgments and references
+### 4. Acknowledgments and references
 1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/).
 1. Finite difference method on three-point stencil is outlined here: http://link.aip.org/link/doi/10.1063/1.2138381.
 
-#### 6. Test cases (folders)
+### 5. Test cases (folders)
 1. Silicon
 1. Pentacene
