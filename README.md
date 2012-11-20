@@ -24,16 +24,16 @@ Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netl
 where ```x*, y*, z*``` are reciprocal directions.  
 At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:
 
+#### 1.1 Numerical Differentiation
 
+Derivatives are estimated using finite-difference method on a five-point stencil.  
 Second order derivatives are estimated with ```O(h^4)``` error:  
-![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/pics/p_2ndd.png)
-
+![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/pics/p_2ndd.png)  
 Mixed second derivatives are estimated also with ```O(h^4)``` error:  
 ![Mixed 2nd Derivative](http://www.holoborodko.com/pavel/wp-content/ql-cache/quicklatex.com-ead43440eddb0f8db2cc36a1df79c547_l3.svg)
 
-#### 2. Required input files
-**1.** ```OUTCAR``` can be either OUTCAR from an SCF calculation from VASP or output from an SCF calculation from CRYSTAL renamed to OUTCAR  
-**2.** ```inp``` has the following form:  
+### 2. Required input files
+**1.** ```inp``` has the following form:  
 ```
 0.000 0.000 0.000   ! K-POINT in reciprocal cartesian system, set to Gamma: 3 floats
 0.001               ! dk step: 1 float
