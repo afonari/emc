@@ -3,13 +3,18 @@
 #### 1. Theory
 
 ```
-Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees,
-distance is in Bohrs, mass is in electron mass (m0).
+Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in electron mass (m0).
 ```
 
 The average velocity of an electron for a certain value of *n* and *k* is:  
-![Mean velocity](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)
+![Mean velocity](https://raw.github.com/alexandr-fonari/emc/master/pics/p_v.png)  
+thus acceleation can be written as:  
+![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a.png)
 
+In the semiclassical picture, equation of motion of an electron in the presence of the electric (**E**) and magnetic (**H**) fields is:  
+![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_e_m.png)  
+in the case: ```H = 0```:  
+![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
 
 Effective mass tensor is defined as:  
 ![Effective Mass Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)
