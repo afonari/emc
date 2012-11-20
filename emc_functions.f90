@@ -1,3 +1,9 @@
+! Copyright (c) "2012, by Georgia Institute of Technology
+!                Contributors: Alexandr Fonari
+!                Affiliation: Dr. Bredas group
+!                URL: https://github.com/alexandr-fonari/emc
+!                License: MIT License"
+
 ! http://www.tek-tips.com/viewthread.cfm?qid=1516435
 module emc_functions
     implicit none
