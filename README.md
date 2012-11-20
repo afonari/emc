@@ -26,7 +26,8 @@ where ```x*, y*, z*``` are reciprocal directions.
 
 At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:  
 ![Eigenvalues](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ev.png)  
-where ```αi``` are eigevalues of the ````d2E/dk2``` tensor.
+where ```αi``` are eigevalues of the ```d2E/dk2``` tensor.
+
 **Notes**:
  1. For the top of the band, eigenvalues are negative, for the bottom of the band, eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
@@ -44,10 +45,10 @@ Mixed second derivatives are estimated also with ```O(h^4)``` error:
 ### 2. Required input files
 ```inp``` has the following form:  
 ```
-0.000 0.000 0.000   ! K-POINT in reciprocal space (3 floats)
-0.01                ! step size (1 float)
-81                  ! band number, (1 integer)
-V                   ! program indentifier (1 char)
+0.000 0.000 0.000                       ! K-POINT in reciprocal space (3 floats)
+0.01                                    ! step size (1 float)
+81                                      ! band number, (1 integer)
+V                                       ! program indentifier (1 char)
 6.291999817  0.000000000  0.000000000   ! direct lattice vectors
 0.755765092  7.652872670  0.000000000   ! direct lattice vectors
 0.462692761  3.245907103 14.032346772   ! direct lattice vectors
@@ -56,28 +57,25 @@ V                   ! program indentifier (1 char)
  - **step size** in 1/Bohr. If *program identifier* is *VASP* step size will be converted to 2π/A units. At this time, in *POSCAR* scale should be set to **1.000**.
  - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads in desired band number. For **VASP** valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
  - **program identifier** at this time can be either ```C``` (for *CRYSTAL*) or ```V``` (for *VASP*).
- - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with differences in units.
+ - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with units.
+ - Please remove comments from ```inp``` file, as they are not currently supported.
 
 ### 3. How to run
 #### 3.1 CRYSTAL
 1. Run SCF.
-1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
-1. Copy ```KPOINTS``` file generated with ```EMCg.x``` into it.
-1. Run from freshly created directory (```emH-00-50-00-d01```) as ```cry-getE.pl -i ../input.out -f ../input.f9 -b 131```.
-1. Copy ```EIGENVAL``` generated file to the directory with ```inp``` file.
-1. Run ```EMCc.x``` in directory with ```inp``` and ```EIGENVAL``` files.
-1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
-*. In CRYSTAL, units are 1/Bohr.
+1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```.
+1. Make ```inp``` file with the desired characteristics in the newly created directory.
+1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
+1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file. **cry-getE.pl** uses the followin parameters: (i) SCF f9 file in ```-f``` flag; (2) band number in ```-b``` flag. Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
+1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
 
 #### 3.2 VASP
 1. Run SCF (e.g. ```ICHARG=2``` in INCAR).
-1. Make directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
-1. Copy ```KPOINTS``` file generated with ```EMCg.x``` into it.
-1. Run non-SCF calculation (```ICHARG=11``` in INCAR) from freshly created directory (```emH-00-50-00-d01```)
-1. Copy resulting ```EIGENVAL``` file to the directory with ```inp``` file.
-1. Run ```EMCc.x``` in directory with ```inp``` and ```EIGENVAL``` files.
-1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
-*. In VASP, units are 2Pi/A.
+1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```.
+1. Make ```inp``` file with the desired characteristics in the newly created directory.
+1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
+1. Run a non-SCF calculation (```ICHARG=11``` in INCAR). Don't forget to copy ```CHGCAR``` file from SCF folder.
+1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
 
 #### 5. Acknowledgments and references
 1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/).
