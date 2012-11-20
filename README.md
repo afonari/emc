@@ -3,7 +3,8 @@
 ### 1. Theory
 
 ```
-Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in electron mass (m0).
+Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees,
+distance is in Bohrs, mass is in electron mass (m0).
 ```
 
 The average velocity of an electron for a certain value of *n* and *k* is:  
@@ -11,7 +12,7 @@ The average velocity of an electron for a certain value of *n* and *k* is:
 thus acceleration can be written as:  
 ![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a.png)
 
-In the semiclassical picture, equation of motion of an electron in the presence of the electric (**E**) and magnetic (**H**) fields is:  
+In the semiclassical picture, equation of motion of an electron in the presence of the electric ( **E** ) and magnetic (**H**) fields is:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_e_m.png)  
 in the case of: ```H = 0```:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
@@ -35,10 +36,10 @@ Mixed second derivatives are estimated also with ```O(h^4)``` error:
 ### 2. Required input files
 **1.** ```inp``` has the following form:  
 ```
-0.000 0.000 0.000   ! K-POINT in reciprocal cartesian system, set to Gamma: 3 floats
-0.001               ! dk step: 1 float
-81                  ! band number, can be VB or CB or whatever you want: 1 integer
-V                   ! program, currently support V for VASP and C for crystal: 1 char
+0.000 0.000 0.000   ! K-POINT in reciprocal space (3 floats)
+0.001               ! dk step (1 float)
+81                  ! band number, (1 integer)
+V                   ! program indentifier (1 char)
 ```
 
 #### 3. How to run with CRYSTAL
