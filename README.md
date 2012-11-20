@@ -28,10 +28,10 @@ At a saddle point (e.g. band maximum/minimum) components of the effective mass a
 ![Eigenvalues](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ev.png)  
 where ```αi``` are eigevalues of the ````d2E/dk2``` tensor.
 **Notes**:
-1. For the top of the band, eigenvalues are negative, for the bottom of the band, eigenvalues are positive.
-1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
-1. Eigenvectors are directions of principal effective mass components.
-1. Note that components of the effective mass tensor can be highly anisotropic.
+ 1. For the top of the band, eigenvalues are negative, for the bottom of the band, eigenvalues are positive.
+ 1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
+ 1. Eigenvectors are directions of principal effective mass components.
+ 1. Note that components of the effective mass tensor can be highly anisotropic.
 
 #### 1.1 Numerical Differentiation
 
