@@ -1,6 +1,6 @@
 ## Effective Mass Calculator
 
-#### 1. Theory
+### 1. Theory
 
 ```
 Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in electron mass (m0).
@@ -17,11 +17,12 @@ in the case of: ```H = 0```:
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
 getting back to acceleration:  
 ![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a2.png)  
-from here, inverse of the effective mass tensor can be written as:  
+from here, inverse of the effective mass tensor (9 comoponents) can be written as:  
 ![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
+Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
+![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.gif)  
+At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:
 
-Effective mass tensor is defined as:  
-![Effective Mass Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)
 
 Energy gradient tensor (symmetric) is defined in 3D as follows:  
 ![Energy Gradient Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_et.png)  
@@ -32,8 +33,6 @@ Second order derivatives are estimated with ```O(h^4)``` error:
 
 Mixed second derivatives are estimated also with ```O(h^4)``` error:  
 ![Mixed 2nd Derivative](http://www.holoborodko.com/pavel/wp-content/ql-cache/quicklatex.com-ead43440eddb0f8db2cc36a1df79c547_l3.svg)
-
-After matrix is built, it is inversed (```DGETRF+DGETRI``` [[SO]](http://stackoverflow.com/questions/3519959/computing-the-inverse-of-a-matrix-using-lapack-in-c)) and diagonalized (```DGEEV```).
 
 #### 2. Required input files
 **1.** ```OUTCAR``` can be either OUTCAR from an SCF calculation from VASP or output from an SCF calculation from CRYSTAL renamed to OUTCAR  
