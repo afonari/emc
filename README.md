@@ -18,13 +18,20 @@ in the case of: ```H = 0```:
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
 getting back to acceleration:  
 ![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a2.png)  
-from here, inverse of the effective mass tensor (9 comoponents) can be written as:  
+from here, inverse effective mass tensor (9 comoponents) is expressed through the tensor of second derivatives of energy with respect to reciprocal wavevector:  
 ![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
 Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
 ![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.png)  
 where ```x*, y*, z*``` are reciprocal directions.
 
-At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:
+At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:  
+![Eigenvalues](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ev.png)  
+where ```αi``` are eigevalues of the ````d2E/dk2``` tensor.
+**Notes**:
+1. For the top of the band, eigenvalues are negative, for the bottom of the band, eigenvalues are positive.
+1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
+1. Eigenvectors are directions of principal effective mass components.
+1. Note that components of the effective mass tensor can be highly anisotropic.
 
 #### 1.1 Numerical Differentiation
 
@@ -41,16 +48,20 @@ Mixed second derivatives are estimated also with ```O(h^4)``` error:
 0.01                ! step size (1 float)
 81                  ! band number, (1 integer)
 V                   ! program indentifier (1 char)
+6.291999817  0.000000000  0.000000000   ! direct lattice vectors
+0.755765092  7.652872670  0.000000000   ! direct lattice vectors
+0.462692761  3.245907103 14.032346772   ! direct lattice vectors
 ```
- - **K-POINT** usually band maximum for holes and band minimum for electrons.
+ - **K-POINT** coordinates in reciprocal space of a band maximum for holes and band minimum for electrons.
  - **step size** in 1/Bohr. If *program identifier* is *VASP* step size will be converted to 2π/A units. At this time, in *POSCAR* scale should be set to **1.000**.
  - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads in desired band number. For **VASP** valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
  - **program identifier** at this time can be either ```C``` (for *CRYSTAL*) or ```V``` (for *VASP*).
+ - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with differences in units.
 
 ### 3. How to run
 #### 3.1 CRYSTAL
 1. Run SCF.
-1. Make directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
+1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
 1. Copy ```KPOINTS``` file generated with ```EMCg.x``` into it.
 1. Run from freshly created directory (```emH-00-50-00-d01```) as ```cry-getE.pl -i ../input.out -f ../input.f9 -b 131```.
 1. Copy ```EIGENVAL``` generated file to the directory with ```inp``` file.
