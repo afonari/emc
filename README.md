@@ -20,13 +20,10 @@ getting back to acceleration:
 from here, inverse of the effective mass tensor (9 comoponents) can be written as:  
 ![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
 Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
-![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.gif)  
+![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.png)  
+where ```x*, y*, z*``` are reciprocal directions.  
 At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:
 
-
-Energy gradient tensor (symmetric) is defined in 3D as follows:  
-![Energy Gradient Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_et.png)  
-where ```x*, y*, z*``` are cartesian reciprocal directions (see ```EMCcoords.pl``` for reference).
 
 Second order derivatives are estimated with ```O(h^4)``` error:  
 ![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/pics/p_2ndd.png)
