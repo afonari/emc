@@ -8,13 +8,17 @@ Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees, distanc
 
 The average velocity of an electron for a certain value of *n* and *k* is:  
 ![Mean velocity](https://raw.github.com/alexandr-fonari/emc/master/pics/p_v.png)  
-thus acceleation can be written as:  
+thus acceleration can be written as:  
 ![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a.png)
 
 In the semiclassical picture, equation of motion of an electron in the presence of the electric (**E**) and magnetic (**H**) fields is:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_e_m.png)  
-in the case: ```H = 0```:  
+in the case of: ```H = 0```:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
+getting back to acceleration:  
+![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a2.png)  
+from here, inverse of the effective mass tensor can be written as:  
+![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
 
 Effective mass tensor is defined as:  
 ![Effective Mass Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ms.gif)
