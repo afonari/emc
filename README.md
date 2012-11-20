@@ -12,7 +12,7 @@ The average velocity of an electron for a certain value of *n* and *k* is:
 thus acceleration can be written as:  
 ![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a.png)
 
-In the semiclassical picture, equation of motion of an electron in the presence of the electric ( **E** ) and magnetic (**H**) fields is:  
+In the semiclassical picture, equation of motion of an electron in the presence of the electric ( **E** ) and magnetic ( **H** ) fields is:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_e_m.png)  
 in the case of: ```H = 0```:  
 ![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
@@ -22,7 +22,8 @@ from here, inverse of the effective mass tensor (9 comoponents) can be written a
 ![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
 Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
 ![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.png)  
-where ```x*, y*, z*``` are reciprocal directions.  
+where ```x*, y*, z*``` are reciprocal directions.
+
 At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:
 
 #### 1.1 Numerical Differentiation
@@ -34,15 +35,20 @@ Mixed second derivatives are estimated also with ```O(h^4)``` error:
 ![Mixed 2nd Derivative](http://www.holoborodko.com/pavel/wp-content/ql-cache/quicklatex.com-ead43440eddb0f8db2cc36a1df79c547_l3.svg)
 
 ### 2. Required input files
-**1.** ```inp``` has the following form:  
+```inp``` has the following form:  
 ```
 0.000 0.000 0.000   ! K-POINT in reciprocal space (3 floats)
-0.001               ! dk step (1 float)
+0.01                ! step size (1 float)
 81                  ! band number, (1 integer)
 V                   ! program indentifier (1 char)
 ```
+ - **K-POINT** usually band maximum for holes and band minimum for electrons.
+ - **step size** in 1/Bohr. If *program identifier* is *VASP* step size will be converted to 2π/A units. At this time, in *POSCAR* scale should be set to **1.000**.
+ - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads in desired band number. For **VASP** valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
+ - **program identifier** at this time can be either ```C``` (for *CRYSTAL*) or ```V``` (for *VASP*).
 
-#### 3. How to run with CRYSTAL
+### 3. How to run
+#### 3.1 CRYSTAL
 1. Run SCF.
 1. Make directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
 1. Copy ```KPOINTS``` file generated with ```EMCg.x``` into it.
@@ -52,7 +58,7 @@ V                   ! program indentifier (1 char)
 1. Determine real space directions from eigevectors using ```EMCcoords.pl``` script.  
 *. In CRYSTAL, units are 1/Bohr.
 
-#### 4. How to run with VASP
+#### 3.2 VASP
 1. Run SCF (e.g. ```ICHARG=2``` in INCAR).
 1. Make directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```*.
 1. Copy ```KPOINTS``` file generated with ```EMCg.x``` into it.
