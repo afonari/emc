@@ -81,7 +81,7 @@ V                                       ! program indentifier (1 char)
 
 ### 4. Acknowledgments and references
 1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/).
-1. Finite-difference method on three-point stencil is outlined here: K. Doi, *et al.*, *J. Appl. Phys.*, **98**, 113709 (2005): [10.1021/cr050140x](http://dx.doi.org/10.1021/cr050140x).
+1. Finite-difference method on three-point stencil is outlined here: K. Doi, *et al.*, *J. Appl. Phys.*, **98**, 113709 (2005): [10.1063/1.2138381](http://dx.doi.org/10.1063/1.2138381).
 
 ### 5. Test cases (folders)
 In progress...
