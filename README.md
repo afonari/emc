@@ -21,7 +21,7 @@ from here, inverse effective mass tensor (9 comoponents) is expressed through th
 ![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
 Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
 ![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.png)  
-where ```x*, y*, z*``` are reciprocal directions.
+where ```kx, ky, kz``` are reciprocal directions.
 
 At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:  
 ![Eigenvalues](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ev.png)  
