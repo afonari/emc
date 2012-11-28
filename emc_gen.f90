@@ -13,7 +13,7 @@ integer(kind=4), parameter :: nkpoints = 61
 integer(kind=4), parameter :: iunt = 10, ilog = 11, w = 1 ! k point weight for VASP
 character(len=3), parameter :: version_number = '1.0'
 
-real(kind=8) :: kp(3), kpr(3), dk, E(-2:2,-2:2,-2:2), A(4), f(3,3), g(3,3)
+real(kind=8) :: kp(3), kpc(3), dk, E(-2:2,-2:2,-2:2), A(4), f(3,3), g(3,3)
 integer(kind=4) :: i, i1, j, j1, band
 character prg
 
@@ -54,21 +54,25 @@ do i=1,3
 end do
 write(ilog,*)
 
-kpr = pureDEGMV(g, kp, 'T')
+kpc = pureDEGMV(g, kp, 'T')
 write(ilog,*) "k-point in: reciprocal space       reciprocal Cartesian space"
-write(ilog,"(3F10.6,A,3F10.6)") (kp(j), j=1,3), "     ", (kpr(j), j=1,3)
+write(ilog,"(3F10.6,A,3F10.6)") (kp(j), j=1,3), "     ", (kpc(j), j=1,3)
 
 ! write KPOINTS file ###########################################
 
 open(unit=iunt,file='KPOINTS',form='formatted')
 
-write(unit=iunt,fmt='(A,F7.4,F7.4,F7.4,A,F7.5)') 'kp: ', (kpr(j), j=1,3), ', dk: ', dk
+write(unit=iunt,fmt='(A,F7.4,F7.4,F7.4,A,F7.5)') 'kpc: ', (kpc(j), j=1,3), ', dk: ', dk
 write(unit=iunt,fmt='(I2)') nkpoints
-write(unit=iunt,fmt='(A)') 'Cartesian'
+if(prg .eq. 'C') then
+    write(unit=iunt,fmt='(A)') 'Reciprocal'
+else
+    write(unit=iunt,fmt='(A)') 'Cartesian'
+end if
 
 ! x
 do i=-2,2
-    call set_next_eigeval(iunt, g, kpr, i, 0, 0, w, dk, prg)
+    call set_next_eigeval(iunt, g, kpc, i, 0, 0, w, dk, prg)
 end do
 
 ! http://stackoverflow.com/questions/9791001/loop-in-fortran-from-a-list
@@ -77,13 +81,13 @@ A = (/ -2, -1, 1, 2 /)
 ! y
 do i = 1, size(A)
     i1 = A(i)
-    call set_next_eigeval(iunt, g, kpr, 0, i1, 0, w, dk, prg)
+    call set_next_eigeval(iunt, g, kpc, 0, i1, 0, w, dk, prg)
 end do
 
 ! z
 do i = 1, size(A)
     i1 = A(i)
-    call set_next_eigeval(iunt, g, kpr, 0, 0, i1, w, dk, prg)
+    call set_next_eigeval(iunt, g, kpc, 0, 0, i1, w, dk, prg)
 end do
 
 ! xy
@@ -91,7 +95,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, g, kpr, j1, i1, 0, w, dk, prg)
+        call set_next_eigeval(iunt, g, kpc, j1, i1, 0, w, dk, prg)
     end do
 end do
 
@@ -100,7 +104,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, g, kpr, j1, 0, i1, w, dk, prg)
+        call set_next_eigeval(iunt, g, kpc, j1, 0, i1, w, dk, prg)
     end do
 end do
 
@@ -109,7 +113,7 @@ do i = 1, size(A)
     i1 = A(i)
     do j=1, size(A)
         j1 = A(j)
-        call set_next_eigeval(iunt, g, kpr, 0, j1, i1, w, dk, prg)
+        call set_next_eigeval(iunt, g, kpc, 0, j1, i1, w, dk, prg)
     end do
 end do
 
