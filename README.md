@@ -64,8 +64,8 @@ V                                       ! program indentifier (1 char)
 1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```.
 1. Make ```inp``` file with the desired characteristics in the newly created directory.
 1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
-1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file.
- - **cry-getE.pl** uses the following parameters:
+1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file.  
+ **cry-getE.pl** uses the following parameters:
    * SCF f9 file in ```-f``` flag;
    * band number in ```-b``` flag.
    * Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
