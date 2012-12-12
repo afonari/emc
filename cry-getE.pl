@@ -91,7 +91,7 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
     print "\n\n\nrunning $i of ".NKPOINTS.":\n\n";
     print `cat input.d3`;
     print "\n\n";
-    `cp $opt_f9 ./`;
+    `/bin/cp -r $opt_f9 ./`;
     `runprop09 input input`;
     #`cat input.d3 > BAND-$i`;
     #`cat input_input_dat.BAND >> BAND-$i`;
