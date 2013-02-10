@@ -33,7 +33,7 @@ write(ilog,*)
 open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) (kp(j),j=1,3)
     read(iunt,fmt=*) dk
-    read(iunt,fmt=*) band    
+    read(iunt,fmt=*) band
     read(iunt,fmt=*) prg
     read(iunt,*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
