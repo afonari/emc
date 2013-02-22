@@ -1,6 +1,6 @@
-## Effective Mass Calculator
+## Effective Mass Calculator for Semiconductors
 
-For the theory behind the concept and validation of the results please see our [ArXiv paper](http://arxiv.org/abs/1302.4996).  
+For the theory behind the concept and validation of the results please see our [arXiv paper](http://arxiv.org/abs/1302.4996).  
 If you use the code (or anything else from this repo), please cite accordingly: [RIS](citation.ris) and [BibTeX](citation.bib).
 
 ### 1. Notes on theory
