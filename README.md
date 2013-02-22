@@ -2,46 +2,13 @@
 
 For the theory behind the concept and validation of the results please see our [ArXiv paper](http://arxiv.org/abs/1302.4996).  
 If you use the code (or anything else from this repo), please cite accordingly: [RIS](citation.ris) and [BibTeX](citation.bib).
-### 1. Theory
 
-```
-Note: Atomic units (a.u.) will be used, hbar = 1, energy is in Hartrees,
-distance is in Bohrs, mass is in electron mass (m0).
-```
-
-The average velocity of an electron for a certain value of *n* and *k* is:  
-![Mean velocity](https://raw.github.com/alexandr-fonari/emc/master/pics/p_v.png)  
-thus acceleration can be written as:  
-![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a.png)
-
-In the semiclassical picture, equation of motion of an electron in the presence of the electric ( **E** ) and magnetic ( **H** ) fields is:  
-![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_e_m.png)  
-in the case of: ```H = 0```:  
-![Equation of motion](https://raw.github.com/alexandr-fonari/emc/master/pics/p_f.png)  
-getting back to acceleration:  
-![Acceleration](https://raw.github.com/alexandr-fonari/emc/master/pics/p_a2.png)  
-from here, inverse effective mass tensor (9 comoponents) is expressed through the tensor of second derivatives of energy with respect to reciprocal wavevector:  
-![Inverse EM tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_1o_m.png)  
-Note that this tensor is symmetric (can be diagonalized with [DSYEV](http://netlib.org/lapack/double/dsyev.f)):  
-![Tensor](https://raw.github.com/alexandr-fonari/emc/master/pics/p_tensor.png)  
-where ```kx, ky, kz``` are reciprocal directions.
-
-At a saddle point (e.g. band maximum/minimum) components of the effective mass are inverse of eigenvalues of the tensor:  
-![Eigenvalues](https://raw.github.com/alexandr-fonari/emc/master/pics/p_ev.png)  
-where ```αᵢ``` are eigevalues of the ```d²E/dk²``` tensor.
-
-**Notes**:
- 1. For the top of the band, eigenvalues are negative, for the bottom of the band, eigenvalues are positive.
+### 1. Notes on theory
+ 1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in the electron mass (m0).
+ 1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
  1. Eigenvectors are directions of principal effective mass components.
- 1. Note that components of the effective mass tensor can be highly anisotropic.
-
-#### 1.1 Numerical Differentiation
-Derivatives are estimated using finite-difference method on a five-point stencil.  
-Second order derivatives are estimated with ```O(h^4)``` error:  
-![2nd Derivative](https://raw.github.com/alexandr-fonari/emc/master/pics/p_2ndd.png)  
-Mixed second derivatives are estimated also with ```O(h^4)``` error:  
-![Mixed 2nd Derivative](http://www.holoborodko.com/pavel/wp-content/ql-cache/quicklatex.com-ead43440eddb0f8db2cc36a1df79c547_l3.svg)
+ 1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
 
 ### 2. Required input files
 ```inp``` has the following form:  
@@ -69,7 +36,7 @@ V                                       ! program indentifier (1 char)
 1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
 1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file.  
  **cry-getE.pl** uses the following parameters:
-   * SCF f9 file in ```-f``` flag;
+   * SCF output filename (.f9) in ```-f``` flag;
    * band number in ```-b``` flag.
    * Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
 1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
@@ -83,8 +50,7 @@ V                                       ! program indentifier (1 char)
 1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
 
 ### 4. Acknowledgments and references
-1. Mixed 2nd derivative formula: [Pavel Holoborodko](http://www.holoborodko.com/pavel/numerical-methods/numerical-derivative/central-differences/).
 1. Finite-difference method on three-point stencil is outlined here: K. Doi, *et al.*, *J. Appl. Phys.*, **98**, 113709 (2005): [10.1063/1.2138381](http://dx.doi.org/10.1063/1.2138381).
 
-### 5. Test cases (folders)
+### 5. Test cases
 In progress...
