@@ -1,4 +1,7 @@
 ## Effective Mass Calculator
+
+For the theory behind the concept and validation of the results please see our [ArXiv paper](http://arxiv.org/abs/1302.4996).
+If you use the code (or anything else from this repo), please cite accordingly: .
 ### 1. Theory
 
 ```
