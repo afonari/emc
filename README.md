@@ -23,9 +23,9 @@ V                                       ! program indentifier (1 char)
 ```
  - **K-POINT** coordinates in reciprocal space of a band maximum for holes and band minimum for electrons.
  - **step size** in 1/Bohr. If *program identifier* is ```V``` (for *VASP*) step size will be converted to 2π/A units. At this time, in *POSCAR* scale (2nd line) should be set to **1.000**.
- - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads in desired band number. For *VASP* valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
+ - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads-in the desired band number. For *VASP* valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
  - **program identifier** at this time can be either ```C``` (for *CRYSTAL*) or ```V``` (for *VASP*).
- - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with units.
+ - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with units itself.
  - Please remove comments from ```inp``` file, as they are not currently supported.
 
 ### 3. Usage
