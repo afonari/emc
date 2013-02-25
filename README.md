@@ -1,8 +1,5 @@
 ## Effective Mass Calculator for Semiconductors
 
-For the theory behind the concept and validation of the results please see our [arXiv paper](http://arxiv.org/abs/1302.4996).  
-If you use the code (or anything else from this repo), please cite accordingly: [RIS](citation.ris) and [BibTeX](citation.bib).
-
 ### 1. Notes on theory
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in the electron mass (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
