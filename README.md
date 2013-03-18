@@ -1,9 +1,12 @@
 ## Effective Mass Calculator for Semiconductors
 
+### 0. Theory and validation
+For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
+
 ### 1. Notes on theory
- 1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartrees, distance is in Bohrs, mass is in the electron mass (m0).
+ 1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
- 1. In some cases, not all eigenvalues have the same sign, meaning that choosen reciprocal point is not a global minimum (maximum).
+ 1. In some cases, not all eigenvalues have the same sign, meaning that chosen reciprocal point is not a global minimum (maximum).
  1. Eigenvectors are directions of principal effective mass components.
  1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
 
@@ -13,7 +16,7 @@
 0.000 0.000 0.000                       ! K-POINT in reciprocal space (3 floats)
 0.01                                    ! step size (1 float)
 81                                      ! band number, (1 integer)
-V                                       ! program indentifier (1 char)
+V                                       ! program identifier (1 char)
 6.291999817  0.000000000  0.000000000   ! direct lattice vectors
 0.755765092  7.652872670  0.000000000   ! direct lattice vectors
 0.462692761  3.245907103 14.032346772   ! direct lattice vectors
