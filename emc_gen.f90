@@ -1,6 +1,4 @@
-! Copyright (c) "2012, by Georgia Institute of Technology
-!                Contributors: Alexandr Fonari
-!                Affiliation: Dr. Bredas group
+! Copyright (c) "2012, Alexandr Fonari
 !                URL: https://github.com/alexandr-fonari/emc
 !                License: MIT License"
 
