@@ -1,3 +1,5 @@
 *.x
 *.mod
 *.o
+emc_calc
+emc_gen
