@@ -1,4 +1,6 @@
-LAPACKLIBS=-llapack -lblas # comment this line if you are not using LAPACK.
+# http://stackoverflow.com/questions/2539735/trying-to-build-the-levmar-math-library-on-a-mac-using-the-accelerate-framework
+
+LAPACKLIBS=-llapack -lblas #  [for Mac os] comment this line if you are not using LAPACK.
                              # On systems with a FORTRAN (not f2c'ed) version of LAPACK, -lf2c is
                              # not necessary; on others, -lf2c is equivalent to -lF77 -lI77
 
@@ -15,7 +17,7 @@ LIBS=$(LAPACKLIBS)
 
 #all of these Fortran compilers work fine for cuda/cula programs
 #note the option for the g95 compiler
-FOR=gfortran # or: g95 $(G95OPT) or nagfor
+FOR=gfortran # or g95 $(G95OPT) or nagfor
 
 all: emc_functions.o emc_gen emc_calc
 
