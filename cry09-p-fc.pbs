@@ -1,0 +1,40 @@
+#!/bin/bash
+#PBS -j oe
+#PBS -N PENCEN06-emH-pbe0-Cry09
+#PBS -l nodes=1:ppn=1
+#PBS -l pmem=1200mb
+#PBS -q optimus
+#PBS -l walltime=50:00:00
+#PBS -V
+
+#PBS -M alexandr.fonari@gatech.edu
+#PBS -m abe
+
+#environment for Intel and MPI libraries
+
+export PATH=/usr/local/packages/intel/compiler/11.1.059/bin/intel64/:$PATH
+export LD_LIBRARY_PATH=/usr/local/packages/intel/compiler/11.1.059/lib/intel64/:/usr/local/packages/intel/mkl/10.3/lib/intel64:$LD_LIBRARY_PATH
+
+mpi=/usr/local/packages/openmpi/1.4.3/intel-11.1.059/
+
+export PATH=$mpi/bin:$PATH
+export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+
+## Crystal environment (sets scratch directory too)
+source /nv/hp18/afonari3/data/Crystal09/utils09/cry2k9.bashrc
+
+# NPROCS=`wc -l < ${PBS_NODEFILE}`
+
+#
+# run the job
+#
+cd ${PBS_O_WORKDIR}
+
+cat ${PBS_NODEFILE}
+# PBS_NODEFILE=`pwd`/nodefile
+# echo ${PBS_NODEFILE}
+
+
+# light it up!
+/home/afonari3/EMC/cry-getE.pl -f ../input.f9 -b 300 > em.out
+
