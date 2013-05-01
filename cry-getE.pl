@@ -6,7 +6,8 @@
 use strict;
 use Data::Dumper;
 use Getopt::Long;
-	$Getopt::Long::ignorecase = 1;
+    $Getopt::Long::ignorecase = 1;
+use File::Copy;
 
 use constant H2EV => 27.21138505; #
 use constant ISS => 10000; # shrinking factor
@@ -42,7 +43,7 @@ OUT
 }
 
 # check for runprop09 in path
-system("which runprop09 >& /dev/null") == 0 or die "runprop09 is not in \$PATH (which call failed): $?";
+system("which runprop09 >& /dev/null") == 0 or die "runprop09 is not in \$PATH (`which` failed): $!";
 
 my $band = $opt_nband;
 print "Will use band = $band\n";
@@ -91,7 +92,7 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
     print "\n\n\nrunning $i of ".NKPOINTS.":\n\n";
     print `cat input.d3`;
     print "\n\n";
-    `/bin/cp -r $opt_f9 ./input.f9`;
+    copy($opt_f9,"input.f9") or die "Copy of $opt_f9 to ./input.f9 failed: $!";
     `runprop09 input input`;
     #`cat input.d3 > BAND-$i`;
     #`cat input_input_dat.BAND >> BAND-$i`;
@@ -99,15 +100,8 @@ for(my $i = 1; $i <= NKPOINTS; $i++)
     open( my $out_fh, "<", "input_input.outp" ) || die "Can't open file: $!";
     while(<$out_fh>)
     {
-        if(/CARTESIAN COORD/)
-        {
-            print;
-        }
-
-        if(/POINTS/)
-        {
-            print;
-        }
+        if(/CARTESIAN COORD/){ print; }
+        if(/POINTS/){ print; }
     }
     close($out_fh);
     
