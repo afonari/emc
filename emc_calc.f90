@@ -36,6 +36,11 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
 
+if(prg .eq. 'C') then
+    write(ilog,*) "It is Crystal - setting band to 1"
+    band=1
+end if
+
 ! g = inverse(transpose(f)), will do it in two steps
 g=f
 g=transpose(g)
