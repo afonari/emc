@@ -1,0 +1,10 @@
+System = fcc GaAs
+ISTART = 0 ; ICHARG=2
+ENCUT  = 500; EDIFF = 1.0E-8
+PREC = Accurate
+ISMEAR = 0; SIGMA = 0.02;
+ALGO = Fast; ISYM = 0;
+ADDGRID = .TRUE.
+LREAL = .FALSE.
+LCHARG = .TRUE.; LMAXMIX=6
+LWAVE = .FALSE.
