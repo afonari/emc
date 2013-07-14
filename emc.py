@@ -28,6 +28,12 @@ def fd_effmass(e, stepsize, order=2):
     m[2][0] = m[0][2]
     m[2][1] = m[1][2]
 
+    print 'Assembling effective mass tensor...'
+    for i in range(len(m)):
+        print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
+
+    print ''
+
     return m
 
 def get_kpoints(kpt, stepsize, prg, basis, debug=False):
@@ -65,8 +71,7 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size):
     eigenval_fh.readline()
 
     nelec, nkpt, nband = [int(s) for s in eigenval_fh.readline().split()]
-    print 'Reading __filename__:\n'
-    print '  Number of the valence band is %d (NELECT/2)' % (nelec/2)
+    print 'From EIGENVAL: Number of the valence band is %d (NELECT/2)' % (nelec/2)
     if band > nband:
         print 'Requested band (%d) is larger than total number of the calculated bands (%d), exiting...' % (band, nband)
         sys.exit(0)
@@ -80,6 +85,7 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size):
             if band == j:
                 energies.append(float(line.split()[1])*ev2h)
 
+    print ''
     return energies
 
 def parse_inpcar(filename="INPCAR", debug=False):
@@ -131,16 +137,23 @@ def parse_inpcar(filename="INPCAR", debug=False):
         if p:
             basis.append([float(p.group(1)), float(p.group(2)), float(p.group(3))])
 
-    print "Basis:"
-    print basis
+    print "Real space basis:"
+    for i in range(len(basis)):
+        print '%9.7f %9.7f %9.7f' % (basis[i][0], basis[i][1], basis[i][2])
+    print ''
 
     return kpt, stepsize, band, prg, basis
 
 if __name__ == '__main__':
     import sys
     import re
+    import datetime
     import numpy as np
 
+    print '\nEffective mass calculator '+EMC_VERSION
+    print 'License: MIT'
+    print 'Developed by: Alexandr Fonari'
+    print 'Started at: '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")+'\n'
     kpt, stepsize, band, prg, basis = parse_inpcar()
 
     output_filename = ''
@@ -167,11 +180,6 @@ if __name__ == '__main__':
         if prg.upper() == 'V':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
             m = fd_effmass(energies, stepsize)
-
-        print 'Original matrix:'
-        for i in range(len(m)):
-            print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
-        print '\n'
 
         eigval, eigvec = np.linalg.eigh(np.array(m))
         print 'Principle effective masses and directions:\n'
