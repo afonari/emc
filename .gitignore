@@ -1,5 +1,6 @@
 *.x
 *.mod
 *.o
+*.pyc
 emc_calc
 emc_gen

@@ -36,7 +36,7 @@ def fd_effmass(e, stepsize, order=2):
 
     return m
 
-def get_kpoints(kpt, stepsize, prg, basis, debug=False):
+def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
     import numpy as np
     import sys
 
@@ -58,7 +58,7 @@ def get_kpoints(kpt, stepsize, prg, basis, debug=False):
 
     return kpoints
 
-def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size):
+def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
     import sys
     import re
 
@@ -71,10 +71,10 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size):
     eigenval_fh.readline()
 
     nelec, nkpt, nband = [int(s) for s in eigenval_fh.readline().split()]
-    print 'From EIGENVAL: Number of the valence band is %d (NELECT/2)' % (nelec/2)
+    if debug: print 'From EIGENVAL: Number of the valence band is %d (NELECT/2)' % (nelec/2)
     if band > nband:
         print 'Requested band (%d) is larger than total number of the calculated bands (%d), exiting...' % (band, nband)
-        sys.exit(0)
+        sys.exit(1)
 
     energies = []
     for i in range(diff2_size):
@@ -85,10 +85,10 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size):
             if band == j:
                 energies.append(float(line.split()[1])*ev2h)
 
-    print ''
+    if debug: print ''
     return energies
 
-def parse_inpcar(filename="INPCAR", debug=False):
+def parse_inpcar(inpcar_fh, debug=False):
     import sys
     import re
 
@@ -98,49 +98,50 @@ def parse_inpcar(filename="INPCAR", debug=False):
     prg = ''       # program identifier (1 char)
     basis = []     # basis vectors in cartesian coords (3x3 floats), units depend on the program identifier
 
-    inpcar = open(filename, 'r')
-
-    p = re.search(r'^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)', inpcar.readline())
+    inpcar_fh.seek(0) # just in case
+    p = re.search(r'^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)', inpcar_fh.readline())
     if p:
         kpt = [float(p.group(1)), float(p.group(2)), float(p.group(3))]
-        print "Found k point in the reduced reciprocal space: %5.3f %5.3f %5.3f" % (kpt[0], kpt[1], kpt[2])
+        if debug: print "Found k point in the reduced reciprocal space: %5.3f %5.3f %5.3f" % (kpt[0], kpt[1], kpt[2])
     else:
         print "Was expecting k point on the line 0 (3 floats), didn't get it, exiting..."
         sys.exit(1)
 
-    p = re.search(r'^\s*(\d+\.\d+)', inpcar.readline())
+    p = re.search(r'^\s*(\d+\.\d+)', inpcar_fh.readline())
     if p:
         stepsize = float(p.group(1))
-        print "Found stepsize of: %5.3f (1/Bohr)" % stepsize
+        if debug: print "Found stepsize of: %5.3f (1/Bohr)" % stepsize
     else:
         print "Was expecting a stepsize on line 1 (1 float), didn't get it, exiting..."
         sys.exit(1)
 
-    p = re.search(r'^\s*(\d+)', inpcar.readline())
+    p = re.search(r'^\s*(\d+)', inpcar_fh.readline())
     if p:
         band = int(p.group(1))
-        print "Requested band is : %5d" % band
+        if debug: print "Requested band is : %5d" % band
     else:
         print "Was expecting band number on line 2 (1 int), didn't get it, exiting..."
         sys.exit(1)
 
-    p = re.search(r'^\s*(\w)', inpcar.readline())
+    p = re.search(r'^\s*(\w)', inpcar_fh.readline())
     if p:
         prg = p.group(1)
-        print "Program identifier is: %5c" % prg
+        if debug: print "Program identifier is: %5c" % prg
     else:
         print "Was expecting program identifier on line 3 (1 char), didn't get it, exiting..."
         sys.exit(1)
 
     for i in range(3):
-        p = re.search(r'^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)', inpcar.readline())
+        p = re.search(r'^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)', inpcar_fh.readline())
         if p:
             basis.append([float(p.group(1)), float(p.group(2)), float(p.group(3))])
 
-    print "Real space basis:"
-    for i in range(len(basis)):
-        print '%9.7f %9.7f %9.7f' % (basis[i][0], basis[i][1], basis[i][2])
-    print ''
+    if debug: 
+        print "Real space basis:"
+        for i in range(len(basis)):
+            print '%9.7f %9.7f %9.7f' % (basis[i][0], basis[i][1], basis[i][2])
+
+    if debug: print ''
 
     return kpt, stepsize, band, prg, basis
 
@@ -154,7 +155,15 @@ if __name__ == '__main__':
     print 'License: MIT'
     print 'Developed by: Alexandr Fonari'
     print 'Started at: '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")+'\n'
-    kpt, stepsize, band, prg, basis = parse_inpcar()
+
+    inpcar_fh = 0
+    try:
+        inpcar_fh = open('INPCAR', 'r')
+    except IOError:
+        print "Couldn't open INPCAR file, exiting..."
+        sys.exit(1)
+
+    kpt, stepsize, band, prg, basis = parse_inpcar(inpcar_fh)
 
     output_filename = ''
     if len(sys.argv) > 1:
@@ -190,7 +199,7 @@ if __name__ == '__main__':
 
     else:
         print 'No '+output_filename+' file found, entering the Generation regime...\n'
-        kpoints = get_kpoints(kpt, stepsize, prg, basis, debug=False)
+        kpoints = generate_kpoints(kpt, stepsize, prg, basis, debug=False)
 
         kpoints_fh = open('KPOINTS', 'w')
         kpoints_fh.write("EMC "+EMC_VERSION+"\n")
