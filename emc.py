@@ -13,7 +13,7 @@ diff_d2.append([0.0, -1.0, -1.0]); diff_d2.append([0.0, 1.0, 1.0]); diff_d2.appe
 
 Bohr = 0.5291772
 
-def fd_effmass(e, stepsize, order=2):
+def fd_effmass(e, stepsize, order=2, debug=False):
     m = [[0.0 for i in range(3)] for j in range(3)]
     m[0][0] = (e[1] - 2.0*e[0] + e[2])/stepsize**2
     m[1][1] = (e[3] - 2.0*e[0] + e[4])/stepsize**2
@@ -28,12 +28,12 @@ def fd_effmass(e, stepsize, order=2):
     m[2][0] = m[0][2]
     m[2][1] = m[1][2]
 
-    print 'Assembling effective mass tensor...'
-    for i in range(len(m)):
-        print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
+    if debug:
+        print 'Assembling effective mass tensor...'
+        for i in range(len(m)):
+            print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
 
-    print ''
-
+    if debug: print ''
     return m
 
 def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
