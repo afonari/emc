@@ -22,7 +22,6 @@ export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
 
 ## Crystal environment (sets scratch directory too)
 source /opt/Crystal09/utils09/cry2k9.bashrc
-
 #
 # run the job
 #
@@ -31,6 +30,7 @@ cd ${PBS_O_WORKDIR}
 #cat ${PBS_NODEFILE}
 
 # light it up!
-# -b band number
+# -b band number (search for N. OF ELECTRONS PER CELL in the output of SCF run)
+#    and divide by 2 in the case of non-polarized calculation)
 # -f f9 file from the SCF converged run
 /opt/emc/cry-getE.pl -f ../input.f9 -b 300 > em.out
