@@ -11,14 +11,14 @@ setup(name = "emc",
       maintainer = "Alexandr Fonari",
       maintainer_email = "firstname.lastname@gatech.edu",
       url = "https://github.com/alexandr-fonari/emc",
-      download_url = "http://www.defuze.org/oss/ws4py/",
+      download_url = "https://github.com/alexandr-fonari/emc",
       py_modules = ['emc'],
-#      packages = ["ws4py", "ws4py.client", "ws4py.server"],
       platforms = ["any"],
       license = 'MIT',
-      long_description = "WebSocket library for Python",
+      long_description = "Effective mass calculator",
       classifiers=[
           'Development Status :: 4 - Beta',
-          'Topic :: Software Development :: Libraries :: Python Modules'
+          'Topic :: Scientific/Engineering :: Chemistry',
+          'Topic :: Scientific/Engineering :: Physics'
           ],
      )
