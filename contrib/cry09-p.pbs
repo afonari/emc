@@ -22,6 +22,7 @@ export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
 
 ## Crystal environment (sets scratch directory too)
 source /opt/Crystal09/utils09/cry2k9.bashrc
+
 #
 # run the job
 #
