@@ -19,6 +19,9 @@ class EMC_Test(unittest.TestCase):
         eigenval_path = os.path.join(script_dir, "GaAs-5.648-PBE-VASP/EIGENVAL")
         self.eigenval_fh = open(eigenval_path, 'r')
 
+        kpoints_path = os.path.join(script_dir, "GaAs-5.648-PBE-VASP/KPOINTS")
+        self.kpoints_fh = open(kpoints_path, 'r')
+
     def test_parse_inpcar(self):
         kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need stepsize later
         self.assertListEqual(kpt, [0.0, 0.0, 0.0], msg='Failed to parse K-point')
@@ -35,6 +38,20 @@ class EMC_Test(unittest.TestCase):
         self.assertListAlmostEqual(m[0], [-2.90687, 0.0, 0.0], places=5, msg='Failed to calculate effective mass tensor')
         self.assertListAlmostEqual(m[1], [0.0, -2.90687, 0.0], places=5, msg='Failed to calculate effective mass tensor')
         self.assertListAlmostEqual(m[2], [0.0, 0.0, -2.90687], places=5, msg='Failed to calculate effective mass tensor')
+
+    def test_kpoints(self):
+        kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need stepsize later
+        kpts = emc.generate_kpoints(kpt, stepsize, prg, basis, debug=False)
+
+        self.kpoints_fh.readline() # title
+        nkpt = int(self.kpoints_fh.readline()) # Reciprocal
+        self.assertEquals(nkpt, len(kpts), msg='Length of the list is not equal to the number from KPOINTS')
+        self.kpoints_fh.readline() # Reciprocal
+
+        for i in range(len(kpts)):
+            kp = [float(x) for x in self.kpoints_fh.readline().split()[0:3]] # kx ky kz w
+            self.assertListAlmostEqual(kpts[i], kp, places=5, msg='K-point %d is not equal to that from the KPOINTS file' % i)
+
 
 if __name__ == '__main__':
     unittest.main()

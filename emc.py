@@ -13,6 +13,48 @@ diff_d2.append([0.0, -1.0, -1.0]); diff_d2.append([0.0, 1.0, 1.0]); diff_d2.appe
 
 Bohr = 0.5291772
 
+# def get_eigensystem_3x3(m): # SHOULD BE SYMMETRIC!
+#     # en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices
+#     eigvals = [0.0 for i in range(3)]
+#     b = [[0.0 for i in range(3)] for j in range(3)]
+#     identity = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]
+# 
+#     p = m[0][1]**2 + m[0][2]**2 + m[1][2]**2
+#     if (p == 0.0):
+#         # m is diagonal
+#         eigvals[0] = m[0][0]
+#         eigvals[1] = m[1][1]
+#         eigvals[2] = m[2][2]
+#     else:
+#         q = (m[0][0] + m[1][1] + m[2][2])/3
+#         p = (m[0][0] - q)**2 + (m[1][1] - q)**2 + (m[2][2] - q)**2 + 2*p
+#         p = sqrt(p/6.0)
+# 
+#         # B = (1 / p) * (A - q * I)    I is the identity matrix
+#         for i in range(3):
+#             for j in range(3):
+#                 b[i][j] = (1.0/p) * (m[i][j] - q*identity[i][j])
+#                 r = det(B)/2.0
+#  
+#    % In exact arithmetic for a symmetric matrix  -1 <= r <= 1
+#    % but computation error can leave it slightly outside this range.
+#    if (r <= -1) 
+#       phi = pi / 3
+#    elseif (r >= 1)
+#       phi = 0
+#    else
+#       phi = acos(r) / 3
+#    end
+#  
+#    % the eigenvalues satisfy eig3 <= eig2 <= eig1
+#    eig1 = q + 2 * p * cos(phi)
+#    eig3 = q + 2 * p * cos(phi + pi * (2/3))
+#    eig2 = 3 * q - eig1 - eig3     % since trace(A) = eig1 + eig2 + eig3
+# end
+# 
+# def det_3by3(m):
+#     return m[0][0]*m[1][1]*m[2][2] + m[0][1]*$g[6]*$g[7] + $g[3]*$g[8]*$g[4] - $g[7]*$g[5]*$g[3] - $g[4]*$g[2]*$g[9] - $g[1]*$g[6]*$g[8]; 
+
 def fd_effmass(e, stepsize, order=2, debug=False):
     m = [[0.0 for i in range(3)] for j in range(3)]
     m[0][0] = (e[1] - 2.0*e[0] + e[2])/stepsize**2
@@ -36,13 +78,21 @@ def fd_effmass(e, stepsize, order=2, debug=False):
     if debug: print ''
     return m
 
+def MAT_DOT_VEC_3X3(m, v):  #define MAT_DOT_VEC_3X3(p,m,v)
+    p = [0.0 for i in range(3)]
+    for i in range(3):
+        p[i] = m[i][0]*v[0] + m[i][1]*v[i] + m[i][2]*v[i]
+    return p
+
+def T_3X3(m):
+    p = [[ m[j][i] for i in range(3)] for j in range(3)]
+    return p
+    
 def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
     import numpy as np
     import sys
 
     basis_r_np = np.linalg.inv(np.array(basis).T)* 2*np.pi
-    #else:
-    #    basis_r_np = np.linalg.inv(np.array(basis))
 
     kpt_r_cart = np.dot(np.array(kpt), basis_r_np)
     if debug: print kpt_r_cart
