@@ -78,23 +78,24 @@ def fd_effmass(e, stepsize, order=2, debug=False):
     if debug: print ''
     return m
 
-def MAT_DOT_VEC_3X3(m, v):  #define MAT_DOT_VEC_3X3(p,m,v)
-    p = [0.0 for i in range(3)]
-    for i in range(3):
-        p[i] = m[i][0]*v[0] + m[i][1]*v[i] + m[i][2]*v[i]
+def MAT_m_VEC(m, v):
+    p = [ 0.0 for i in range(len(v)) ]
+    for i in range(len(m)):
+        assert len(v) == len(m[i]), 'Length of the matrix row is not equal to the length of the vector'
+        p[i] = sum( [ m[i][j]*v[j] for j in range(len(v)) ] )
     return p
 
-def T_3X3(m):
-    p = [[ m[j][i] for i in range(3)] for j in range(3)]
+def T(m):
+    p = [[ m[i][j] for i in range(len( m[j] )) ] for j in range(len( m )) ]
     return p
     
 def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
     import numpy as np
     import sys
 
-    basis_r_np = np.linalg.inv(np.array(basis).T)* 2*np.pi
+    basis_r_np = (np.linalg.inv(np.array(T(basis)))* 2*np.pi).tolist()
 
-    kpt_r_cart = np.dot(np.array(kpt), basis_r_np)
+    kpt_r_cart = MAT_m_VEC(T(basis_r_np), kpt)
     if debug: print kpt_r_cart
 
     if prg == 'V':
@@ -210,7 +211,7 @@ if __name__ == '__main__':
     try:
         inpcar_fh = open('INPCAR', 'r')
     except IOError:
-        print "Couldn't open INPCAR file, exiting..."
+        print "Couldn't open INPCAR file, exiting...\n"
         sys.exit(1)
 
     kpt, stepsize, band, prg, basis = parse_inpcar(inpcar_fh)
@@ -232,23 +233,31 @@ if __name__ == '__main__':
     except IOError:
         pass
 
-    energies = []
     if output_exists:
         print 'Successfully opened '+output_filename+', preparing to parse it...\n'
 
-        if prg.upper() == 'V':
+        energies = []
+        if prg.upper() == 'V' or prg.upper() == 'C':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
             m = fd_effmass(energies, stepsize)
+            print m
 
         eigval, eigvec = np.linalg.eigh(np.array(m))
         print 'Principle effective masses and directions:\n'
         for i in range(len(m)):
-            eigenvec_norm = eigvec[:,i]/np.max(eigvec[:,i])
+            max_i = np.argmax(np.abs(eigvec[:,i]))
+            eigenvec_norm = eigvec[:,i]/eigvec[max_i,i]
             print 'Effective mass (%d): %12.3f' % (i, 1.0/eigval[i])
             print 'Cartesian coordinates: %7.5f %7.5f %7.5f\n' % (eigenvec_norm[0], eigenvec_norm[1], eigenvec_norm[2])
 
     else:
         print 'No '+output_filename+' file found, entering the Generation regime...\n'
+
+        if prg.upper() == 'C' and band != 1:
+            print 'Band should be set to 1 for CRYSTAL calculations,'
+            print 'desired band number is set as a parameter (-b) for cry-getE.pl script.\n'
+            sys.exit(1)
+
         kpoints = generate_kpoints(kpt, stepsize, prg, basis, debug=False)
 
         kpoints_fh = open('KPOINTS', 'w')
