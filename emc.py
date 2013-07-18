@@ -13,47 +13,10 @@ diff_d2.append([0.0, -1.0, -1.0]); diff_d2.append([0.0, 1.0, 1.0]); diff_d2.appe
 
 Bohr = 0.5291772
 
-# def get_eigensystem_3x3(m): # SHOULD BE SYMMETRIC!
-#     # en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices
-#     eigvals = [0.0 for i in range(3)]
-#     b = [[0.0 for i in range(3)] for j in range(3)]
-#     identity = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]
-# 
-#     p = m[0][1]**2 + m[0][2]**2 + m[1][2]**2
-#     if (p == 0.0):
-#         # m is diagonal
-#         eigvals[0] = m[0][0]
-#         eigvals[1] = m[1][1]
-#         eigvals[2] = m[2][2]
-#     else:
-#         q = (m[0][0] + m[1][1] + m[2][2])/3
-#         p = (m[0][0] - q)**2 + (m[1][1] - q)**2 + (m[2][2] - q)**2 + 2*p
-#         p = sqrt(p/6.0)
-# 
-#         # B = (1 / p) * (A - q * I)    I is the identity matrix
-#         for i in range(3):
-#             for j in range(3):
-#                 b[i][j] = (1.0/p) * (m[i][j] - q*identity[i][j])
-#                 r = det(B)/2.0
-#  
-#    % In exact arithmetic for a symmetric matrix  -1 <= r <= 1
-#    % but computation error can leave it slightly outside this range.
-#    if (r <= -1) 
-#       phi = pi / 3
-#    elseif (r >= 1)
-#       phi = 0
-#    else
-#       phi = acos(r) / 3
-#    end
-#  
-#    % the eigenvalues satisfy eig3 <= eig2 <= eig1
-#    eig1 = q + 2 * p * cos(phi)
-#    eig3 = q + 2 * p * cos(phi + pi * (2/3))
-#    eig2 = 3 * q - eig1 - eig3     % since trace(A) = eig1 + eig2 + eig3
-# end
-# 
-# def det_3by3(m):
-#     return m[0][0]*m[1][1]*m[2][2] + m[0][1]*$g[6]*$g[7] + $g[3]*$g[8]*$g[4] - $g[7]*$g[5]*$g[3] - $g[4]*$g[2]*$g[9] - $g[1]*$g[6]*$g[8]; 
+def cart2frac(basis, v):
+    import numpy as np
+    return np.dot(v, np.linalg.inv(basis)).tolist()
+
 
 def fd_effmass(e, stepsize, order=2, debug=False):
     m = [[0.0 for i in range(3)] for j in range(3)]
@@ -88,14 +51,22 @@ def MAT_m_VEC(m, v):
 def T(m):
     p = [[ m[i][j] for i in range(len( m[j] )) ] for j in range(len( m )) ]
     return p
-    
-def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
+
+def N(v):
+    max_ = 0.
+    for item in v:
+        if abs(item) > abs(max_): max_ = item
+
+    return [ item/max_ for item in v ]
+
+def generate_kpoints(kpt_frac, stepsize, prg, basis, debug=False):
     import numpy as np
     import sys
 
-    basis_r_np = (np.linalg.inv(np.array(T(basis)))* 2*np.pi).tolist()
+    # working in the reciprocal space
+    basis_r = (np.linalg.inv( T(basis) )* 2*np.pi).tolist()
 
-    kpt_r_cart = MAT_m_VEC(T(basis_r_np), kpt)
+    k_c = MAT_m_VEC(T(basis_r), kpt_frac)
     if debug: print kpt_r_cart
 
     if prg == 'V':
@@ -103,15 +74,14 @@ def generate_kpoints(kpt, stepsize, prg, basis, debug=False):
 
     kpoints = []
     for i in range(len(diff_d2)):
-        k_cart = kpt_r_cart + np.array(diff_d2[i])*stepsize
-        k_frac = np.dot(k_cart, np.linalg.inv(basis_r_np))
-        kpoints.append( [k_frac[0], k_frac[1], k_frac[2]] )
+        k_c_ = [ k_c[j] + diff_d2[i][j]*stepsize for j in range(3) ] # getting displaced k points in Cartesian coordinates
+        k_f = cart2frac(basis_r, k_c_)
+        kpoints.append( [k_f[0], k_f[1], k_f[2]] )
 
     return kpoints
 
 def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
     import sys
-    import re
 
     ev2h = 1.0/27.21138505
     eigenval_fh.seek(0) # just in case
@@ -240,15 +210,17 @@ if __name__ == '__main__':
         if prg.upper() == 'V' or prg.upper() == 'C':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
             m = fd_effmass(energies, stepsize)
-            print m
 
         eigval, eigvec = np.linalg.eigh(np.array(m))
         print 'Principle effective masses and directions:\n'
         for i in range(len(m)):
-            max_i = np.argmax(np.abs(eigvec[:,i]))
-            eigenvec_norm = eigvec[:,i]/eigvec[max_i,i]
+            vec_cart = eigvec[:,i].tolist()
+            vec_frac = cart2frac(basis, vec_cart)
+            #vec_real = MAT_m_VEC(T(basis), vec)
+            vec_n = N(vec_frac)
             print 'Effective mass (%d): %12.3f' % (i, 1.0/eigval[i])
-            print 'Cartesian coordinates: %7.5f %7.5f %7.5f\n' % (eigenvec_norm[0], eigenvec_norm[1], eigenvec_norm[2])
+            print 'Original eigenvectors: %7.5f %7.5f %7.5f\n' % (vec_cart[0], vec_cart[1], vec_cart[2])
+            print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vec_n[0], vec_n[1], vec_n[2])
 
     else:
         print 'No '+output_filename+' file found, entering the Generation regime...\n'

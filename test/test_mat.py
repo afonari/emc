@@ -24,6 +24,11 @@ class EMC_Test(unittest.TestCase):
         p = emc.MAT_m_VEC(m, v)
         self.assertListAlmostEqual(p, [-14., -32., -50.], places=5, msg='MAT_n_VEC failed')
 
+    def test_normal(self):
+        m = [-1., 2., -3.]
+        m_n = emc.N(m)
+        self.assertListAlmostEqual(m_n, [ item/(-3.) for item in m ], places=5, msg='Normal function failed')
+
 if __name__ == '__main__':
     unittest.main()
 
