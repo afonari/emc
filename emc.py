@@ -13,10 +13,78 @@ diff_d2.append([0.0, -1.0, -1.0]); diff_d2.append([0.0, 1.0, 1.0]); diff_d2.appe
 
 Bohr = 0.5291772
 
+def MAT_m_VEC(m, v):
+    p = [ 0.0 for i in range(len(v)) ]
+    for i in range(len(m)):
+        assert len(v) == len(m[i]), 'Length of the matrix row is not equal to the length of the vector'
+        p[i] = sum( [ m[i][j]*v[j] for j in range(len(v)) ] )
+    return p
+
+def T(m):
+    p = [[ m[i][j] for i in range(len( m[j] )) ] for j in range(len( m )) ]
+    return p
+
+def N(v):
+    max_ = 0.
+    for item in v:
+        if abs(item) > abs(max_): max_ = item
+
+    return [ item/max_ for item in v ]
+def DET_3X3(m):
+    assert len(m) == 3, 'Matrix should be of the size 3 by 3'
+    return m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2] - \
+           m[0][2]*m[1][1]*m[2][0] - m[2][1]*m[1][2]*m[0][0] - m[2][2]*m[0][1]*m[1][0]
+
+def IS_SYMMETRIC(m):
+    for i in range(len(m)):
+        for j in range(len(m[i])):
+            if m[i][j] != m[j][i]: return False # automatically checks square-shape
+
+    return True
+
+def EIGVALUES_SYMMETRIC_3X3(m):
+    # follows http://en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices
+    import math
+
+    assert IS_SYMMETRIC(m), 'Supplied matrix is not symmetric'
+
+    eigs = [ 0.0 for i in range(3) ]
+    n = [[0.0 for i in range(3)] for j in range(3)]
+    identity = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]
+
+    p = m[0][1]**2 + m[0][2]**2 + m[1][2]**2
+    if p == 0.0:
+        # m is diagonal.
+        eigs = sorted( [ m[i][i] for i in range(3) ] ) # ascending order
+    else:
+        q = sum([ m[i][i] for i in range(3) ])/3.0
+        p = (m[0][0] - q)**2 + (m[1][1] - q)**2 + (m[2][2] - q)**2 + 2.0*p
+        p = math.sqrt(p/6.0)
+
+        for i in range(3):
+            for j in range(3):
+                n[i][j] = (1.0/p) * (m[i][j] - q*identity[i][j])
+
+        r = DET_3X3(n)/2.0
+
+        if r <= -1.:
+            phi = math.pi/3.0
+        elif r >= 1.:
+            phi = 0.0
+        else:
+            phi = math.acos(r)/3.0
+
+        eigs[0] = q + 2.0*p*math.cos(phi)
+        eigs[1] = q + 2.0*p*math.cos(phi + math.pi * (2.0/3.0))
+        eigs[2] = 3.0*q - eigs[0] - eigs[1]
+
+        eigs = sorted(eigs) # I'm aware of the list.sort() method
+
+    return eigs
+
 def cart2frac(basis, v):
     import numpy as np
     return np.dot(v, np.linalg.inv(basis)).tolist()
-
 
 def fd_effmass(e, stepsize, order=2, debug=False):
     m = [[0.0 for i in range(3)] for j in range(3)]
@@ -40,24 +108,6 @@ def fd_effmass(e, stepsize, order=2, debug=False):
 
     if debug: print ''
     return m
-
-def MAT_m_VEC(m, v):
-    p = [ 0.0 for i in range(len(v)) ]
-    for i in range(len(m)):
-        assert len(v) == len(m[i]), 'Length of the matrix row is not equal to the length of the vector'
-        p[i] = sum( [ m[i][j]*v[j] for j in range(len(v)) ] )
-    return p
-
-def T(m):
-    p = [[ m[i][j] for i in range(len( m[j] )) ] for j in range(len( m )) ]
-    return p
-
-def N(v):
-    max_ = 0.
-    for item in v:
-        if abs(item) > abs(max_): max_ = item
-
-    return [ item/max_ for item in v ]
 
 def generate_kpoints(kpt_frac, stepsize, prg, basis, debug=False):
     import numpy as np

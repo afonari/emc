@@ -29,6 +29,21 @@ class EMC_Test(unittest.TestCase):
         m_n = emc.N(m)
         self.assertListAlmostEqual(m_n, [ item/(-3.) for item in m ], places=5, msg='Normal function failed')
 
+    def test_det(self):
+        m = [[-1., 2., 3.], [4., 5., -6.], [7., -8., 9.]]
+        det = emc.DET_3X3(m)
+        self.assertAlmostEqual(det, -354., places=2, msg='Determinant failed')
+
+    def test_eigenval_diag(self):
+        m_diag = [[9., 0., 0.], [0., -4., 0.], [0., 0., 1.]]
+        eigvals = emc.EIGVALUES_SYMMETRIC_3X3(m_diag)
+        self.assertListAlmostEqual(eigvals, [-4., 1., 9.], places=1, msg='Eigenvals for diagonal symmetric matrix failed')
+
+    def test_eigenval(self):
+        m = [[1.,2.,30.],[2.,5.,10.],[30.,10.,9.]]
+        eigvals = emc.EIGVALUES_SYMMETRIC_3X3(m)
+        self.assertListAlmostEqual(eigvals, [-26.13065, 3.443361, 37.68729], places=5, msg='Eigenvals for symmetric matrix failed')
+
 if __name__ == '__main__':
     unittest.main()
 
