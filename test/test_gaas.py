@@ -39,6 +39,9 @@ class EMC_Test(unittest.TestCase):
         self.assertListAlmostEqual(m[1], [0.0, -2.90687, 0.0], places=5, msg='Failed to calculate effective mass tensor')
         self.assertListAlmostEqual(m[2], [0.0, 0.0, -2.90687], places=5, msg='Failed to calculate effective mass tensor')
 
+        masses, vecs_cart, vecs_frac, vecs_n = emc.get_eff_masses(m, basis)
+        self.assertListAlmostEqual(masses, [-0.344013]*3, places=5, msg='Effective mass calculations failed')
+
     def test_kpoints(self):
         kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need stepsize later
         kpts = emc.generate_kpoints(kpt, stepsize, prg, basis, debug=False)

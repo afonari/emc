@@ -103,6 +103,7 @@ def fd_effmass(e, stepsize, order=2, debug=False):
 
     if debug:
         print 'Assembling effective mass tensor...'
+        print ''
         for i in range(len(m)):
             print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
 
@@ -216,11 +217,25 @@ def parse_inpcar(inpcar_fh, debug=False):
 
     return kpt, stepsize, band, prg, basis
 
+def get_eff_masses(m, basis):
+    import numpy as np
+
+    vecs_cart = [[0.0 for i in range(3)] for j in range(3)]
+    vecs_frac = [[0.0 for i in range(3)] for j in range(3)]
+    vecs_n    = [[0.0 for i in range(3)] for j in range(3)]
+
+    eigval, eigvec = np.linalg.eigh(np.array(m))
+    for i in range(3):
+        vecs_cart[i] = eigvec[:,i].tolist()
+        vecs_frac[i] = cart2frac(basis, vecs_cart[i])
+        vecs_n[i]    = N(vecs_frac[i])
+
+    return (1.0/eigval).tolist(), vecs_cart, vecs_frac, vecs_n
+
 if __name__ == '__main__':
     import sys
     import re
     import datetime
-    import numpy as np
 
     print '\nEffective mass calculator '+EMC_VERSION
     print 'License: MIT'
@@ -234,24 +249,28 @@ if __name__ == '__main__':
         print "Couldn't open INPCAR file, exiting...\n"
         sys.exit(1)
 
+    print 'Contents of the INPCAR file:\n'
+    print inpcar_fh.read()
+    print ''
+    print '=========='
+    print ''
+
     kpt, stepsize, band, prg, basis = parse_inpcar(inpcar_fh)
 
     output_filename = ''
     if len(sys.argv) > 1:
         output_filename = sys.argv[1]
     else:
-        if prg.upper() == 'V':
+        if prg.upper() == 'V' or prg.upper() == 'C':
             output_filename = 'EIGENVAL'
         else:
-            output_filename = "OUTCAR"
+            output_filename = 'OUTCAR'
 
-    output_fh = 0
-    output_exists = False
     try:
         output_fh = open(output_filename, 'r')
         output_exists = True
     except IOError:
-        pass
+        output_exists = False
 
     if output_exists:
         print 'Successfully opened '+output_filename+', preparing to parse it...\n'
@@ -259,18 +278,25 @@ if __name__ == '__main__':
         energies = []
         if prg.upper() == 'V' or prg.upper() == 'C':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
-            m = fd_effmass(energies, stepsize)
+            m = fd_effmass(energies, stepsize, debug=True)
 
-        eigval, eigvec = np.linalg.eigh(np.array(m))
-        print 'Principle effective masses and directions:\n'
-        for i in range(len(m)):
-            vec_cart = eigvec[:,i].tolist()
-            vec_frac = cart2frac(basis, vec_cart)
-            #vec_real = MAT_m_VEC(T(basis), vec)
-            vec_n = N(vec_frac)
-            print 'Effective mass (%d): %12.3f' % (i, 1.0/eigval[i])
-            print 'Original eigenvectors: %7.5f %7.5f %7.5f\n' % (vec_cart[0], vec_cart[1], vec_cart[2])
-            print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vec_n[0], vec_n[1], vec_n[2])
+        try:
+            import numpy as np
+            HAS_NUMPY = True
+        except ImportError:
+            HAS_NUMPY = False
+
+        if HAS_NUMPY:
+            masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
+            print 'Principle effective masses and directions:\n'
+            for i in range(3):
+                print 'Effective mass (%d): %12.3f' % (i, masses[i])
+                print 'Original eigenvectors: %7.5f %7.5f %7.5f' % (vecs_cart[i][0], vecs_cart[i][1], vecs_cart[i][2])
+                print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vecs_n[i][0], vecs_n[i][1], vecs_n[i][2])
+        else:
+            print "Unfortunately, numpy library couldn't be imported,"
+            print "eigensystem calculation is not implemented completely at this time"
+            print "post the code below to Mathematica(R) in order to obtain effective masses and principal directions:"
 
     else:
         print 'No '+output_filename+' file found, entering the Generation regime...\n'
@@ -292,9 +318,3 @@ if __name__ == '__main__':
 
         kpoints_fh.close()
         print 'KPOINTS file has been generated in the current directory...\n'
-
-
-
-
-
-
