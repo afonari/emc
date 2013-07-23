@@ -1,0 +1,469 @@
+Will use band = 236
+
+
+
+running 2 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0    -220     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:***  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):(-0.010 0.000 0.000) STEP  0.0100
+
+
+
+running 4 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+  220     0     0       1  -437     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (220  0  0:  1***  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.010 0.000 0.000):( 0.000-0.010 0.000) STEP  0.0141
+
+
+
+running 6 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+   -1   437     0       0     0  -327
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 ( -1437  0:  0  0***)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.010 0.000):( 0.000 0.000-0.010) STEP  0.0141
+
+
+
+running 8 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0   327    -218  -437     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0327:******  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.010):(-0.010-0.010 0.000) STEP  0.0173
+
+
+
+running 10 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+  218   437     0     221  -437     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (218437  0:221***  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.010 0.010 0.000):( 0.010-0.010 0.000) STEP  0.0200
+
+
+
+running 12 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+ -221   437     0    -220     0  -327
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (***437  0:***  0***)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. (-0.010 0.010 0.000):(-0.010 0.000-0.010) STEP  0.0141
+
+
+
+running 14 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+  220     0   327     220     0  -327
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (220  0327:220  0***)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.010 0.000 0.010):( 0.010 0.000-0.010) STEP  0.0200
+
+
+
+running 16 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+ -220     0   327       1  -437  -327
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (***  0327:  1******)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. (-0.010 0.000 0.010):( 0.000-0.010-0.010) STEP  0.0245
+
+
+
+running 18 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+   -1   437   327      -1   437  -327
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 ( -1437327: -1437***)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.010 0.010):( 0.000 0.010-0.010) STEP  0.0200
+
+
+
+running 20 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    1  -437   327       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  1***327:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000-0.010 0.010):( 0.000 0.000 0.000) STEP  0.0141
+
+
+
+running 22 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 24 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 26 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 28 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 30 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 32 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 34 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 36 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 38 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 40 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 42 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 44 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 46 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 48 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 50 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 52 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 54 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 56 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 58 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 60 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+
+running 61 of 61:
+
+BAND
+For k-point (CART): TODO
+1 10000 2 236 236 1 0
+    0     0     0       0     0     0
+END
+
+
+ NUMBER OF K POINTS IN THE IBZ  72  CELL VOLUME (A.U.)        7819.68023
+ LINE   1 (  0  0  0:  0  0  0)    2 POINTS - SHRINKING_FACTOR****
+ CARTESIAN COORD. ( 0.000 0.000 0.000):( 0.000 0.000 0.000) STEP  0.0000
+
+
+done.

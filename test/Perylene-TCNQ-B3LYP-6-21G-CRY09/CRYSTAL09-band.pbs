@@ -1,0 +1,35 @@
+#!/bin/bash
+#PBS -j oe
+#PBS -N Perylene-TCNQ-emH
+#PBS -l nodes=1:ppn=1
+#PBS -l pmem=2000mb
+#PBS -l walltime=01:00:00
+#PBS -V
+
+#environment for Intel and MPI libraries
+
+export PATH=/usr/local/packages/intel/compiler/11.1.059/bin/intel64/:$PATH
+export LD_LIBRARY_PATH=/usr/local/packages/intel/compiler/11.1.059/lib/intel64/:/usr/local/packages/intel/mkl/10.3/lib/intel64:$LD_LIBRARY_PATH
+
+mpi=/usr/local/packages/openmpi/1.4.3/intel-11.1.059/
+
+export PATH=$mpi/bin:$PATH
+export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+
+## Crystal environment (sets scratch directory too)
+source /Crystal09/utils09/cry2k9.bashrc
+
+#
+# run the job
+#
+cd ${PBS_O_WORKDIR}
+
+cat ${PBS_NODEFILE}
+# PBS_NODEFILE=`pwd`/nodefile
+# echo ${PBS_NODEFILE}
+
+
+# input.f9 should be from the converged SCF run
+# -b is the band number
+/EMC/cry-getE.pl -f ../input.f9 -b 236 > em-EMC-test.out
+
