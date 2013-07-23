@@ -22,6 +22,11 @@ class EMC_Test(unittest.TestCase):
         kpoints_path = os.path.join(script_dir, "GaAs-5.648-PBE-VASP/KPOINTS")
         self.kpoints_fh = open(kpoints_path, 'r')
 
+    def tearDown(self):
+        self.inpcar_fh.close()
+        self.eigenval_fh.close()
+        self.kpoints_fh.close()
+
     def test_parse_inpcar(self):
         kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need stepsize later
         self.assertListEqual(kpt, [0.0, 0.0, 0.0], msg='Failed to parse K-point')
@@ -58,4 +63,3 @@ class EMC_Test(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
