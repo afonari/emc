@@ -30,10 +30,32 @@ def N(v):
         if abs(item) > abs(max_): max_ = item
 
     return [ item/max_ for item in v ]
+
 def DET_3X3(m):
     assert len(m) == 3, 'Matrix should be of the size 3 by 3'
     return m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2] - \
            m[0][2]*m[1][1]*m[2][0] - m[2][1]*m[1][2]*m[0][0] - m[2][2]*m[0][1]*m[1][0]
+
+def SCALE_ADJOINT_3X3(m, s):
+    a = [[0.0 for i in range(3)] for j in range(3)]
+
+    a[0][0] = (s) * (m[1][1] * m[2][2] - m[1][2] * m[2][1])
+    a[1][0] = (s) * (m[1][2] * m[2][0] - m[1][0] * m[2][2])
+    a[2][0] = (s) * (m[1][0] * m[2][1] - m[1][1] * m[2][0])
+
+    a[0][1] = (s) * (m[0][2] * m[2][1] - m[0][1] * m[2][2])
+    a[1][1] = (s) * (m[0][0] * m[2][2] - m[0][2] * m[2][0])
+    a[2][1] = (s) * (m[0][1] * m[2][0] - m[0][0] * m[2][1])
+
+    a[0][2] = (s) * (m[0][1] * m[1][2] - m[0][2] * m[1][1])
+    a[1][2] = (s) * (m[0][2] * m[1][0] - m[0][0] * m[1][2])
+    a[2][2] = (s) * (m[0][0] * m[1][1] - m[0][1] * m[1][0])
+
+    return a
+
+def INVERT_3X3(m):
+    tmp = 1.0/DET_3X3(m)
+    return SCALE_ADJOINT_3X3(m, tmp)
 
 def IS_SYMMETRIC(m):
     for i in range(len(m)):
@@ -83,8 +105,7 @@ def EIGVALUES_SYMMETRIC_3X3(m):
     return eigs
 
 def cart2frac(basis, v):
-    import numpy as np
-    return np.dot(v, np.linalg.inv(basis)).tolist()
+    return MAT_m_VEC( T(INVERT_3X3(basis)), v )
 
 def fd_effmass(e, stepsize, order=2, debug=False):
     m = [[0.0 for i in range(3)] for j in range(3)]
@@ -111,29 +132,27 @@ def fd_effmass(e, stepsize, order=2, debug=False):
     return m
 
 def generate_kpoints(kpt_frac, stepsize, prg, basis, debug=False):
-    import numpy as np
-    import sys
-
+    from math import pi
+    #
     # working in the reciprocal space
-    basis_r = (np.linalg.inv( T(basis) )* 2*np.pi).tolist()
-
+    m = INVERT_3X3(T(basis))
+    basis_r = [[ m[i][j]*2.0*pi for j in range(3) ] for i in range(3) ]
+    #
     k_c = MAT_m_VEC(T(basis_r), kpt_frac)
     if debug: print kpt_r_cart
-
+    #
     if prg == 'V':
         stepsize = stepsize*(1/Bohr) # [1/A]
-
+    #
     kpoints = []
     for i in range(len(diff_d2)):
         k_c_ = [ k_c[j] + diff_d2[i][j]*stepsize for j in range(3) ] # getting displaced k points in Cartesian coordinates
         k_f = cart2frac(basis_r, k_c_)
         kpoints.append( [k_f[0], k_f[1], k_f[2]] )
-
+    #
     return kpoints
 
 def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
-    import sys
-
     ev2h = 1.0/27.21138505
     eigenval_fh.seek(0) # just in case
     eigenval_fh.readline()
