@@ -242,6 +242,12 @@ if __name__ == '__main__':
     print 'Developed by: Alexandr Fonari'
     print 'Started at: '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")+'\n'
 
+    try:
+        import numpy
+    except ImportError:
+        print "Couldn't import numpy, exiting..."
+        sys.exit(1)
+
     inpcar_fh = 0
     try:
         inpcar_fh = open('INPCAR', 'r')
@@ -280,23 +286,12 @@ if __name__ == '__main__':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
             m = fd_effmass(energies, stepsize, debug=True)
 
-        try:
-            import numpy as np
-            HAS_NUMPY = True
-        except ImportError:
-            HAS_NUMPY = False
-
-        if HAS_NUMPY:
-            masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
-            print 'Principle effective masses and directions:\n'
-            for i in range(3):
-                print 'Effective mass (%d): %12.3f' % (i, masses[i])
-                print 'Original eigenvectors: %7.5f %7.5f %7.5f' % (vecs_cart[i][0], vecs_cart[i][1], vecs_cart[i][2])
-                print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vecs_n[i][0], vecs_n[i][1], vecs_n[i][2])
-        else:
-            print "Unfortunately, numpy library couldn't be imported,"
-            print "eigensystem calculation is not implemented completely at this time"
-            print "post the code below to Mathematica(R) in order to obtain effective masses and principal directions:"
+        masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
+        print 'Principle effective masses and directions:\n'
+        for i in range(3):
+            print 'Effective mass (%d): %12.3f' % (i, masses[i])
+            print 'Original eigenvectors: %7.5f %7.5f %7.5f' % (vecs_cart[i][0], vecs_cart[i][1], vecs_cart[i][2])
+            print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vecs_n[i][0], vecs_n[i][1], vecs_n[i][2])
 
     else:
         print 'No '+output_filename+' file found, entering the Generation regime...\n'
