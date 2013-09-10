@@ -36,12 +36,12 @@ class EMC_Test(unittest.TestCase):
 
     def test_eigenval_diag(self):
         m_diag = [[9., 0., 0.], [0., -4., 0.], [0., 0., 1.]]
-        eigvals = emc.EIGVALUES_SYMMETRIC_3X3(m_diag)
+        eigvec, eigvals = emc.jacobi(m_diag)
         self.assertListAlmostEqual(eigvals, [-4., 1., 9.], places=1, msg='Eigenvals for diagonal symmetric matrix failed')
 
     def test_eigenval(self):
         m = [[1.,2.,30.],[2.,5.,10.],[30.,10.,9.]]
-        eigvals = emc.EIGVALUES_SYMMETRIC_3X3(m)
+        eigvec, eigvals = emc.jacobi(m)
         self.assertListAlmostEqual(eigvals, [-26.13065, 3.443361, 37.68729], places=5, msg='Eigenvals for symmetric matrix failed')
 
 if __name__ == '__main__':

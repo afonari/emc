@@ -64,46 +64,93 @@ def IS_SYMMETRIC(m):
 
     return True
 
-def EIGVALUES_SYMMETRIC_3X3(m):
-    # follows http://en.wikipedia.org/wiki/Eigenvalue_algorithm#3.C3.973_matrices
-    import math
-
-    assert IS_SYMMETRIC(m), 'Supplied matrix is not symmetric'
-
-    eigs = [ 0.0 for i in range(3) ]
-    n = [[0.0 for i in range(3)] for j in range(3)]
-    identity = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]
-
-    p = m[0][1]**2 + m[0][2]**2 + m[1][2]**2
-    if p == 0.0:
-        # m is diagonal.
-        eigs = sorted( [ m[i][i] for i in range(3) ] ) # ascending order
-    else:
-        q = sum([ m[i][i] for i in range(3) ])/3.0
-        p = (m[0][0] - q)**2 + (m[1][1] - q)**2 + (m[2][2] - q)**2 + 2.0*p
-        p = math.sqrt(p/6.0)
-
-        for i in range(3):
-            for j in range(3):
-                n[i][j] = (1.0/p) * (m[i][j] - q*identity[i][j])
-
-        r = DET_3X3(n)/2.0
-
-        if r <= -1.:
-            phi = math.pi/3.0
-        elif r >= 1.:
-            phi = 0.0
-        else:
-            phi = math.acos(r)/3.0
-
-        eigs[0] = q + 2.0*p*math.cos(phi)
-        eigs[1] = q + 2.0*p*math.cos(phi + math.pi * (2.0/3.0))
-        eigs[2] = 3.0*q - eigs[0] - eigs[1]
-
-        eigs = sorted(eigs) # I'm aware of the list.sort() method
-
-    return eigs
-
+def jacobi(ainput):
+    # from NWChem/contrib/python/mathutil.py
+    # possible need to rewrite due to licensing issues
+    #
+    from math import sqrt
+    #
+    a = [[ ainput[i][j] for i in range(len( ainput[j] )) ] for j in range(len( ainput )) ] # copymatrix
+    n = len(a)
+    m = len(a[0])
+    if n != m:
+        raise 'Matrix must be square'
+    #
+    for i in range(n):
+        for j in range(m):
+            if a[i][j] != a[j][i]:
+                raise ' Matrix must be symmetric'
+    #
+    tolmin = 1e-14
+    tol = 1e-4
+    #
+    v = [[0.0 for i in range(n)] for j in range(n)] # zeromatrix
+    for i in range(n):
+        v[i][i] = 1.0
+    #
+    maxd = 0.0
+    for i in range(n):
+        maxd = max(abs(a[i][i]),maxd)
+    #
+    for iter in range(50):
+        nrot = 0
+        for i in range(n):
+            for j in range(i+1,n):
+                aii = a[i][i]
+                ajj = a[j][j]
+                daij = abs(a[i][j])
+                if daij > tol*maxd: # Screen small elements
+                    nrot = nrot + 1
+                    s = aii - ajj
+                    ds = abs(s)
+                    if daij > (tolmin*ds): # Check for sufficient precision
+                        if (tol*daij) > ds:
+                            c = s = 1/sqrt(2.)
+                        else:
+                            t = a[i][j]/s
+                            u = 0.25/sqrt(0.25+t*t)
+                            c = sqrt(0.5+u)
+                            s = 2.*t*u/c
+                        #
+                        for k in range(n):
+                            u = a[i][k]
+                            t = a[j][k]
+                            a[i][k] = s*t + c*u
+                            a[j][k] = c*t - s*u
+                        #
+                        for k in range(n):
+                            u = a[k][i]
+                            t = a[k][j]
+                            a[k][i] = s*t + c*u
+                            a[k][j]= c*t - s*u
+                        #
+                        for k in range(n):
+                            u = v[i][k]
+                            t = v[j][k]
+                            v[i][k] = s*t + c*u
+                            v[j][k] = c*t - s*u
+                        #
+                        a[j][i] = a[i][j] = 0.0
+                        maxd = max(maxd,abs(a[i][i]),abs(a[j][j]))
+        #
+        if nrot == 0 and tol <= tolmin:
+            break
+        tol = max(tolmin,tol*0.99e-2)
+    #
+    if nrot != 0:
+        raise "Jacobi iteration did not converge in 50 passes"
+    #
+    # Sort eigenvectors and values into increasing order
+    e = [0.0 for i in range(n)] # zerovector
+    for i in range(n):
+        e[i] = a[i][i]
+        for j in range(i):
+            if e[j] > e[i]:
+                (e[i],e[j]) = (e[j],e[i])
+                (v[i],v[j]) = (v[j],v[i])
+    #
+    return (v,e)
+#
 def cart2frac(basis, v):
     return MAT_m_VEC( T(INVERT_3X3(basis)), v )
 
@@ -160,7 +207,7 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
     eigenval_fh.readline()
     eigenval_fh.readline()
     eigenval_fh.readline()
-
+    #
     nelec, nkpt, nband = [int(s) for s in eigenval_fh.readline().split()]
     if debug: print 'From EIGENVAL: Number of the valence band is %d (NELECT/2)' % (nelec/2)
     if band > nband:
@@ -182,13 +229,13 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
 def parse_inpcar(inpcar_fh, debug=False):
     import sys
     import re
-
+    #
     kpt = []       # k-point at which eff. mass in reciprocal reduced coords (3 floats)
     stepsize = 0.0 # stepsize for finite difference (1 float) in Bohr
     band = 0       # band for which eff. mass is computed (1 int)
     prg = ''       # program identifier (1 char)
     basis = []     # basis vectors in cartesian coords (3x3 floats), units depend on the program identifier
-
+    #
     inpcar_fh.seek(0) # just in case
     p = re.search(r'^\s*(-*\d+\.\d+)\s+(-*\d+\.\d+)\s+(-*\d+\.\d+)', inpcar_fh.readline())
     if p:
@@ -237,98 +284,91 @@ def parse_inpcar(inpcar_fh, debug=False):
     return kpt, stepsize, band, prg, basis
 
 def get_eff_masses(m, basis):
-    import numpy as np
-
+    #
     vecs_cart = [[0.0 for i in range(3)] for j in range(3)]
     vecs_frac = [[0.0 for i in range(3)] for j in range(3)]
     vecs_n    = [[0.0 for i in range(3)] for j in range(3)]
-
-    eigval, eigvec = np.linalg.eigh(np.array(m))
+    #
+    eigvec, eigval = jacobi(m)
+    #
     for i in range(3):
-        vecs_cart[i] = eigvec[:,i].tolist()
-        vecs_frac[i] = cart2frac(basis, vecs_cart[i])
+        #vecs_cart[i] = eigvec[:,i].tolist()
+        vecs_frac[i] = cart2frac(basis, eigvec[i])
         vecs_n[i]    = N(vecs_frac[i])
-
-    return (1.0/eigval).tolist(), vecs_cart, vecs_frac, vecs_n
-
-if __name__ == '__main__':
+    #
+    em = [ 1.0/eigval[i] for i in range(len(eigval)) ]
+    return em, vecs_cart, vecs_frac, vecs_n
+#
+if __name__ == "__main__":
     import sys
     import re
     import datetime
-
+    #
     print '\nEffective mass calculator '+EMC_VERSION
     print 'License: MIT'
-    print 'Developed by: Alexandr Fonari'
+    print 'Developed by: Alexandr Fonari and Chris Sutton'
     print 'Started at: '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")+'\n'
-
-    try:
-        import numpy
-    except ImportError:
-        print "Couldn't import numpy, exiting..."
+    #
+    if len(sys.argv) == 1:
+        print "Run as:"
+        print "    %s input.in [output.out]" % sys.argv[0]
+        print ""
         sys.exit(1)
-
-    inpcar_fh = 0
+    inpcar_fn = sys.argv[1]
+    #
     try:
-        inpcar_fh = open('INPCAR', 'r')
+        inpcar_fh = open(inpcar_fn, 'r')
     except IOError:
-        print "Couldn't open INPCAR file, exiting...\n"
-        sys.exit(1)
-
-    print 'Contents of the INPCAR file:\n'
+        sys.exit("Couldn't open input file "+inpcar_fn+", exiting...\n")
+    #
+    print "Contents of the "+inpcar_fn+" file:\n"
     print inpcar_fh.read()
-    print ''
-    print '=========='
-    print ''
-
+    print ""
+    print "=========="
+    print ""
+    #
     kpt, stepsize, band, prg, basis = parse_inpcar(inpcar_fh)
-
-    output_filename = ''
-    if len(sys.argv) > 1:
-        output_filename = sys.argv[1]
-    else:
-        if prg.upper() == 'V' or prg.upper() == 'C':
-            output_filename = 'EIGENVAL'
-        else:
-            output_filename = 'OUTCAR'
-
-    try:
-        output_fh = open(output_filename, 'r')
-        output_exists = True
-    except IOError:
-        output_exists = False
-
-    if output_exists:
-        print 'Successfully opened '+output_filename+', preparing to parse it...\n'
-
+    #
+    output_fn = None
+    if len(sys.argv) > 2:
+        output_fn = sys.argv[2]
+        try:
+            output_fh = open(output_fn, 'r')
+        except IOError:
+            sys.exit("Couldn't open input file "+output_fn+", exiting...\n")
+    #
+    if output_fn:
+        print 'Successfully opened '+output_fn+', preparing to parse it...\n'
+        #
         energies = []
         if prg.upper() == 'V' or prg.upper() == 'C':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
             m = fd_effmass(energies, stepsize, debug=True)
-
+            #
         masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
         print 'Principle effective masses and directions:\n'
         for i in range(3):
             print 'Effective mass (%d): %12.3f' % (i, masses[i])
             print 'Original eigenvectors: %7.5f %7.5f %7.5f' % (vecs_cart[i][0], vecs_cart[i][1], vecs_cart[i][2])
             print 'Normal fractional coordinates: %7.5f %7.5f %7.5f\n' % (vecs_n[i][0], vecs_n[i][1], vecs_n[i][2])
-
+    #
     else:
-        print 'No '+output_filename+' file found, entering the Generation regime...\n'
-
-        if prg.upper() == 'C' and band != 1:
-            print 'Band should be set to 1 for CRYSTAL calculations,'
-            print 'desired band number is set as a parameter (-b) for cry-getE.pl script.\n'
+        print 'No output file provided, entering the Generation regime...\n'
+        #
+        if prg.upper() == "C" and band != 1:
+            print "    Band should be set to 1 for CRYSTAL calculations,"
+            print "    desired band number is set as a parameter (-b) for cry-getE.pl script."
+            print ""
             sys.exit(1)
-
+        #
         kpoints = generate_kpoints(kpt, stepsize, prg, basis, debug=False)
-
         kpoints_fh = open('KPOINTS', 'w')
         kpoints_fh.write("EMC "+EMC_VERSION+"\n")
         kpoints_fh.write("%d\n" % len(diff_d2))
         kpoints_fh.write("Reciprocal\n")
-
+        #
         for i, kpt in enumerate(kpoints):
             kpoints_fh.write( '%7.5f %7.5f %7.5f 0.01\n' % (kpt[0], kpt[1], kpt[2]) )
-
+        #
         kpoints_fh.close()
         print 'KPOINTS file has been generated in the current directory...\n'
