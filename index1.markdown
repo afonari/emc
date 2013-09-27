@@ -41,8 +41,7 @@ V                                       ! program identifier (1 char)
 
  - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script `cry-getE.pl` reads-in the desired band number (see below). For *VASP* valence band number can be obtained as a half of the `NELECT` variable from the *OUTCAR* file (for non spin-polarized calculations).
  - **program identifier**: `C` for *CRYSTAL* or `V` for *VASP*. (TODO: Quantum Espresso)
- - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`. In *VASP* under: ```direct lattice vectors```. Program will deal with units itself.
- - Please remove comments from ```inp``` file, as they are not currently supported.
+ - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* under: `direct lattice vectors`.
 
 ### 3. Usage
 #### 3.1 CRYSTAL
