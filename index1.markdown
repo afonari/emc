@@ -13,11 +13,17 @@ Effective mass calculator (**EMC**) implements calculation of the effective mass
 
 ![Eq. 1](/emc/eqs/01.svg)
 
+where *x, y, z* are the directions in the reciprocal Cartesian space (2π/A), *En(k)* is the dispersion relation for the *n*-th electronic band. The explicit form of the right-side symmetric tensor from the above eq. is:
+
+![Eq. 1](/emc/eqs/02.svg)
+
+where the derivatives can be evaluated numerically using the finite difference method.
+
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
 #### Notes
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
- 1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
+ 1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive (as results from the basic calculus).
  1. In some cases, not all eigenvalues have the same sign, meaning that chosen reciprocal point is not a global minimum (maximum).
  1. Eigenvectors are directions of principal effective mass components.
  1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
