@@ -27,6 +27,7 @@ V                                       ! program identifier (1 char)
 0.755765092  7.652872670  0.000000000   ! direct lattice vectors
 0.462692761  3.245907103 14.032346772   ! direct lattice vectors
 ```
+
  - **K-POINT** coordinates in reciprocal space of a band maximum for holes and band minimum for electrons.
  - **step size** in 1/Bohr. If *program identifier* is ```V``` (for *VASP*) step size will be converted to 2π/A units. At this time, in *POSCAR* scale (2nd line) should be set to **1.000**.
  - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads-in the desired band number. For *VASP* valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
