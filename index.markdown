@@ -8,19 +8,17 @@ title: Effective Mass Calculator
 [![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
 
 # Theory
+
 Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method. For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
-# Theory 2
-
-### 1. Notes on theory
+#### Notes
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that chosen reciprocal point is not a global minimum (maximum).
  1. Eigenvectors are directions of principal effective mass components.
  1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
 
-### [2. Input file](#input-file)
-Input file has the following form:
+### Input file structure
 
 ```bash
 0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
