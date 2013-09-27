@@ -17,7 +17,7 @@ where *x, y, z* are the directions in the reciprocal Cartesian space (2π/A), *E
 
 ![Eq. 1](/emc/eqs/02.svg)
 
-where the derivatives can be evaluated numerically using the finite difference method.
+where the derivatives can be evaluated numerically using the finite difference method. Eigenvalues of the above matrix are inverses of the effective masses, eigenvectors are the directions for these masses.
 
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
