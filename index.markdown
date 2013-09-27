@@ -3,10 +3,11 @@ layout: default
 title: Effective Mass Calculator
 ---
 
-## Effective Mass Calculator for Semiconductors
+## {{ page.title }}
 
 [![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
-### 0. Theory and validation
+
+### [Theory](#theory)
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
 ### 1. Notes on theory
@@ -19,7 +20,7 @@ For the theory behind the code and validation of the code against known data see
 ### 2. Input file
 Input file has the following form:
 
-{% highlight bash %}
+```bash
 0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
 0.01                                    ! step size (1 float)
 81                                      ! band number, (1 integer)
@@ -27,7 +28,7 @@ V                                       ! program identifier (1 char)
 6.291999817  0.000000000  0.000000000   ! direct lattice vectors
 0.755765092  7.652872670  0.000000000   ! direct lattice vectors
 0.462692761  3.245907103 14.032346772   ! direct lattice vectors
-{% endhighlight %}
+```
 
  - **K-POINT** coordinates in reciprocal space of a band maximum for holes and band minimum for electrons.
  - **step size** in 1/Bohr. If *program identifier* is ```V``` (for *VASP*) step size will be converted to 2π/A units. At this time, in *POSCAR* scale (2nd line) should be set to **1.000**.
