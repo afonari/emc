@@ -17,7 +17,7 @@ For the theory behind the code and validation of the code against known data see
  1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
 
 ### 2. Input file
-Input file has the following form:  
+Input file has the following form:
 
 ```bash
 0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
