@@ -1,3 +1,8 @@
+---
+layout: default
+title: Alexandr Fonari
+---
+
 ## Effective Mass Calculator for Semiconductors
 
 [![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
