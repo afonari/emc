@@ -16,11 +16,11 @@ For the theory behind the code and validation of the code against known data see
  1. Eigenvectors are directions of principal effective mass components.
  1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
 
-### 2. Required input files
-`inp` has the following form:  
+### 2. Input file
+Input file has the following form:  
 
 ```bash
-0.000 0.000 0.000                       ! K-POINT in reciprocal space (3 floats)
+0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
 0.01                                    ! step size (1 float)
 81                                      ! band number, (1 integer)
 V                                       ! program identifier (1 char)
