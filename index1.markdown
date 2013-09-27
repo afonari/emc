@@ -17,34 +17,31 @@ where *x, y, z* are the directions in the reciprocal Cartesian space (2π/A), *E
 
 ![Eq. 1](/emc/eqs/02.svg)
 
-where the derivatives can be evaluated numerically using the finite difference method. Eigenvalues of the above matrix are inverses of the effective masses, eigenvectors are the directions for these masses.
+where the derivatives can be evaluated numerically using the finite difference method. Eigenvalues of the above matrix are inverses of the effective masses, eigenvectors are the directions of the principal effective mass components.
 
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
 #### Notes
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive (as results from the basic calculus).
- 1. In some cases, not all eigenvalues have the same sign, meaning that chosen reciprocal point is not a global minimum (maximum).
- 1. Eigenvectors are directions of principal effective mass components.
- 1. Effective masses (eigenvalues of the tensor) can be highly anisotropic.
+ 1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
+ 1. Effective masses can be highly anisotropic.
 
 ### Input file structure
 
 ```bash
 0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
-0.01                                    ! step size (1 float)
+0.01                                    ! step size in 1/Bohr units (1 float)
 81                                      ! band number, (1 integer)
 V                                       ! program identifier (1 char)
-6.291999817  0.000000000  0.000000000   ! direct lattice vectors
-0.755765092  7.652872670  0.000000000   ! direct lattice vectors
-0.462692761  3.245907103 14.032346772   ! direct lattice vectors
+6.291999817  0.000000000  0.000000000   ! direct lattice vectors (3 floats)
+0.755765092  7.652872670  0.000000000   ! direct lattice vectors (3 floats)
+0.462692761  3.245907103 14.032346772   ! direct lattice vectors (3 floats)
 ```
 
- - **K-POINT** coordinates in reciprocal space of a band maximum for holes and band minimum for electrons.
- - **step size** in 1/Bohr. If *program identifier* is ```V``` (for *VASP*) step size will be converted to 2π/A units. At this time, in *POSCAR* scale (2nd line) should be set to **1.000**.
- - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script ```cry-getE.pl``` reads-in the desired band number. For *VASP* valence band number can be obtained as ```NELECT/2``` variable from the *OUTCAR* file.
- - **program identifier** at this time can be either ```C``` (for *CRYSTAL*) or ```V``` (for *VASP*).
- - **direct lattice components** in *CRYSTAL* can be found under: ```DIRECT LATTICE VECTORS COMPON. (A.U.)```. In *VASP* under: ```direct lattice vectors```. Program will deal with units itself.
+ - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script `cry-getE.pl` reads-in the desired band number (see below). For *VASP* valence band number can be obtained as a half of the `NELECT` variable from the *OUTCAR* file (for non spin-polarized calculations).
+ - **program identifier**: `C` for *CRYSTAL* or `V` for *VASP*. (TODO: Quantum Espresso)
+ - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`. In *VASP* under: ```direct lattice vectors```. Program will deal with units itself.
  - Please remove comments from ```inp``` file, as they are not currently supported.
 
 ### 3. Usage
