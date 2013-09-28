@@ -9,7 +9,9 @@ title: Effective Mass Calculator
 
 ### Theory
 
-Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method. Effective mass (m*) is defined as:
+Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
+
+Effective mass (m*) is defined as:
 
 ![Eq. 1](/emc/eqs/01.svg)
 
@@ -23,9 +25,17 @@ For the theory behind the code and validation of the code against known data see
 
 #### Notes
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
- 1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive (as results from the basic calculus).
+ 1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
- 1. Effective masses can be highly anisotropic.
+ 1. Effective masses can be highly anisotropic (see Tests section).
+
+### Installation
+
+EMC is a Python script, that depends only on the Python Standard Library. That means that the only thing you need to do is download [emc.py]() and run it!
+
+### Requirements
+
+The code is being tested with Python v 2.7 (as you can see in the [travis config file](https://github.com/alexandr-fonari/emc/blob/master/.travis.yml)). Other versions of the Python will be coming soon.
 
 ### Input file structure
 
@@ -44,10 +54,15 @@ V                                       ! program identifier (1 char)
  - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* under: `direct lattice vectors`.
 
 ### 3. Usage
-#### 3.1 CRYSTAL
 1. Run SCF.
-1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```.
-1. Create ```inp``` file with the desired characteristics in the newly created directory.
+1. Generate k-point grid (in *KPOINT* file) using *emc.py* with the appropriate input file.
+1. Run non-self consistent calculation using obtained grid:
+  - in case of CRYSTAL: run helper script cry-getE.pl (see below)
+  - in case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run.
+
+#### 3.1 CRYSTAL
+1. Generate k-point grid Create input file and run as: emc.
+1. 
 1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
 1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file.  
  **cry-getE.pl** uses the following parameters:
