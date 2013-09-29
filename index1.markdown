@@ -27,7 +27,7 @@ For the theory behind the code and validation of the code against known data see
  1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
- 1. Effective masses can be highly anisotropic (see Tests section).
+ 1. Effective masses can be highly anisotropic (see [Tests](#toc_8) section).
 
 ### Installation
 
@@ -66,8 +66,10 @@ V                                       ! program identifier (1 char)
 In case of *CRYSTAL*, *cry-getE.pl* script should be used in order to obtain file with the energies on the grid. The script takes two k-points at a time and runs band structure calculations (using *runprop* script from the *CRYSTAL* package).
 
 *cry-getE.pl* has the following command line options:
-   * `-f` SCF output filename (.f9)
-   * `b` band number
+
+ - `-f` SCF output filename (.f9)
+ - `b` band number
+
 Example: `cry-getE.pl -f ../input.f9 -b 131`
 
 Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
@@ -82,7 +84,7 @@ Alexandr Fonari and Christopher Sutton
 
 ### License
 
-Copyright (c) 2012, Alexandr Fonari, Christopher Sutton
+Copyright (c) 2012, Alexandr Fonari, Christopher Sutton  
 Cite as: "Effective Mass Calculator, A. Fonari, C. Sutton, (2012)."
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
