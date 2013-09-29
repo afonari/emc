@@ -24,7 +24,7 @@ where the derivatives can be evaluated numerically using the finite difference m
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
 #### Notes
- 1. Atomic units (a.u.) are used throughout the code: hbar = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
+ 1. Atomic units (a.u.) are used throughout the code: ħ = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
  1. Effective masses can be highly anisotropic (see [Tests](#toc_8) section).
