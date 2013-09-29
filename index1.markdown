@@ -53,34 +53,45 @@ V                                       ! program identifier (1 char)
  - **program identifier**: `C` for *CRYSTAL* or `V` for *VASP*. (TODO: Quantum Espresso)
  - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* under: `direct lattice vectors`.
 
-### 3. Usage
+### Usage
+
 1. Run SCF.
 1. Generate k-point grid (in *KPOINT* file) using *emc.py* with the appropriate input file.
 1. Run non-self consistent calculation using obtained grid:
   - in case of CRYSTAL: run helper script cry-getE.pl (see below)
   - in case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run.
 
-#### 3.1 CRYSTAL
-1. Generate k-point grid Create input file and run as: emc.
-1. 
-1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
-1. Run ```cry-getE.pl -f ../input.f9 -b 131``` to obtain ```EIGENVAL``` file.  
- **cry-getE.pl** uses the following parameters:
-   * SCF output filename (.f9) in ```-f``` flag;
-   * band number in ```-b``` flag.
-   * Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
-1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
+#### Helper script cry-getE.pl
 
-#### 3.2 VASP
-1. Run SCF (e.g. ```ICHARG=2``` in INCAR).
-1. Create a directory, e.g. ```emH-00-50-00-d01```, meaning we are calculating effective mass for holes (VB) **Y** point with ```dk=0.01```.
-1. Create ```inp``` file with the desired characteristics in the newly created directory.
-1. Run ```emc_gen.x``` to obtain ```KPOINTS``` file.
-1. Run a non-SCF calculation (```ICHARG=11``` in INCAR). Don't forget to copy ```CHGCAR``` file from SCF folder.
-1. Run ```emc_calc.x``` to obtain effective masses and directions. Look for ```emc_calc.log``` file.
+In case of *CRYSTAL*, *cry-getE.pl* script should be used in order to obtain file with the energies on the grid. The script takes two k-points at a time and runs band structure calculations (using *runprop* script from the *CRYSTAL* package).
 
-### 4. Acknowledgments and references
-1. Finite-difference method on three-point stencil is outlined here: K. Doi, *et al.*, *J. Appl. Phys.*, **98**, 113709 (2005): [10.1063/1.2138381](http://dx.doi.org/10.1063/1.2138381).
+*cry-getE.pl* has the following command line options:
+   * `-f` SCF output filename (.f9)
+   * `b` band number
+Example: `cry-getE.pl -f ../input.f9 -b 131`
 
-### 5. Test cases
-In progress...
+Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
+
+### Test cases
+
+For the usage examples see the [Tests](https://github.com/alexandr-fonari/emc/tree/master/test) folder used by CI.
+
+### Authors
+
+Alexandr Fonari and Christopher Sutton
+
+### License
+
+Copyright (c) 2012, Alexandr Fonari, Christopher Sutton
+Cite as: "Effective Mass Calculator, A. Fonari, C. Sutton, (2012)."
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
