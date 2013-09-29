@@ -29,11 +29,11 @@ For the theory behind the code and validation of the code against known data see
  1. Atomic units (a.u.) are used throughout the code: ħ = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
- 1. Effective masses can be highly anisotropic (see [Tests](#toc_8) section).
+ 1. Effective masses can be highly anisotropic (see [Running tests](#toc_8) section).
 
 ### Installation
 
-EMC is a Python script, that depends only on the Python Standard Library. That means that the only thing you need to do is download [emc.py]() and run it!
+EMC is a Python script, that depends only on the Python Standard Library. That means that you only need to download the latest version, unpack it, check that *emc.py* has executable flag (`chmod +x ./emc.py` if it doesn't) and it is in your `$PATH`, and enjoy the results!
 
 ### Requirements
 
@@ -76,15 +76,18 @@ Example: `cry-getE.pl -f ../input.f9 -b 131`
 
 Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
 
-### Test cases
+### Running tests
 
-For the usage examples see the [Tests](https://github.com/alexandr-fonari/emc/tree/master/test) folder used by CI.
+To run tests, in the distribution directory run:  
+`python -m unittest discover`
+
+Tests are located in the *test* folder.
 
 ### Authors
 
 Alexandr Fonari and Christopher Sutton
 
-### License
+### License: MIT
 
 Copyright (c) 2012, Alexandr Fonari, Christopher Sutton  
 Cite as: "Effective Mass Calculator, A. Fonari, C. Sutton, (2012)."
