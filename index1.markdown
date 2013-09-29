@@ -33,7 +33,9 @@ For the theory behind the code and validation of the code against known data see
 
 ### Installation
 
-EMC is a Python script, that depends only on the Python Standard Library. To install:
+EMC is a Python script, that depends only on the Python Standard Library.  
+To install:
+
  - download the latest version
  - unpack it: `tar -zxvf emc.tar.gz`
  - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
