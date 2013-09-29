@@ -26,18 +26,23 @@ where the derivatives can be evaluated numerically using the finite difference m
 For the theory behind the code and validation of the code against known data see [the paper](https://github.com/alexandr-fonari/emc/blob/master/Paper-03-18-2013.pdf?raw=true). Let us know if you find any bugs or mistakes, thanks!
 
 #### Notes
- 1. Atomic units (a.u.) are used throughout the code: ħ = 1, energy is in Hartree, distance is in Bohr, mass is in the electron mass at rest (m0).
+ 1. Atomic units (a.u.) are used throughout the code: ħ = 1, energy is in Hartree, effective mass is in the electron mass at rest (m0), distance is in Bohr.
  1. For the top of the VB (valence band) eigenvalues are negative, for the bottom of the CB (conduction band) eigenvalues are positive.
  1. In some cases, not all eigenvalues have the same sign, meaning that the chosen k-point is not a global minimum (maximum).
- 1. Effective masses can be highly anisotropic (see [Running tests](#toc_8) section).
+ 1. Effective masses can be highly anisotropic (see [Running tests](#toc_9) section).
 
 ### Installation
 
-EMC is a Python script, that depends only on the Python Standard Library. That means that you only need to download the latest version, unpack it, check that *emc.py* has executable flag (`chmod +x ./emc.py` if it doesn't) and it is in your `$PATH`, and enjoy the results!
+EMC is a Python script, that depends only on the Python Standard Library. To install:
+ - download the latest version
+ - unpack it: `tar -zxvf emc.tar.gz`
+ - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
+ - check that *emc.py* is in your path `$PATH` by printing the `$PATH` variable: `echo $PATH`
+ - enjoy the results!
 
 ### Requirements
 
-The code is being tested with Python v 2.7 (as you can see in the [travis config file](https://github.com/alexandr-fonari/emc/blob/master/.travis.yml)). Other versions of the Python will be coming soon.
+The code is being tested with Python v 2.7 (as you can see in the [travis-ci config file](https://github.com/alexandr-fonari/emc/blob/master/.travis.yml)). Other versions of the Python will be coming soon.
 
 ### Input file structure
 
@@ -51,9 +56,9 @@ V                                       ! program identifier (1 char)
 0.462692761  3.245907103 14.032346772   ! direct lattice vectors (3 floats)
 ```
 
- - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script `cry-getE.pl` reads-in the desired band number (see below). For *VASP* valence band number can be obtained as a half of the `NELECT` variable from the *OUTCAR* file (for non spin-polarized calculations).
+ - **band number**. If *CRYSTAL* is employed, band number should be set to **1**. Helper script `cry-getE.pl` reads-in the desired band number ([see below](#toc_8)). For *VASP* valence band number can be obtained as a half of the `NELECT` variable from the *OUTCAR* file (for non spin-polarized calculations).
  - **program identifier**: `C` for *CRYSTAL* or `V` for *VASP*. (TODO: Quantum Espresso)
- - **direct lattice components** in *CRYSTAL* can be found under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* under: `direct lattice vectors`.
+ - **direct lattice components** in *CRYSTAL* can be found in the SCF output under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* in the *OUTCAR* under: `direct lattice vectors`.
 
 ### Usage
 
@@ -70,11 +75,11 @@ In case of *CRYSTAL*, *cry-getE.pl* script should be used in order to obtain fil
 *cry-getE.pl* has the following command line options:
 
  - `-f` SCF output filename (.f9)
- - `b` band number
+ - `-b` band number
 
 Example: `cry-getE.pl -f ../input.f9 -b 131`
 
-Note that ```runprop09``` needs to be in the current ```$PATH```, otherwise script will quit.
+Note that ```runprop``` needs to be in the current ```$PATH```, otherwise script will quit.
 
 ### Running tests
 
