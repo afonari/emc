@@ -5,11 +5,13 @@ title: Effective Mass Calculator
 
 ## {{ page.title }}
 
-Continuous integration: [![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
+Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
+
+#### Continuous integration
+
+[![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
 
 ### Theory
-
-Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
 
 Effective mass (m*) is defined as:
 
