@@ -1,18 +1,60 @@
 #!/usr/bin/env python
 
-EMC_VERSION='2.0b1'
-
-diff_d2 = []
-diff_d2.append([0.0, 0.0, 0.0]); # 0
-diff_d2.append([-1.0, 0.0, 0.0]); diff_d2.append([1.0, 0.0, 0.0]);  # dx  1-2
-diff_d2.append([0.0, -1.0, 0.0]); diff_d2.append([0.0, 1.0, 0.0])   # dy  3-4
-diff_d2.append([0.0, 0.0, -1.0]); diff_d2.append([0.0, 0.0, 1.0])   # dz  5-6
-diff_d2.append([-1.0, -1.0, 0.0]); diff_d2.append([1.0, 1.0, 0.0]); diff_d2.append([1.0, -1.0, 0.0]); diff_d2.append([-1.0, 1.0, 0.0]); # dxdy 7-10
-diff_d2.append([-1.0, 0.0, -1.0]); diff_d2.append([1.0, 0.0, 1.0]); diff_d2.append([1.0, 0.0, -1.0]); diff_d2.append([-1.0, 0.0, 1.0]); # dxdz 11-14
-diff_d2.append([0.0, -1.0, -1.0]); diff_d2.append([0.0, 1.0, 1.0]); diff_d2.append([0.0, 1.0, -1.0]); diff_d2.append([0.0, -1.0, 1.0]); # dydz 15-18
-
-Bohr = 0.5291772
-
+EMC_VERSION='1.50py'
+STENCIL=5 # or 3
+#
+###################################################################################################
+#
+#   STENCILS for finite difference
+#
+#   three-point stencil
+st3 = []
+st3.append([0.0, 0.0, 0.0]); # 0
+st3.append([-1.0, 0.0, 0.0]);  st3.append([1.0, 0.0, 0.0]);  # dx  1-2
+st3.append([0.0, -1.0, 0.0]);  st3.append([0.0, 1.0, 0.0])   # dy  3-4
+st3.append([0.0, 0.0, -1.0]);  st3.append([0.0, 0.0, 1.0])   # dz  5-6
+st3.append([-1.0, -1.0, 0.0]); st3.append([1.0, 1.0, 0.0]); st3.append([1.0, -1.0, 0.0]); st3.append([-1.0, 1.0, 0.0]); # dxdy 7-10
+st3.append([-1.0, 0.0, -1.0]); st3.append([1.0, 0.0, 1.0]); st3.append([1.0, 0.0, -1.0]); st3.append([-1.0, 0.0, 1.0]); # dxdz 11-14
+st3.append([0.0, -1.0, -1.0]); st3.append([0.0, 1.0, 1.0]); st3.append([0.0, 1.0, -1.0]); st3.append([0.0, -1.0, 1.0]); # dydz 15-18
+#
+#   five-point stencil
+st5 = []
+st5.append([0.0, 0.0, 0.0])
+#
+a = [-2,-1,1,2]
+for i in range(len(a)): #dx
+    st5.append([float(a[i]), 0., 0.])
+#
+for i in range(len(a)): #dy
+    st5.append([0., float(a[i]), 0.])
+#
+for i in range(len(a)): #dz
+    st5.append([0., 0., float(a[i])])
+#
+for i in range(len(a)):
+    i1=float(a[i])
+    for j in range(len(a)):
+        j1=float(a[j])
+        st5.append([j1, i1, 0.]) # dxdy
+#
+for i in range(len(a)):
+    i1=float(a[i])
+    for j in range(len(a)):
+        j1=float(a[j])
+        st5.append([j1, 0., i1,]) # dxdz
+#
+for i in range(len(a)):
+    i1=float(a[i])
+    for j in range(len(a)):
+        j1=float(a[j])
+        st5.append([0., j1, i1]) # dydz
+#
+#   CONSTANTS
+#
+Bohr = 0.52917721092
+#
+#######  FUNCTIONS and __main__  ##################################################################
+#
 def MAT_m_VEC(m, v):
     p = [ 0.0 for i in range(len(v)) ]
     for i in range(len(m)):
@@ -74,12 +116,12 @@ def jacobi(ainput):
     n = len(a)
     m = len(a[0])
     if n != m:
-        raise 'Matrix must be square'
+        raise 'jacobi: Matrix must be square'
     #
     for i in range(n):
         for j in range(m):
             if a[i][j] != a[j][i]:
-                raise ' Matrix must be symmetric'
+                raise 'jacobi: Matrix must be symmetric'
     #
     tolmin = 1e-14
     tol = 1e-4
@@ -138,7 +180,7 @@ def jacobi(ainput):
         tol = max(tolmin,tol*0.99e-2)
     #
     if nrot != 0:
-        raise "Jacobi iteration did not converge in 50 passes"
+        print 'jacobi: [WARNING] Jacobi iteration did not converge in 50 passes!'
     #
     # Sort eigenvectors and values into increasing order
     e = [0.0 for i in range(n)] # zerovector
@@ -154,46 +196,70 @@ def jacobi(ainput):
 def cart2frac(basis, v):
     return MAT_m_VEC( T(INVERT_3X3(basis)), v )
 
-def fd_effmass(e, stepsize, order=2, debug=False):
+def fd_effmass_st3(e, h):
     m = [[0.0 for i in range(3)] for j in range(3)]
-    m[0][0] = (e[1] - 2.0*e[0] + e[2])/stepsize**2
-    m[1][1] = (e[3] - 2.0*e[0] + e[4])/stepsize**2
-    m[2][2] = (e[5] - 2.0*e[0] + e[6])/stepsize**2
+    m[0][0] = (e[1] - 2.0*e[0] + e[2])/h**2
+    m[1][1] = (e[3] - 2.0*e[0] + e[4])/h**2
+    m[2][2] = (e[5] - 2.0*e[0] + e[6])/h**2
 
-    m[0][1] = (e[7] + e[8] - e[9] - e[10])/(4*stepsize**2)
-    m[0][2] = (e[11] + e[12] - e[13] - e[14])/(4*stepsize**2)
-    m[1][2] = (e[15] + e[16] - e[17] - e[18])/(4*stepsize**2)
+    m[0][1] = (e[7] + e[8] - e[9] - e[10])/(4.0*h**2)
+    m[0][2] = (e[11] + e[12] - e[13] - e[14])/(4.0*h**2)
+    m[1][2] = (e[15] + e[16] - e[17] - e[18])/(4.0*h**2)
 
     # symmetrize
     m[1][0] = m[0][1]
     m[2][0] = m[0][2]
     m[2][1] = m[1][2]
-
-    if debug:
-        print 'Assembling effective mass tensor...'
-        print ''
-        for i in range(len(m)):
-            print '%7.5f %7.5f %7.5f' % (m[i][0], m[i][1], m[i][2])
-
-    if debug: print ''
+    #
+    print '-> fd_effmass_st3: Effective mass tensor:\n'
+    for i in range(len(m)):
+        print '%15.8f %15.8f %15.8f' % (m[i][0], m[i][1], m[i][2])
+    print ''
+    #
     return m
 
-def generate_kpoints(kpt_frac, stepsize, prg, basis, debug=False):
+def fd_effmass_st5(e, h):
+    m = [[0.0 for i in range(3)] for j in range(3)]
+    #
+    m[0][0] = (-(e[1]+e[4])  + 16.0*(e[2]+e[3])   - 30.0*e[0])/(12.0*h**2)
+    m[1][1] = (-(e[5]+e[8])  + 16.0*(e[6]+e[7])   - 30.0*e[0])/(12.0*h**2)
+    m[2][2] = (-(e[9]+e[12]) + 16.0*(e[10]+e[11]) - 30.0*e[0])/(12.0*h**2)
+    #
+    m[0][1] = (-63.0*(e[15]+e[20]+e[21]+e[26]) + 63.0*(e[14]+e[17]+e[27]+e[24]) \
+               +44.0*(e[16]+e[25]-e[13]-e[28]) + 74.0*(e[18]+e[23]-e[19]-e[22]))/(600.0*h**2)
+    m[0][2] = (-63.0*(e[31]+e[36]+e[37]+e[42]) + 63.0*(e[30]+e[33]+e[43]+e[40]) \
+               +44.0*(e[32]+e[41]-e[29]-e[44]) + 74.0*(e[34]+e[39]-e[35]-e[38]))/(600.0*h**2)
+    m[1][2] = (-63.0*(e[47]+e[52]+e[53]+e[58]) + 63.0*(e[46]+e[49]+e[59]+e[56]) \
+               +44.0*(e[48]+e[57]-e[45]-e[60]) + 74.0*(e[50]+e[55]-e[51]-e[54]))/(600.0*h**2)
+    #
+    # symmetrize
+    m[1][0] = m[0][1]
+    m[2][0] = m[0][2]
+    m[2][1] = m[1][2]
+    #
+    print '-> fd_effmass_st5: Effective mass tensor:\n'
+    for i in range(3):
+        print '%15.8f %15.8f %15.8f' % (m[i][0], m[i][1], m[i][2])
+    print ''
+    #
+    return m
+
+def generate_kpoints(kpt_frac, st, h, prg, basis):
     from math import pi
     #
     # working in the reciprocal space
     m = INVERT_3X3(T(basis))
     basis_r = [[ m[i][j]*2.0*pi for j in range(3) ] for i in range(3) ]
     #
-    k_c = MAT_m_VEC(T(basis_r), kpt_frac)
-    if debug: print kpt_r_cart
+    kpt_rec = MAT_m_VEC(T(basis_r), kpt_frac)
+    print '-> generate_kpoints: K-point in reciprocal coordinates: %5.3f %5.3f %5.3f' % (kpt_rec[0], kpt_rec[1], kpt_rec[2])
     #
     if prg == 'V':
-        stepsize = stepsize*(1/Bohr) # [1/A]
+        h = h*(1/Bohr) # [1/A]
     #
     kpoints = []
-    for i in range(len(diff_d2)):
-        k_c_ = [ k_c[j] + diff_d2[i][j]*stepsize for j in range(3) ] # getting displaced k points in Cartesian coordinates
+    for i in range(len(st)):
+        k_c_ = [ kpt_rec[j] + st[i][j]*h for j in range(3) ] # getting displaced k points in Cartesian coordinates
         k_f = cart2frac(basis_r, k_c_)
         kpoints.append( [k_f[0], k_f[1], k_f[2]] )
     #
@@ -211,7 +277,7 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
     nelec, nkpt, nband = [int(s) for s in eigenval_fh.readline().split()]
     if debug: print 'From EIGENVAL: Number of the valence band is %d (NELECT/2)' % (nelec/2)
     if band > nband:
-        print 'Requested band (%d) is larger than total number of the calculated bands (%d), exiting...' % (band, nband)
+        print 'Requested band (%d) is larger than total number of the calculated bands (%d)!' % (band, nband)
         sys.exit(1)
 
     energies = []
@@ -303,8 +369,23 @@ if __name__ == "__main__":
     import sys
     import re
     import datetime
+    import time
+    filename = 'emcpy.out_'+str(int(time.time()))
+    print 'Redirecting output to '+filename
+    sys.stdout = open(filename, 'w')
     #
-    print '\nEffective mass calculator '+EMC_VERSION
+    if STENCIL==3:
+        fd_effmass = fd_effmass_st3
+        st = st3
+    elif STENCIL == 5:
+        fd_effmass = fd_effmass_st5
+        st = st5
+    else:
+        print 'main: [ERROR] Wrong value for STENCIL, should be 3 or 5.'
+        sys.exit(1)
+    #
+    print 'Effective mass calculator '+EMC_VERSION
+    print 'Stencil: '+str(STENCIL)
     print 'License: MIT'
     print 'Developed by: Alexandr Fonari and Chris Sutton'
     print 'Started at: '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")+'\n'
@@ -342,8 +423,8 @@ if __name__ == "__main__":
         #
         energies = []
         if prg.upper() == 'V' or prg.upper() == 'C':
-            energies = parse_EIGENVAL_VASP(output_fh, band, len(diff_d2))
-            m = fd_effmass(energies, stepsize, debug=True)
+            energies = parse_EIGENVAL_VASP(output_fh, band, len(st))
+            m = fd_effmass(energies, stepsize)
             #
         masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
         print 'Principle effective masses and directions:\n'
@@ -361,14 +442,14 @@ if __name__ == "__main__":
             print ""
             sys.exit(1)
         #
-        kpoints = generate_kpoints(kpt, stepsize, prg, basis, debug=False)
+        kpoints = generate_kpoints(kpt, st, stepsize, prg, basis)
         kpoints_fh = open('KPOINTS', 'w')
         kpoints_fh.write("EMC "+EMC_VERSION+"\n")
-        kpoints_fh.write("%d\n" % len(diff_d2))
+        kpoints_fh.write("%d\n" % len(st))
         kpoints_fh.write("Reciprocal\n")
         #
         for i, kpt in enumerate(kpoints):
-            kpoints_fh.write( '%7.5f %7.5f %7.5f 0.01\n' % (kpt[0], kpt[1], kpt[2]) )
+            kpoints_fh.write( '%15.10f %15.10f %15.10f 0.01\n' % (kpt[0], kpt[1], kpt[2]) )
         #
         kpoints_fh.close()
         print 'KPOINTS file has been generated in the current directory...\n'

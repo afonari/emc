@@ -9,7 +9,7 @@ real(kind=8), parameter :: b2a = 0.52917721092d0
 real(kind=8), parameter :: pi = 4.d0*DATAN(1.d0)
 integer(kind=4), parameter :: nkpoints = 61
 integer(kind=4), parameter :: iunt = 10, ilog = 11, w = 1 ! k point weight for VASP
-character(len=3), parameter :: version_number = '1.0'
+character(len=8), parameter :: version_number = '1.5f'
 
 real(kind=8) :: kp(3), kpc(3), dk, E(-2:2,-2:2,-2:2), A(4), f(3,3), g(3,3)
 integer(kind=4) :: i, i1, j, j1, band
@@ -27,10 +27,6 @@ open(unit=iunt,file='inp',form='formatted')
     read(iunt,fmt=*) prg
     read(iunt,*) ((f(i,j),j=1,3),i=1,3)
 close(iunt)
-    
-if(prg .eq. 'C') then
-    f=f/(2.d0*pi)
-end if
 
 write(ilog,"(A,I5,F10.6)") "band, dk: ", band, dk
 
@@ -45,6 +41,7 @@ write(ilog,*)
 g=f
 g=transpose(g)
 call inverse(g, 3)
+g=g*2.d0*pi
 
 write(ilog,*) "direct lattice vectors              reciprocal lattice vectors"
 do i=1,3
@@ -68,13 +65,15 @@ else
     write(unit=iunt,fmt='(A)') 'Cartesian'
 end if
 
-! x
-do i=-2,2
-    call set_next_eigeval(iunt, g, kpc, i, 0, 0, w, dk, prg)
-end do
+call set_next_eigeval(iunt, g, kpc, 0, 0, 0, w, dk, prg) ! 0 0 0
 
 ! http://stackoverflow.com/questions/9791001/loop-in-fortran-from-a-list
 A = (/ -2, -1, 1, 2 /)
+! x
+do i = 1, size(A)
+    i1 = A(i)
+    call set_next_eigeval(iunt, g, kpc, i1, 0, 0, w, dk, prg)
+end do
 
 ! y
 do i = 1, size(A)

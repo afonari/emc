@@ -1,4 +1,4 @@
-#LAPACKLIBS=-llapack -lblas #  [for Mac os] comment this line if you are not using LAPACK.
+LAPACKLIBS=-llapack -lblas #  [for Mac os] comment this line if you are not using LAPACK.
                              # On systems with a FORTRAN (not f2c'ed) version of LAPACK, -lf2c is
                              # not necessary; on others, -lf2c is equivalent to -lF77 -lI77
 
@@ -11,7 +11,7 @@
 #LAPACKLIBS=-L/opt/intel/mkl/8.0.1/lib/32/ -lmkl_lapack -lmkl_ia32 -lguide -lf2c # This works with MKL 8.0.1 from
                    # http://www.intel.com/cd/software/products/asmo-na/eng/perflib/mkl/index.htm
 
-LAPACKLIBS=-L/opt/intel/Compiler/11.1/046/mkl/lib/em64t -lmkl_lapack -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread
+#LAPACKLIBS=-L/opt/intel/Compiler/11.1/046/mkl/lib/em64t -lmkl_lapack -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread
 
 LIBS=$(LAPACKLIBS)
 

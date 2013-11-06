@@ -38,8 +38,8 @@ class EMC_Test(unittest.TestCase):
     def test_calculate_effmass(self):
         kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need band and stepsize later
 
-        energies = emc.parse_EIGENVAL_VASP(self.eigenval_fh, band, len(emc.diff_d2), debug=False)
-        m = emc.fd_effmass(energies, stepsize, debug=False)
+        energies = emc.parse_EIGENVAL_VASP(self.eigenval_fh, band, len(emc.st3), debug=False)
+        m = emc.fd_effmass_st3(energies, stepsize)
         self.assertListAlmostEqual(m[0], [-2.90687, 0.0, 0.0], places=5, msg='Failed to calculate effective mass tensor')
         self.assertListAlmostEqual(m[1], [0.0, -2.90687, 0.0], places=5, msg='Failed to calculate effective mass tensor')
         self.assertListAlmostEqual(m[2], [0.0, 0.0, -2.90687], places=5, msg='Failed to calculate effective mass tensor')
@@ -49,7 +49,7 @@ class EMC_Test(unittest.TestCase):
 
     def test_kpoints(self):
         kpt, stepsize, band, prg, basis = emc.parse_inpcar(self.inpcar_fh, debug=False) # will need stepsize later
-        kpts = emc.generate_kpoints(kpt, stepsize, prg, basis, debug=False)
+        kpts = emc.generate_kpoints(kpt, emc.st3, stepsize, prg, basis)
 
         self.kpoints_fh.readline() # title
         nkpt = int(self.kpoints_fh.readline()) # Reciprocal
