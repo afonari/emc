@@ -33,13 +33,17 @@ For the theory behind the code and validation of the code against known data see
 
 ### Installation
 
-EMC is a Python script, that depends only on the Python Standard Library.  
+The current version is [**1.50**](https://github.com/alexandr-fonari/emc/releases/download/1.50/emc-1.50.tar.gz).
+
+#### Python version
+
+`emc.py` is a Python script, that depends only on the Python Standard Library.  
 To install:
 
  - download the latest version
- - unpack it: `tar -zxvf emc.tar.gz`
+ - unpack it: `tar -zxvf emc-1.50.tar.gz`
  - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
- - check that *emc.py* is in your path `$PATH` by printing the `$PATH` variable: `echo $PATH`
+ - check that *emc.py* is in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
  - enjoy the results!
 
 ### Requirements
