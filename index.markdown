@@ -5,7 +5,7 @@ title: Effective Mass Calculator
 
 ## {{ page.title }}
 
-Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
+Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). There are currently two versions of the script: FORTRAN program and Python script. Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
 
 #### Continuous integration
 
