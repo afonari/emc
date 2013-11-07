@@ -37,7 +37,8 @@ Download and unpack the current version: [**1.50**](https://github.com/alexandr-
 
 #### Python version
 
-`emc.py` is a Python script, that depends only on the Python Standard Library.  
+`emc.py` is a Python script, that depends only on the Python Standard Library.
+
 To install:
 
  - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
@@ -46,7 +47,8 @@ To install:
 
 #### Fortran version
 
-Fortran version depends on LAPACK and BLAS libraries.  
+Fortran version depends on LAPACK and BLAS libraries.
+
 To install:
 
  - edit Makefile from the *fortran* folder for you needs.
@@ -84,16 +86,16 @@ V                                       ! program identifier (1 char)
   - in case of CRYSTAL: run helper script cry-getE.pl (see below)
   - in case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run.
 
-#### Helper script cry-getE.pl
+#### Helper script for CRYSTAL: cry-getE.pl
 
 In case of *CRYSTAL*, *cry-getE.pl* script should be used in order to obtain file with the energies on the grid. The script takes two k-points at a time and runs band structure calculations (using *runprop* script from the *CRYSTAL* package).
 
 *cry-getE.pl* has the following command line options:
 
- - `-f` SCF output filename (.f9)
+ - `-f` SCF output filename (.f98)
  - `-b` band number
 
-Example: `cry-getE.pl -f ../input.f9 -b 131`
+Example: `cry-getE.pl -f ../input.f98 -b 131`
 
 Note that ```runprop``` needs to be in the current ```$PATH```, otherwise script will quit.
 
