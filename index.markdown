@@ -5,7 +5,7 @@ title: Effective Mass Calculator
 
 ## {{ page.title }}
 
-Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). There are currently two versions of the script: FORTRAN program and Python script. Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
+Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). There are two versions of the program: written in FORTRAN and Python. Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
 
 #### Continuous integration
 
@@ -33,22 +33,30 @@ For the theory behind the code and validation of the code against known data see
 
 ### Installation
 
-The current version is [**1.50**](https://github.com/alexandr-fonari/emc/releases/download/1.50/emc-1.50.tar.gz).
+Download and unpack the current version: [**1.50**](https://github.com/alexandr-fonari/emc/releases/download/1.50/emc-1.50.tar.gz).
 
 #### Python version
 
 `emc.py` is a Python script, that depends only on the Python Standard Library.  
 To install:
 
- - download the latest version
- - unpack it: `tar -zxvf emc-1.50.tar.gz`
  - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
  - check that *emc.py* is in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
  - enjoy the results!
 
+#### Fortran version
+
+Fortran version depends on LAPACK and BLAS libraries.  
+To install:
+
+ - edit Makefile from the *fortran* folder for you needs.
+ - run `make`.
+ - check that *emc_gen* and *emc_calc* are in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
+ - enjoy the results!
+
 ### Requirements
 
-The code is being tested with Python v 2.7 (as you can see in the [travis-ci config file](https://github.com/alexandr-fonari/emc/blob/master/.travis.yml)). Other versions of the Python will be coming soon.
+The code is being tested with Python v 2.7 (as you can see in the [travis-ci config file](https://github.com/alexandr-fonari/emc/blob/master/.travis.yml)). Support for the other versions of the Python is coming soon.
 
 ### Input file structure
 
@@ -69,8 +77,10 @@ V                                       ! program identifier (1 char)
 ### Usage
 
 1. Run SCF.
-1. Generate k-point grid (in *KPOINT* file) using *emc.py* with the appropriate input file.
-1. Run non-self consistent calculation using obtained grid:
+1. Generate k-point grid (in *KPOINT* file):  
+   1a. Python version: `emc.py input_file`  
+   1b. FORTRAN version: `emc_gen`. Note: FORTRAN version requires input file to be named `inp`.
+1. Run non-self consistent calculation using obtained k-point grid:
   - in case of CRYSTAL: run helper script cry-getE.pl (see below)
   - in case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run.
 
