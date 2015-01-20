@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 EMC_VERSION='1.50py'
-STENCIL=5 # or 3
+STENCIL=3 # or 3
 #
 ###################################################################################################
 #
@@ -291,7 +291,44 @@ def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
 
     if debug: print ''
     return energies
-
+#
+def parse_nscf_PWSCF(eigenval_fh, band, diff2_size, debug=False):
+    ev2h = 1.0/27.21138505
+    eigenval_fh.seek(0) # just in case
+    engrs_at_k = []
+    energies = []
+    #
+    while True:
+        line = eigenval_fh.readline()
+        if not line:
+            break
+        #
+        if "End of band structure calculation" in line:
+            for i in range(diff2_size):
+                #
+                while True:
+                    line = eigenval_fh.readline()
+                    if "occupation numbers" in line:
+                        break
+                    #
+                    if "k =" in line:
+                        a = [] # energies at a k-point
+                        eigenval_fh.readline() # empty line
+                        #
+                        while True:
+                            line = eigenval_fh.readline()
+                            if line.strip() == "": # empty line
+                                break
+                            #
+                            a.extend(line.strip().split())
+                        #
+                        #print a
+                        assert len(a) <= band, 'Length of the energies array at a k-point is smaller than band param'
+                        energies.append(float(a[band-1])*ev2h)
+    #
+    #print engrs_at_k
+    return energies
+#
 def parse_inpcar(inpcar_fh, debug=False):
     import sys
     import re
@@ -425,7 +462,11 @@ if __name__ == "__main__":
         if prg.upper() == 'V' or prg.upper() == 'C':
             energies = parse_EIGENVAL_VASP(output_fh, band, len(st))
             m = fd_effmass(energies, stepsize)
-            #
+        #
+        if prg.upper() == 'Q':
+            energies = parse_nscf_PWSCF(output_fh, band, len(st))
+            m = fd_effmass(energies, stepsize)
+        #
         masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)
         print 'Principle effective masses and directions:\n'
         for i in range(3):
