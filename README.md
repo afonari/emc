@@ -1,4 +1,3 @@
 # Effective Mass Calculator for Semiconductors
 
-Math test:
-$$x=4$$
+Please refer to http://afonari.com/emc/
