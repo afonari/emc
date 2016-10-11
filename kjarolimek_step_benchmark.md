@@ -39,7 +39,7 @@ Calculations on InP show that even in one material there does not exist a single
 Karol Jarolimek (firstname.lastname@gmail.com)
 
 ## PDF version
-<a href ="kjarolimek_step_benchmark.pdf">kjarolimek_step_benchmark.pdf</a>
+<a href ="kjarolimek_step_benchmark.pdf" targe="_blank">kjarolimek_step_benchmark.pdf</a>
 
 ## References
 1. Kim, Y.-S.; Marsman, M.; Kresse, G.; Tran, F.; Blaha, P. *Phys. Rev. B: Condens. Matter* **2010**, *82*, 205212.
