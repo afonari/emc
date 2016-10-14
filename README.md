@@ -49,7 +49,7 @@ To install:
  - check that *emc_gen* and *emc_calc* are in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
  - enjoy the results!
 
-### Input file structure
+## Input file structure
 
 ```bash
 0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
@@ -65,7 +65,7 @@ V                                       ! program identifier (1 char)
  - **program identifier**: `C` for *CRYSTAL* or `V` for *VASP*. (TODO: Quantum Espresso)
  - **direct lattice components** in *CRYSTAL* can be found in the SCF output under: `DIRECT LATTICE VECTORS COMPON. (A.U.)`, in *VASP* in the *OUTCAR* under: `direct lattice vectors`.
 
-### Usage
+## Usage
 
 1. Run SCF.
 1. Generate k-point grid (in *KPOINT* file):
@@ -91,19 +91,19 @@ Example: `cry-getE.pl -f ../input.f98 -b 131`
 
 Note that ```runprop``` needs to be in the current ```$PATH```, otherwise script will quit.
 
-### Running tests
+## Running tests
 
 To run tests, in the distribution directory run:  
 `python -m unittest discover`
 
 Tests are located in the *test* folder.
 
-### Authors
+## Authors
 
 Alexandr Fonari and Christopher Sutton  
 If you have any questions or suggestions don't hesitate to contact us at: alexandr[dot]fonari[nospam]gmail.com or csutton[nospam]gatech.edu. You can also [submit as issue](https://github.com/alexandr-fonari/emc/issues/new).
 
-### License: MIT
+## License: MIT
 
 Copyright (c) 2012, Alexandr Fonari, Christopher Sutton  
 Cite as: "Effective Mass Calculator, A. Fonari, C. Sutton, (2012)."
