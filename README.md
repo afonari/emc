@@ -8,7 +8,7 @@ Effective mass calculator (**EMC**) implements calculation of the effective mass
 
 Effective mass (m*) is defined as:
 
-![Eq. 1](/emc/eqs/01.svg)
+![Eq. 1](./images/01.svg)
 
 where *x, y, z* are the directions in the reciprocal Cartesian space (2π/A), *En(k)* is the dispersion relation for the *n*-th electronic band. The explicit form of the right-side symmetric tensor from the above eq. is:
 
