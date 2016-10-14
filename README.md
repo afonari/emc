@@ -2,7 +2,7 @@
 
 Effective mass calculator (**EMC**) implements calculation of the effective masses at the bands extrema using finite difference method (**not** the band fitting method). There are two versions of the program: written in FORTRAN and Python. Currently *CRYSTAL* and *VASP* are supported, *Quantum Espresso* is coming!
 
-[![Build Status](https://travis-ci.org/alexandr-fonari/emc.png)](https://travis-ci.org/alexandr-fonari/emc.png)
+[![Build Status](https://travis-ci.org/afonari/emc.svg?branch=master)](https://travis-ci.org/afonari/emc)
 
 ## Theory
 
