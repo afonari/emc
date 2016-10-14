@@ -395,7 +395,7 @@ def get_eff_masses(m, basis):
     eigvec, eigval = jacobi(m)
     #
     for i in range(3):
-        #vecs_cart[i] = eigvec[:,i].tolist()
+        vecs_cart[i] = eigvec[i]
         vecs_frac[i] = cart2frac(basis, eigvec[i])
         vecs_n[i]    = N(vecs_frac[i])
     #
