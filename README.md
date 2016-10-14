@@ -8,11 +8,11 @@ Effective mass calculator (**EMC**) implements calculation of the effective mass
 
 Effective mass (m*) is defined as:
 
-![Eq. 1](./images/01.svg?raw=true)
+![Eq. 1](https://rawgithub.com/afonari/emc/master/images/01.svg)
 
 where *x, y, z* are the directions in the reciprocal Cartesian space (2π/A), *En(k)* is the dispersion relation for the *n*-th electronic band. The explicit form of the right-side symmetric tensor from the above eq. is:
 
-![Eq. 1](/emc/eqs/02.svg)
+![Eq. 1](https://rawgithub.com/afonari/emc/master/images/02.svg)
 
 where the derivatives can be evaluated numerically using the finite difference method. Eigenvalues of the above matrix are inverses of the effective masses, eigenvectors are the directions of the principal effective mass components.
 
