@@ -1,10 +1,18 @@
 sudo: false
 
+install:
+ - pip install coveralls
+
 language: python
 
 python:
   - 2.7
 
-script: 
-  - python -m unittest discover
+#script: 
+#  - python -m unittest discover
+script:
+  coverage run --source cookiecutter setup.py test
+
+after_success:
+    coveralls
 
