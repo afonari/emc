@@ -11,7 +11,7 @@ python:
 #script: 
 #  - python -m unittest discover
 script:
-  coverage run --source cookiecutter setup.py test
+  coverage run -m unittest discover
 
 after_success:
     coveralls
