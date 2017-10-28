@@ -70,14 +70,14 @@ V                                       ! program identifier (1 char)
 
 1. Run SCF.
 1. Generate k-point grid (in *KPOINT* file):
-  - Python version: `emc.py input_file`
-  - FORTRAN version: `emc_gen`. Note: FORTRAN version requires input file to be named `inp`
+    - Python version: `emc.py input_file`
+    - FORTRAN version: `emc_gen`. Note: FORTRAN version requires input file to be named `inp`
 1. Run non-self consistent calculation using obtained k-point grid:
-  - in the case of CRYSTAL: run helper script cry-getE.pl (see below)
-  - in the case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run
+    - in the case of CRYSTAL: run helper script cry-getE.pl (see below)
+    - in the case of VASP: set `ICHARG=11` in the *INCAR*. Don't forget to copy *CHGCAR* file from the converged SCF run
 1. Calculate effective masses and principal directions using *EIGENVAL* file generated in previous step:
-  - Python version: `emc.py input_file EIGENVAL_file`
-  - FORTRAN version: `emc_calc`. Current folder should contain both *inp* and *EIGENVAL* files
+    - Python version: `emc.py input_file EIGENVAL_file`
+    - FORTRAN version: `emc_calc`. Current folder should contain both *inp* and *EIGENVAL* files
 
 ### Helper script for CRYSTAL: cry-getE.pl
 
