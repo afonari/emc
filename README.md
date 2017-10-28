@@ -26,19 +26,18 @@ For the theory behind the code and validation of the code against known data see
 
 ## Installation
 
-Download and unpack the current version: [**1.50**](https://github.com/alexandr-fonari/emc/releases/download/1.50/emc-1.50.tar.gz).
-
 ### Python version
 
-`emc.py` is a Python script, that depends only on the Python Standard Library. Code is being tested with Python v 2.7.
+`emc.py` is a Python script, that depends only on the Python Standard Library. Code is being tested with Python v 2.7. 
 
 To install:
-
- - check that *emc.py* has executable flag using `ls -la`, if it doesn't do `chmod +x ./emc.py`
+ - check that *emc.py* has executable flag using `ls -la`, if it doesn't, do `chmod +x ./emc.py`
  - check that *emc.py* is in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
  - enjoy the results!
 
-### Fortran version
+### Fortran version (considered deprecated)
+
+FORTRAN version is considered deprecated: Download and unpack the current version: [**1.50**](https://github.com/alexandr-fonari/emc/releases/download/1.50/emc-1.50.tar.gz).
 
 Fortran version depends on LAPACK and BLAS libraries.
 
@@ -48,6 +47,8 @@ To install:
  - run `make`
  - check that *emc_gen* and *emc_calc* are in your path `$PATH` (to print the `$PATH` variable do `echo $PATH`)
  - enjoy the results!
+
+NOTE: `emc.py` uses STENCIL=3 by default. It is possible to use STENCIL=5. For that purpose change the third line in `emc.py` file from `STENCIL=3` to `STENCIL=5`.
 
 ## Input file structure
 
@@ -90,6 +91,34 @@ In case of *CRYSTAL*, *cry-getE.pl* script should be used in order to obtain fil
 Example: `cry-getE.pl -f ../input.f98 -b 131`
 
 Note that ```runprop``` needs to be in the current ```$PATH```, otherwise script will quit.
+
+## Usage with CASTEP
+*Contribution by Genadi Naydenov*
+
+1. Create an input file (let's say emc-input). Below is an example of emc-input:
+
+```bash
+0.000 0.000 0.000                       ! K-POINT in the reciprocal crystal coord. (3 floats)
+0.01                                    ! step size in 1/Bohr units (1 float)
+17                                      ! band number, (1 integer)
+P                                       ! program identifier (1 char) - P is the CASTEP identifier
+6.291999817  0.000000000  0.000000000   ! direct lattice vectors in Angs (3 floats)
+0.755765092  7.652872670  0.000000000   ! direct lattice vectors in Angs (3 floats)
+0.462692761  3.245907103 14.032346772   ! direct lattice vectors in Angs (3 floats)
+```
+2. Run `./emc.py emc-input`. This will generate a `KPOINTS` file, which contains a list of k-points.
+3. Copy the fractional coordinates of the k-points from KPOINTS and paste them into a kpoints_list block in <seedname>.cell. Example of the block:
+
+```bash
+%BLOCK SPECTRAL_KPOINTS_LIST
+
+*paste k-points list here*
+
+%ENDBLOCK SPECTRAL_KPOINTS_LIST
+```
+
+4. Run a spectral calculation in CASTEP.
+5. Once the spectral calculation is done, use `./emc.py emc-input <seedname>.bands` to obtain the effective mass for the desired band. You can change the band number and repeat step 5 to calculate the effective mass for a different band.
 
 ## Running tests
 
