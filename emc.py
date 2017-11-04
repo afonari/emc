@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-EMC_VERSION='1.50py'
-STENCIL=3 # or 3
+EMC_VERSION = '1.51py'
+STENCIL = 3 # or 5
 #
 ###################################################################################################
 #
@@ -254,7 +254,7 @@ def generate_kpoints(kpt_frac, st, h, prg, basis):
     kpt_rec = MAT_m_VEC(T(basis_r), kpt_frac)
     print '-> generate_kpoints: K-point in reciprocal coordinates: %5.3f %5.3f %5.3f' % (kpt_rec[0], kpt_rec[1], kpt_rec[2])
     #
-    if prg == 'V':
+    if prg == 'V' or prg == 'P':
         h = h*(1/Bohr) # [1/A]
     #
     kpoints = []
@@ -264,6 +264,41 @@ def generate_kpoints(kpt_frac, st, h, prg, basis):
         kpoints.append( [k_f[0], k_f[1], k_f[2]] )
     #
     return kpoints
+
+def parse_bands_CASTEP(eigenval_fh, band, diff2_size, debug=False):
+
+    # Number of k-points X
+    nkpt = int(eigenval_fh.readline().strip().split()[3])
+
+    # Number of spin components X
+    spin_components = float(eigenval_fh.readline().strip().split()[4])
+
+    # Number of electrons X.00 Y.00
+    tmp = eigenval_fh.readline().strip().split()
+    if spin_components == 1:
+        nelec = int(float(tmp[3]))
+        n_electrons_down = None
+    elif spin_components == 2:
+        nelec = [float(tmp[3])]
+        n_electrons_down = int(float(tmp[4]))
+
+    # Number of eigenvalues X
+    nband = int(eigenval_fh.readline().strip().split()[3])
+
+    energies = []
+    # Get eigenenergies and unit cell from .bands file
+    while True:
+        line = eigenval_fh.readline()
+        if not line:
+            break
+        #
+        if 'Spin component 1' in line:
+            for i in range(1, nband + 1):
+                energy = float(eigenval_fh.readline().strip())
+                if band == i:
+                    energies.append(energy)
+
+    return energies
 
 def parse_EIGENVAL_VASP(eigenval_fh, band, diff2_size, debug=False):
     ev2h = 1.0/27.21138505
@@ -411,7 +446,7 @@ if __name__ == "__main__":
     print 'Redirecting output to '+filename
     sys.stdout = open(filename, 'w')
     #
-    if STENCIL==3:
+    if STENCIL == 3:
         fd_effmass = fd_effmass_st3
         st = st3
     elif STENCIL == 5:
@@ -465,6 +500,10 @@ if __name__ == "__main__":
         #
         if prg.upper() == 'Q':
             energies = parse_nscf_PWSCF(output_fh, band, len(st))
+            m = fd_effmass(energies, stepsize)
+        #
+        if prg.upper() == 'P':
+            energies = parse_bands_CASTEP(output_fh, band, len(st))
             m = fd_effmass(energies, stepsize)
         #
         masses, vecs_cart, vecs_frac, vecs_n = get_eff_masses(m, basis)

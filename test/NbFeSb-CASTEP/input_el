@@ -1,0 +1,7 @@
+0.500 0.500 0.00                       ! K-POINT in the reciprocal crystal coord. (3 floats)
+0.05                                   ! step size in 1/Bohr units (1 float)
+19                                     ! band number, (1 integer)
+P                                       ! program identifier (1 char)
+0.00000000000000        2.97874452804324        2.97874452804324    
+2.97874452804324        0.00000000000000        2.97874452804324    
+2.97874452804324        2.97874452804324        0.0  ! direct lattice vectors (3 floats)
